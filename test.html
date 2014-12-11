@@ -4,12 +4,15 @@
 <meta charset="UTF-8" />
 <title>phaser</title>
 <script src="phaser-examples/examples/_site/js/jquery-2.0.3.min.js" type="text/javascript"></script>
-<script src="phaser-examples/examples/_site/js/purl.js" type="text/javascript"></script>
 <script src="phaser-examples/examples/_site/js/phaser.js"></script>
 <script>
 var game = new Phaser.Game(320, 240, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update }, false, false);
 
 function preload() {
+  game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+  game.scale.setScreenSize();
+  game.stage.smoothed = false;
+
   game.load.bitmapFont('times', 'assets/fonts/Times.png', 'assets/fonts/Times.xml');
 }
 
@@ -24,6 +27,16 @@ function update() {
     text.setText('Bitmap Fonts!\nx: ' + Math.round(game.input.x) + ' y: ' + Math.round(game.input.y));
 }
 </script>
+<style>
+canvas {
+  image-rendering: optimizeSpeed;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: pixelated;
+  /* image-rendering: -webkit-optimize-contrast; */
+  image-rendering: optimize-contrast;
+  -ms-interpolation-mode: nearest-neighbor;
+}
+</style>
 </head>
 <body>
     <div id="phaser-example"></div>
