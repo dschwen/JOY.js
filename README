@@ -1,0 +1,3 @@
+
+# Generate XML
+grep DWIDTH ../adfrescue/test/Disk1/Fonts/Times.bdf | awk 'BEGIN { x=0; id=32; print "<font>\n<info face=\"Times\" size=\"18\"/>\n<common lineHeight=\"18\" base=\"14\"/>" } { print "<char id=\"" id "\" x=\"" x "\" y=\"0\" width=\"" $2 "\" xadvance=\"" $2 "\" height=\"18\" xoffset=\"0\" yoffset=\"0\"></char>"; x=x+$2; id+=1 } END { print "</font>" }' > Times.xml
