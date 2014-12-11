@@ -6,11 +6,12 @@
 <script src="phaser-examples/examples/_site/js/jquery-2.0.3.min.js" type="text/javascript"></script>
 <script src="phaser-examples/examples/_site/js/phaser.js"></script>
 <script>
-var game = new Phaser.Game(320, 240, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update }, false, false);
+var game = new Phaser.Game(320, 240, Phaser.AUTO, '', { preload: preload, create: create, update: update }, false, false);
 
 function preload() {
-  game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+  game.scale.scaleMode = Phaser.ScaleManager.USER_SCALE;
   game.scale.setScreenSize();
+  game.scale.setResizeCallback(resize, this);
   game.stage.smoothed = false;
 
   game.load.bitmapFont('times', 'assets/fonts/Times.png', 'assets/fonts/Times.xml');
@@ -29,6 +30,20 @@ function update() {
     //text.setText('Bitmap Fonts!\nx: ' + Math.round(game.input.x) + ' y: ' + Math.round(game.input.y));
     text.setText('BITMAP FONTS!\nX: ' + Math.round(game.input.x) + ' Y: ' + Math.round(game.input.y));
 }
+
+function resize(scale, parentBounds)
+{
+  var w = parentBounds.width,
+      h = parentBounds.height,
+      wm, hm, m;
+  if (w===0 || h===0) return;
+
+  wm = Math.floor(w/game.width);
+  hm = Math.floor(h/game.height);
+  m = Math.max(Math.min(wm, hm), 1);
+
+  scale.setUserScale(m,m,0,0);
+}
 </script>
 <style>
 canvas {
@@ -42,6 +57,5 @@ canvas {
 </style>
 </head>
 <body>
-    <div id="phaser-example"></div>
 </body>
 </html>
