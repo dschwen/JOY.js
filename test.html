@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>phaser</title>
+<script src="phaser-examples/examples/_site/js/jquery-2.0.3.min.js" type="text/javascript"></script>
+<script src="phaser-examples/examples/_site/js/purl.js" type="text/javascript"></script>
+<script src="phaser-examples/examples/_site/js/phaser.js"></script>
+<script>
+var game = new Phaser.Game(320, 240, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update }, false, false);
+
+function preload() {
+  game.load.bitmapFont('times', 'assets/fonts/Times.png', 'assets/fonts/Times.xml');
+}
+
+var text;
+
+function create() {
+  game.stage.backgroundColor = '#700';
+  text = game.add.bitmapText(200, 100, 'times','Bitmap Fonts!',18);
+}
+
+function update() {
+    text.setText('Bitmap Fonts!\nx: ' + Math.round(game.input.x) + ' y: ' + Math.round(game.input.y));
+}
+</script>
+</head>
+<body>
+    <div id="phaser-example"></div>
+</body>
+</html>
