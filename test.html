@@ -16,6 +16,8 @@ function preload() {
 
   game.load.bitmapFont('times', 'assets/fonts/Times.png', 'assets/fonts/Times.xml');
   game.load.bitmapFont('joy', 'assets/fonts/JOY.png', 'assets/fonts/JOY.xml');
+  game.load.bitmapFont('64erI', 'assets/fonts/64erI.png', 'assets/fonts/64erI.xml');
+  game.load.bitmapFont('64erII', 'assets/fonts/64erII.png', 'assets/fonts/64erII.xml');
 }
 
 var text;
@@ -23,13 +25,14 @@ var text;
 function create() {
   game.stage.backgroundColor = '#700';
   //text = game.add.bitmapText(20, 20, 'joy','Bitmap Fonts!',18);
-  text = game.add.bitmapText(20, 20, 'joy','BITMAP FONTS!', 6);
+  //text = game.add.bitmapText(20, 20, 'joy','BITMAP FONTS!', 6);
+  text = game.add.bitmapText(20, 20, '64erII','Bitmap Fonts!',8);
   text.tint = 0x000077;
 }
 
 function update() {
-    //text.setText('Bitmap Fonts!\nx: ' + Math.round(game.input.x) + ' y: ' + Math.round(game.input.y));
-    text.setText('BITMAP FONTS!\nX: ' + Math.round(game.input.x) + ' Y: ' + Math.round(game.input.y));
+  text.setText('Bitmap Fonts!\nx: ' + Math.round(game.input.x) + ' y: ' + Math.round(game.input.y));
+  //text.setText('BITMAP FONTS!\nX: ' + Math.round(game.input.x) + ' Y: ' + Math.round(game.input.y));
 }
 
 function resize(scale, parentBounds)
