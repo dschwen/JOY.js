@@ -14,17 +14,20 @@ function preload() {
   game.stage.smoothed = false;
 
   game.load.bitmapFont('times', 'assets/fonts/Times.png', 'assets/fonts/Times.xml');
+  game.load.bitmapFont('joy', 'assets/fonts/JOY.png', 'assets/fonts/JOY.xml');
 }
 
 var text;
 
 function create() {
   game.stage.backgroundColor = '#700';
-  text = game.add.bitmapText(200, 100, 'times','Bitmap Fonts!',18);
+  //text = game.add.bitmapText(20, 20, 'joy','Bitmap Fonts!',18);
+  text = game.add.bitmapText(20, 20, 'joy','BITMAP FONTS!', 6);
 }
 
 function update() {
-    text.setText('Bitmap Fonts!\nx: ' + Math.round(game.input.x) + ' y: ' + Math.round(game.input.y));
+    //text.setText('Bitmap Fonts!\nx: ' + Math.round(game.input.x) + ' y: ' + Math.round(game.input.y));
+    text.setText('BITMAP FONTS!\nX: ' + Math.round(game.input.x) + ' Y: ' + Math.round(game.input.y));
 }
 </script>
 <style>
