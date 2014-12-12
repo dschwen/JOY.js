@@ -5,7 +5,7 @@ JOY = {
     verb: Array(16),
     geg: Array(255),
     transport: Array(255),
-    raum: Array(26),
+    //raum: Array(26),
     zurueck: Arary(26),
     betreten: Array(26),
     person: Array(20),
@@ -38,7 +38,8 @@ JOY = {
     baumx: Array(10), baumy: Array(10),
     omax: Array(10), omay: Array(10),
 
-    raum_: 1
+    raum: 1,
+    raum2: 0
   },
 
   // parser state
@@ -48,10 +49,11 @@ JOY = {
   gehe: 0,
 
   // Raum routinen
-  raum: []
+  initRaum: [],
+  raumFunc: []
 };
 
-function test_sreen()
+function test_screen()
 {
    // If Mouse Screen = 0
       Screen 0
@@ -79,7 +81,75 @@ function test_sreen()
 }
 
 // implementierung aller Raum routinen
-JOY.raum[1] = function()
+JOY.initRaum[1] = function()
+{
+  if (JOY.state.raum2 > 3) {
+     JOY.state.flag[1] = 1
+  }
+  if (JOY.state.transport[2] == 1) {
+     If JOY.state.flag[1] = 0 Or JOY.state.flag[1] = 2
+        Screen 2
+        Bob 2 , 54 , 41 , 3
+        Screen 0
+        Set Zone 2 , 50 , 39 To 61 , 51
+     Else
+        Screen 2
+        Bob 14 , 49 , 0 , 4
+        Screen 0
+        Set Zone 2 , 61 , 20 To 67 , 30
+     EndIf
+  Else
+     If JOY.state.flag[1] = 1
+        Screen 2
+        Bob 14 , 49 , 0 , 8
+     EndIf
+  EndIf
+  If JOY.state.transport[5] = 1
+     Screen 2
+     Bob 5 , 305 , 34 , 5
+     Screen 0
+     Set Zone 5 , 306 , 33 To 316 , 47
+  EndIf
+  If JOY.state.flag[5] = 0
+     Screen 2
+     Bob 16 , 282 , 0 , 7
+     Screen 0
+     Set Zone 18 , 281 , 0 To 319 , 54
+  Else
+     Screen 0
+     Set Zone 16 , 281 , 0 To 319 , 54
+  EndIf
+  If JOY.state.flag[3] = 1 And JOY.state.flag[4] = 1 And ( JOY.state.handlung[2] = 0 Or JOY.state.handlung[2] = 3 )
+     Screen 2
+     Bob 6 , 136 , 81 , 6
+  EndIf
+  If handlung$ ( 2 ) > 0 And handlung$ ( 2 ) < 3
+     Screen 2
+     Bob 6 , 136 , 81 , 9
+  EndIf
+  If JOY.state.flag[2] = 0
+     If JOY.state.transport[8] = 1
+        Screen 2
+        Bob 8 , 57 , 123 , 2
+        Screen 0
+        Set Zone 8 , 57 , 123 To 85 , 128
+     EndIf
+  Else
+     If JOY.state.transport[9] = 1
+        Screen 2
+        Bob 9 , 57 , 123 , 2
+        Screen 0
+        Set Zone 9 , 57 , 123 To 85 , 128
+     EndIf
+  EndIf
+  If JOY.state.person[8] = 1
+     Screen 2
+     Bob 19 , 0 , 34 , 10
+  EndIf
+}
+
+// implementierung aller Raum routinen
+JOY.raumFunc[1] = function()
 {
   if (JOY.verb == 1) {
     if (JOY.geg1 == 6 && handlung[2] == 2) {
@@ -122,7 +192,7 @@ JOY.raum[1] = function()
     }
     if (JOY.geg1 == 13
        JOY.state.flag[54] = 1
-       person$ ( 1 ) = 1
+       JOY.state.person[1] = 1
        Gosub personendisplay
        If person$ ( 1 ) = "???" && JOY.state.flag[56] = 1
           person$ ( 1 ) = "JUPP"
@@ -144,8 +214,8 @@ JOY.raum[1] = function()
        Call 'clickmouse$'
        Call 'screco$'
        JOY.state.flag[56] = 1
-       betreten$ ( 2 ) = 0
-       betreten$ ( 3 ) = 0
+       JOY.state.betreten[2] = 0
+       JOY.state.betreten[3] = 0
        For i = 2 To 10
           If person$ ( i ) = 4
              person$ ( i ) = 1
@@ -234,8 +304,8 @@ JOY.raum[1] = function()
        Call 'screco$'
        g = 134
        Gosub ablegen
-       handlung$ ( 2 ) = 3
-       person$ ( 3 ) = 1
+       JOY.state.handlung[2] = 3
+       JOY.state.person[3] = 1
        Gosub personendisplay
        Screen 2
        Bob 6 , 136 , 81 , 6
@@ -250,7 +320,7 @@ JOY.raum[1] = function()
        Gosub test_recall
     }
     if (JOY.geg1 == 254 && geg2 == 7) {
-       if (handlung$ ( 2 ) = 0 || handlung$ ( 2 ) == 3) {
+       if (JOY.state.handlung[2] = 0 || handlung$ ( 2 ) == 3) {
           Goto klackstris
        } else {
           Call 'txt$' [ Chr$ ( 10 ) + "DENK AN HERBERT !!!" + Chr$ ( 10 ) + "*" + Chr$ ( 10 ) ]
@@ -303,7 +373,7 @@ JOY.raum[1] = function()
        }
     }
     if (JOY.geg1 == 7 && JOY.state.flag[4] == 1) {
-       if (handlung$ ( 2 ) = 0 Or handlung$ ( 2 ) = 3) {
+       if (JOY.state.handlung[2] = 0 Or JOY.state.handlung[2] = 3) {
           schalte = 1
           JOY.state.flag[4] = 0
           Screen 2
@@ -323,12 +393,12 @@ JOY.raum[1] = function()
     }
  }
  if (JOY.verb == 10 && geg1 = 14 && JOY.state.flag[1] == 1) {
-    if (handlung$ ( 3 ) = 5 && handlung$ ( 4 ) = 0
-       handlung$ ( 4 ) = 1
+    if (JOY.state.handlung[3] = 5 && JOY.state.handlung[4] = 0
+       JOY.state.handlung[4] = 1
        Call 'txt$' [ ereignis$ ( 29 ) ]
        Call 'clickmouse$'
-       person$ ( 2 ) = 0
-       person$ ( 16 ) = 20
+       JOY.state.person[2] = 0
+       JOY.state.person[16] = 20
        Gosub personendisplay
     }
     gehe = 1
@@ -360,7 +430,7 @@ JOY.raum[1] = function()
     g = 162
     Gosub ablegen
     JOY.state.transport[162] = 1
-    handlung$ ( 1 ) = 3
+    JOY.state.handlung[1] = 3
     Call 'punkte$' [ 103 ]
  }
  if (JOY.verb == 16) {
@@ -390,7 +460,7 @@ JOY.raum[1] = function()
        if (reden$ ( 10 ) == 0) {
           Call 'unterhaltung_laden$' [ 2 ]
           Call 'unterhaltung$'
-          reden$ ( 10 ) = 1
+          JOY.state.reden[10] = 1
           verb = verb2
           Pop
           Goto parser
@@ -415,4 +485,99 @@ JOY.raum[1] = function()
        Goto parser
     }
  }
+}
+
+function  initRaum()
+{
+  raum2 = raum;
+  raum = r;
+
+  //Call 'maus_aus$'
+  Screen 2
+  Bob Off
+  Wait Vbl
+  Cls 0
+
+  Call 'roller_blind$'
+  Call 'test_joy2$'
+
+  Screen 2
+  Load pfad$ + "Grafiken/Raum" + ( Str$ ( raum ) - " " ) + ".Bobs.Abk"
+  If raum = 11 And JOY.state.flag[68] = 1 And zeit > 47
+     Load pfad$ + "Grafiken/Raum11_1.Pic" , 8
+  Else
+     If raum = 5 And JOY.state.person[7] = 5
+        Load pfad$ + "Grafiken/Raum5_1.Pic" , 8
+     Else
+        If raum = 14
+           If zeit = 46
+              Load pfad$ + "Grafiken/Raum14_1.Pic" , 8
+           Else
+              If zeit = 47
+                 Load pfad$ + "Grafiken/Raum14_2.Pic" , 8
+              Else
+                 Load pfad$ + "Grafiken/Raum14.Pic" , 8
+              EndIf
+           EndIf
+        Else
+           Load pfad$ + "Grafiken/Raum" + ( Str$ ( raum ) - " " ) + ".Pic" , 8
+        EndIf
+     EndIf
+  EndIf
+  Unpack 8 To 2
+  Erase 8
+
+  Load pfad$ + "Daten/Raum" + ( Str$ ( raum ) - " " ) + ".Zones" , 8
+  Set Input 42 , - 1
+  Open In 1 , pfad$ + "Texte/Raum" + ( Str$ ( raum ) - " " ) + ".Umgebung.Txt"
+  Line Input # 1 , umgebung$
+  umgebung$ = umgebung$ + "*" + Chr$ ( 10 )
+  Close 1
+  Open In 1 , pfad$ + "Texte/Raum" + ( Str$ ( raum ) - " " ) + ".Objekte.Txt"
+  For i = 1 To raumaddierer$ ( raum ) - raumaddierer$ ( raum - 1 )
+     Line Input # 1 , objekt$ ( i )
+     objekt$ ( i ) = objekt$ ( i ) + "*" + Chr$ ( 10 )
+  Next
+  Close 1
+
+  if (flag[54] == 1) {
+    person[1] = raum;
+  }
+
+  Screen 0
+  Flash Off
+  Get Palette 2
+
+  initZones();
+
+  //Gosub "INITRAUM" + ( Str$ ( raum ) - " " )
+  JOY.initRaum[raum]();
+
+  //Screen 3
+  //Cls 0
+  personendisplay();
+
+  Screen 0
+  Call 'cursor$'
+
+  if (JOY.state.raum2 == 19) {
+     Bank Swap 1 , 11
+     Change Mouse 4
+     Bank Swap 1 , 11
+  }
+  if (r == 19) {
+     Bank Swap 1 , 11
+     Change Mouse 5
+     Bank Swap 1 , 11
+  }
+
+  Call 'roller_blind$'
+  //Call 'maus_an$'
+
+  //Gosub handlung
+  handlung();
+
+  if (!(raum == 22 || raum == 23)) {
+     JOY.state.betreten[raum] = 1;
+  }
 }
