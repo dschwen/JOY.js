@@ -37,6 +37,7 @@ JOY = {
     keksx: Array(10), keksy: Array(10),
     baumx: Array(10), baumy: Array(10),
     omax: Array(10), omay: Array(10),
+    zones: [[],[],[],[]],           // current clickable zones per screen
 
     raum: 1,
     raum2: 0
@@ -512,10 +513,6 @@ JOY.raumFunc[1] = function()
  }
 }
 
-function initZones()
-{
-}
-
 function handlung()
 {
 }
@@ -674,3 +671,119 @@ function initRaum()
      JOY.state.betreten[raum] = 1;
   }
 }
+
+function initZones()
+{
+   switchScreen(0);
+   JOY.state.zones[JOY.screen] = JOY.raumZones[JOY.raum];
+   /*
+   anz = Deek ( Start ( 8 ) + Length ( 8 ) - 2 )
+   For i = 1 To anz
+      adr = Start ( 8 ) + ( i - 1 ) * 8
+      x1 = Deek ( adr )
+      y1 = Deek ( adr + 2 )
+      x2 = Deek ( adr + 4 )
+      y2 = Deek ( adr + 6 )
+      If x2 <> 0
+         Set Zone i , x1 , y1 To x2 , y2
+      EndIf
+   Next
+   */
+}
+
+function font(f, groesse)
+{
+   If Not Upper$ ( Right$ ( f$ , 5 ) ) = ".FONT"
+      f$ = f$ + ".Font"
+   EndIf
+   i = 1
+   While Font ( i ) <> ""
+      If Upper$ ( Left$ ( Font ( i ) , 30 ) - " " ) = Upper$ ( f$ )
+         If Val ( Mid$ ( Font ( i ) , 31 , 2 ) ) = groesse
+            Set Font i
+            Exit
+         EndIf
+      EndIf
+      Inc i
+   Wend
+}
+
+function mausAus()
+{
+   Limit Mouse X Mouse , Y Mouse To X Mouse , Y Mouse
+}
+
+function mausAn()
+{
+   Limit Mouse 128 , 47 To 447 , 297
+}
+
+function verbRaus()
+{
+  Shared verb
+  switchScreen(1);
+  Call 'iconbank$' [ 0 ]
+
+  if (JOY.verb < 10) {
+    Paste Icon 0 , verb * 9 , verb
+  } else {
+    Paste Icon 58 , ( verb - 9 ) * 9 , verb
+  }
+}
+
+function verbRein()
+{
+  switchScreen(1);
+  Call 'iconbank$' [ 0 ]
+  if (JOY.verb < 10) {
+    Paste Icon 0 , verb * 9 , verb + 15
+  } else {
+    Paste Icon 58 , ( verb - 9 ) * 9 , verb + 15
+  }
+}
+
+function lopri(x , y , txt)
+{
+   Text 16 + x * 8 , 54 + y * 8 , txt$
+}
+
+Procedure cursorweg$
+   Shared s , z , scr$ ( )
+   Ink 14 , 6
+   Call 'lopri$' [ s , z , Mid$ ( scr$ ( z ) , s + 1 , 1 ) ]
+   Wait Vbl
+End Proc
+
+Procedure cursorhin$
+   Shared s , z , scr$ ( ) , cc16 , cc17
+   Ink 16 , 17
+   Call 'lopri$' [ s , z , Mid$ ( scr$ ( z ) , s + 1 , 1 ) ]
+   Colour 16 , cc16
+   Colour 17 , cc17
+   Shift Up 25 , 16 , 17 , 1
+   Wait Vbl
+End Proc
+
+Procedure bildaufbau$
+   Shared scr$ ( )
+   For i = 0 To 24
+      Call 'lopri$' [ 0 , i , scr$ ( i ) ]
+   Next
+End Proc
+
+Procedure make_screen$
+   switchScreen(1);
+   Get Block 1 , 0 , 0 , 40 , 80 , 1
+   switchScreen(0);
+   Put Block 2
+   Put Block 1 , 119 , 19
+   Screen Swap
+   Wait Vbl
+End Proc
+
+Procedure p$
+   Shared p
+   switchScreen(0);
+   Ink 1 , 0
+   Text 232 , 30 , Str$ ( p ) - " "
+End Proc
