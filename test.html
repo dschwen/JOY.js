@@ -43,6 +43,9 @@ function resize(scale, parentBounds)
   m = Math.max(Math.min(wm, hm), 1);
 
   scale.setUserScale(m,m,0,0);
+
+  //game.canvas.style['top'] = + 'px';
+  //game.canvas.style['left'] = + 'px';
 }
 </script>
 <style>
@@ -53,6 +56,12 @@ canvas {
   /* image-rendering: -webkit-optimize-contrast; */
   image-rendering: optimize-contrast;
   -ms-interpolation-mode: nearest-neighbor;
+
+  position: absolute;
+}
+body {
+  margin: 0;
+  background-color: black;
 }
 </style>
 </head>
