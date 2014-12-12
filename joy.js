@@ -8,8 +8,8 @@ JOY = {
     //raum: Array(26),
     zurueck: Arary(26),
     betreten: Array(26),
-    person: Array(20),
-    personen: Array(10),
+    person: Array(20),    // room number each person is in
+    personen: Array(10),  // list of portraits displayed up top
     reden: Array(20),
     ereignis: Array(102),
     invent: Array(24),
@@ -48,36 +48,55 @@ JOY = {
   geg1: 0,
   gehe: 0,
 
+  // AMOS state
+  screen: 0,
+
   // Raum routinen
   initRaum: [],
   raumFunc: []
 };
 
-function test_screen()
+function switchScreen(s)
 {
-   // if (Mouse Screen = 0
-      Screen 0
+  JOY.screen = s;
+}
+
+function mouseScreen()
+{
+  // which of the three screen sections (personen, raum, befehle) did the user click
+  return 0;
+}
+
+function testScreen()
+{
+  switch (mouseScreen())
+  {
+    case 0:
+      switchScreen(0);
       mz = Mouse Zone
       JOY.geg = JOY.state.raumaddierer[JOY.state.raum - 1 ] + mz;
-      if (JOY.geg == raumaddierer[JOY.raum_ - 1]) {
-         geg = 0
+      if (JOY.geg == JOY.state.raumaddierer[JOY.state.raum - 1]) {
+        JOY.geg = 0;
       }
-   }
-   // if (Mouse Screen = 1
-      Screen 1
+      break;
+
+    case 1:
+      switchScreen(1);
       mz = Mouse Zone
       if (mz > 4) {
-         geg = JOY.state.inventar[mz - 4]
+        JOY.geg = JOY.state.inventar[mz - 4];
       } else {
-         geg = 0
+        JOY.geg = 0;
       }
-   }
-   // if (Mouse Screen = 3
-      Screen 3
+      break;
+
+    case 3;
+      switchScreen(3);
       mz = Mouse Zone
-      geg = 0
-      pers = JOY.state.personen[mz]
-   }
+      JOY.geg = 0;
+      pers = JOY.state.personen[mz];
+      break;
+  }
 }
 
 // implementierung aller Raum routinen
@@ -88,62 +107,62 @@ JOY.initRaum[1] = function()
   }
   if (JOY.state.transport[2] == 1) {
      if (JOY.state.flag[1] = 0 || JOY.state.flag[1] = 2) {
-        Screen 2
+        switchScreen(2);
         Bob 2 , 54 , 41 , 3
-        Screen 0
+        switchScreen(0);
         Set Zone 2 , 50 , 39 To 61 , 51
      } else {
-        Screen 2
+        switchScreen(2);
         Bob 14 , 49 , 0 , 4
-        Screen 0
+        switchScreen(0);
         Set Zone 2 , 61 , 20 To 67 , 30
      }
   } else {
      if (JOY.state.flag[1] == 1) {
-        Screen 2
+        switchScreen(2);
         Bob 14 , 49 , 0 , 8
      }
   }
   if (JOY.state.transport[5] == 1) {
-     Screen 2
+     switchScreen(2);
      Bob 5 , 305 , 34 , 5
-     Screen 0
+     switchScreen(0);
      Set Zone 5 , 306 , 33 To 316 , 47
   }
   if (JOY.state.flag[5] == 0) {
-     Screen 2
+     switchScreen(2);
      Bob 16 , 282 , 0 , 7
-     Screen 0
+     switchScreen(0);
      Set Zone 18 , 281 , 0 To 319 , 54
   } else {
-     Screen 0
+     switchScreen(0);
      Set Zone 16 , 281 , 0 To 319 , 54
   }
   if (JOY.state.flag[3] == 1 && JOY.state.flag[4] = 1 && ( JOY.state.handlung[2] = 0 || JOY.state.handlung[2] = 3 )) {
-     Screen 2
+     switchScreen(2);
      Bob 6 , 136 , 81 , 6
   }
   if (JOY.state.handlung[2] > 0 && JOY.state.handlung[2] < 3) {
-     Screen 2
+     switchScreen(2);
      Bob 6 , 136 , 81 , 9
   }
   if (JOY.state.flag[2] = 0) {
      if (JOY.state.transport[8] = 1) {
-        Screen 2
+        switchScreen(2);
         Bob 8 , 57 , 123 , 2
-        Screen 0
+        switchScreen(0);
         Set Zone 8 , 57 , 123 To 85 , 128
      }
   } else {
      if (JOY.state.transport[9] = 1) {
-        Screen 2
+        switchScreen(2);
         Bob 9 , 57 , 123 , 2
-        Screen 0
+        switchScreen(0);
         Set Zone 9 , 57 , 123 To 85 , 128
      }
   }
   if (JOY.state.person[8] = 1) {
-     Screen 2
+     switchScreen(2);
      Bob 19 , 0 , 34 , 10
   }
 }
@@ -179,11 +198,11 @@ JOY.raumFunc[1] = function()
        JOY.state.flag[2] = 1
        JOY.state.transport[8] = 0
        JOY.state.transport[9] = 1
-       Screen 2
+       switchScreen(2);
        Bob Off 8
        Bob 9 , 57 , 123 , 2
        Call 'screco$'
-       Screen 0
+       switchScreen(0);
        Reset Zone 8
        Set Zone 9 , 57 , 123 To 85 , 127
     }
@@ -193,20 +212,23 @@ JOY.raumFunc[1] = function()
     if (JOY.geg1 == 13) {
        JOY.state.flag[54] = 1
        JOY.state.person[1] = 1
-       Gosub personendisplay
+       personenDisplay();
        if (JOY.state.person[1] = "???" && JOY.state.flag[56] = 1) {
           JOY.state.person[1] = "JUPP"
        }
     }
   }
   if (JOY.verb == 2 && geg1 = 14 && JOY.state.flag[1] = 0 && JOY.state.transport[2] = 1) {
-    oeffne = 1
-    JOY.state.flag[1] = 1
-    Screen 2
+    oeffne = 1;
+    JOY.state.flag[1] = 1;
+
+    switchScreen(2);
     Bob Off 2
     Bob 14 , 49 , 0 , 4
+
     Call 'screco$'
-    Screen 0
+    switchScreen(0);
+
     Reset Zone 2
     Set Zone 2 , 61 , 20 To 67 , 30
     if (JOY.state.flag[56] = 0) {
@@ -221,38 +243,41 @@ JOY.raumFunc[1] = function()
              JOY.state.person[i] = 1
           }
        Next
-       Gosub personendisplay
+       personenDisplay();
        if (JOY.state.person[1] = "???") {
           JOY.state.person[1] = "JUPP"
        }
     }
  }
- if (JOY.verb == 3 && geg1 = 14 && JOY.state.flag[1] = 1 && JOY.state.transport[2] = 1) {
-    schliesse = 1
-    JOY.state.flag[1] = 0
-    Screen 2
+ if (JOY.verb == 3 && geg1 = 14 && JOY.state.flag[1] = 1 && JOY.state.transport[2] == 1) {
+    schliesse = 1;
+    JOY.state.flag[1] = 0;
+
+    switchScreen(2);
     Bob Off 14
     Bob 2 , 54 , 41 , 3
     Call 'screco$'
-    Screen 0
+
+    switchScreen(0);
     Set Zone 2 , 50 , 39 To 61 , 51
  }
  if (JOY.verb == 4) {
-    if (JOY.geg1 == 2 && JOY.state.transport[2] = 1) {
-       ziehe = 1
-       if (( JOY.state.flag[1] = 0 || JOY.state.flag[1] = 2 )) {
-          g = geg1
-          Gosub aufnehmen
+    if (JOY.geg1 == 2 && JOY.state.transport[2] == 1) {
+       ziehe = 1;
+       if (JOY.state.flag[1] == 0 || JOY.state.flag[1] == 2) {
+          g = geg1;
+          aufnehmen();
        } else {
-          Screen 2
+          switchScreen(2);
           Bob 14 , 49 , 0 , 8
-          g = 2
-          mz = 2
-          Gosub aufnehmen
+
+          g = 2;
+          mz = 2;
+          aufnehmen();
        }
     }
  }
- if (( verb = 5 || verb = 8 ) && geg1 = 10) {
+ if (( verb == 5 || verb == 8 ) && geg1 == 10) {
     showText(Chr$ ( 10 ) + "ABER ES IST DOCH NOCH HELL!" + Chr$ ( 10 ) + "*" + Chr$ ( 10 ));
     Call 'clickmouse$'
     Call 'screco$'
@@ -261,28 +286,28 @@ JOY.raumFunc[1] = function()
  }
  if (JOY.verb == 7) {
     if (JOY.geg1 == 2 && geg2 == 14 && JOY.state.transport[2] == 2) {
-       benutze = 1
-       g = 2
-       Gosub ablegen
+       benutze = 1;
+       g = 2;
+       ablegen();
        JOY.state.transport[2] = 1;
        if (JOY.state.flag[1] == 0 || JOY.state.flag[1] == 2) {
-          Screen 2
+          switchScreen(2);
           Bob 2 , 54 , 41 , 3
           Call 'screco$'
-          Screen 0
+          switchScreen(0);
           Set Zone 2 , 50 , 39 To 61 , 51
        } else {
-          Screen 2
+          switchScreen(2);
           Bob 14 , 49 , 0 , 4
           Call 'screco$'
-          Screen 0
+          switchScreen(0);
           Set Zone 2 , 61 , 20 To 67 , 30
        }
     }
     if (JOY.geg1 == 11 && geg2 == 7) {
-       benutze = 1
-       g = 11
-       Gosub ablegen
+       benutze = 1;
+       g = 11;
+       ablegen();
        JOY.state.transport[11] = 1
        Bset.<> 0 , JOY.state.flag[58]
        Gosub test_recall
@@ -291,31 +316,31 @@ JOY.raumFunc[1] = function()
        benutze = 1
        JOY.state.flag[1] = 0;
        g = 33;
-       Gosub ablegen
+       ablegen();
        showText(JOY.state.ereignis[7]);
        Call 'clickmouse$'
        Call 'screco$'
-       Call 'punkte$' [ 100 ]
+       punkte(100);
     }
     if (JOY.geg1 == 134 && geg2 == 7 && JOY.state.handlung[2] == 2) {
        benutze = 1
        showText(JOY.state.ereignis[39]);
        Call 'clickmouse$'
        Call 'screco$'
-       g = 134
-       Gosub ablegen
-       JOY.state.handlung[2] = 3
-       JOY.state.person[3] = 1
-       Gosub personendisplay
-       Screen 2
+       g = 134;
+       ablegen();
+       JOY.state.handlung[2] = 3;
+       JOY.state.person[3] = 1;
+       personenDisplay();
+       switchScreen(2);
        Bob 6 , 136 , 81 , 6
        Call 'screco$'
-       Call 'punkte$' [ 102 ]
+       punkte(102);
     }
     if (JOY.geg1 == 203 && geg2 == 12) {
-       benutze = 1
-       g = 203
-       Gosub ablegen
+       benutze = 1;
+       g = 203;
+       ablegen();
        Bset.<> 1 , JOY.state.flag[58]
        Gosub test_recall
     }
@@ -336,7 +361,7 @@ JOY.raumFunc[1] = function()
        schalte = 1
        JOY.state.flag[3] = 1
        if (JOY.state.flag[4] == 1) {
-          Screen 2
+          switchScreen(2);
           Bob 6 , 136 , 81 , 6
           Call 'screco$'
        }
@@ -346,7 +371,7 @@ JOY.raumFunc[1] = function()
        JOY.state.flag[4] = 1
        Gosub test_recall
        if (JOY.state.flag[3] = 1) {
-          Screen 2
+          switchScreen(2);
           Bob 6 , 136 , 81 , 6
           Call 'screco$'
        }
@@ -361,7 +386,7 @@ JOY.raumFunc[1] = function()
        if (JOY.state.handlung[2] == 0 || JOY.state.handlung[2] == 3) {
           schalte = 1
           JOY.state.flag[3] = 0
-          Screen 2
+          switchScreen(2);
           Bob Off 6
           Call 'screco$'
        } else {
@@ -376,7 +401,7 @@ JOY.raumFunc[1] = function()
        if (JOY.state.handlung[2] = 0 || JOY.state.handlung[2] = 3) {
           schalte = 1
           JOY.state.flag[4] = 0
-          Screen 2
+          switchScreen(2);
           Bob Off 6
           Call 'screco$'
        } else {
@@ -399,7 +424,7 @@ JOY.raumFunc[1] = function()
        Call 'clickmouse$'
        JOY.state.person[2] = 0
        JOY.state.person[16] = 20
-       Gosub personendisplay
+       personenDisplay();
     }
     gehe = 1
     r = 4
@@ -428,10 +453,10 @@ JOY.raumFunc[1] = function()
     Call 'clickmouse$'
     Call 'screco$'
     g = 162
-    Gosub ablegen
+    ablegen();
     JOY.state.transport[162] = 1
     JOY.state.handlung[1] = 3
-    Call 'punkte$' [ 103 ]
+    punkte(103);
  }
  if (JOY.verb == 16) {
     if (pers == 5) {
@@ -478,7 +503,7 @@ JOY.raumFunc[1] = function()
           JOY.state.person[7] = "HANS-WERNER"
           JOY.state.person[9] = "RAINER"
           JOY.state.person[10] = "ANJA"
-          Call 'punkte$' [ 113 ]
+          punkte(113);
        }
        verb = verb2
        Pop
@@ -487,13 +512,79 @@ JOY.raumFunc[1] = function()
  }
 }
 
-function  initRaum()
+function initZones()
 {
-  raum2 = raum;
-  raum = r;
+}
+
+function handlung()
+{
+}
+
+function aufnehmen()
+{
+}
+
+function ablegen()
+{
+  for (var i = 1; i <= 24; ++i) {
+    if (JOY.state.inventar[i] == g) {
+      JOY.state.inventar[i] = 0;
+      JOY.state.transport[g] = 0;
+      JOY.state.invent[i] = "";
+      break;
+    }
+  }
+  inventory();
+}
+
+function testInventar()
+{
+  var liste = 0;
+  for (var i = 1; i <= 24) {
+    if (JOY.state.inventar[i] > 0) {
+      liste++
+    }
+  }
+  if (liste == 24) {
+    Call 'txt$' [ Chr$ ( 10 ) + "MEHR KANNST DU NICHT TRAGEN !" + Chr$ ( 10 ) + "*" + Chr$ ( 10 ) ]
+    Call 'clickmouse$'
+    Call 'screco$'
+    Pop
+    //Goto parser
+  }
+}
+
+function personenDisplay()
+{
+  Call 'iconbank$' [ 2 ]
+  switchScreen(3);
+
+  var person_ = 1;
+  var i = 0;
+  for (var j = 1; j <= 10; ++j) {
+    personen[j] = 0;
+  }
+
+  do
+  {
+    if (JOY.state.person[person_] == JOY.state.raum) {
+      Paste Icon i * 31 , 0 , person_
+      JOY.state.personen[i + 1] = person_;
+      i++;
+    }
+    person_++;
+  } while (i != 10 && person_ != 21);
+
+  Cls 0 , i * 31 , 0 To ( i * 31 ) + ( 320 - i ) , 39
+}
+
+function initRaum()
+{
+  JOY.state.raum2 = JOY.state.raum;
+  JOY.state.raum = r;
 
   //Call 'maus_aus$'
-  Screen 2
+  switchScreen(2);
   Bob Off
   Wait Vbl
   Cls 0
@@ -501,19 +592,19 @@ function  initRaum()
   Call 'roller_blind$'
   Call 'test_joy2$'
 
-  Screen 2
+  switchScreen(2);
   Load pfad$ + "Grafiken/Raum" + ( Str$ ( raum ) - " " ) + ".Bobs.Abk"
-  if (raum = 11 && JOY.state.flag[68] = 1 && zeit > 47) {
+  if (JOY.state.raum == 11 && JOY.state.flag[68] == 1 && JOY.state.zeit > 47) {
      Load pfad$ + "Grafiken/Raum11_1.Pic" , 8
   } else {
-     if (raum = 5 && JOY.state.person[7] = 5) {
+     if (JOY.state.raum == 5 && JOY.state.person[7] == 5) {
         Load pfad$ + "Grafiken/Raum5_1.Pic" , 8
      } else {
-        if (raum = 14) {
-           if (zeit = 46) {
+        if (JOY.state.raum == 14) {
+           if (JOY.state.zeit == 46) {
               Load pfad$ + "Grafiken/Raum14_1.Pic" , 8
            } else {
-              if (zeit = 47) {
+              if (JOY.state.zeit == 47) {
                  Load pfad$ + "Grafiken/Raum14_2.Pic" , 8
               } else {
                  Load pfad$ + "Grafiken/Raum14.Pic" , 8
@@ -540,11 +631,12 @@ function  initRaum()
   Next
   Close 1
 
-  if (flag[54] == 1) {
-    person[1] = raum;
+  // move player to current room
+  if (JOY.state.flag[54] == 1) {
+    JOY.state.person[1] = JOY.state.raum;
   }
 
-  Screen 0
+  switchScreen(0);
   Flash Off
   Get Palette 2
 
@@ -553,13 +645,14 @@ function  initRaum()
   //Gosub "INITRAUM" + ( Str$ ( raum ) - " " )
   JOY.initRaum[raum]();
 
-  //Screen 3
+  //switchScreen(3);
   //Cls 0
   personendisplay();
 
-  Screen 0
+  switchScreen(0);
   Call 'cursor$'
 
+  // crooked mouse cursor in room 19?
   if (JOY.state.raum2 == 19) {
      Bank Swap 1 , 11
      Change Mouse 4
