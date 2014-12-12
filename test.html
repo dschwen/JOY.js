@@ -44,8 +44,10 @@ function resize(scale, parentBounds)
 
   scale.setUserScale(m,m,0,0);
 
-  //game.canvas.style['top'] = + 'px';
-  //game.canvas.style['left'] = + 'px';
+  x = Math.floor((w - game.width*m)/2);
+  game.canvas.style['left'] = x + 'px';
+  y = Math.floor((h - game.height*m)/2);
+  game.canvas.style['top'] = y + 'px';
 }
 </script>
 <style>
