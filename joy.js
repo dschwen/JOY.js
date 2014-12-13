@@ -1,3 +1,5 @@
+var game = new Phaser.Game(320, 240, Phaser.AUTO, '', { preload: preload, create: create, update: update }, false, false);
+
 JOY = {
   state: {
     inventar: Array(24),
@@ -44,6 +46,7 @@ JOY = {
 
   // parser state
   verb: 0,
+  benutze: 0,
   pers: 0,
   geg1: 0,
   gehe: 0,
@@ -56,14 +59,51 @@ JOY = {
   raumFunc: [],
 
   // assets
-  ereignis: []  
+  ereignis: []
 };
 
 // Load all game assets
-function preload()
-{
-  game.load.json('zones', 'assets/daten/zones.json');
+function preload() {
+  var i;
+
+  game.scale.scaleMode = Phaser.ScaleManager.USER_SCALE;
+  game.scale.setScreenSize();
+  game.scale.setResizeCallback(resize, this);
+  game.stage.smoothed = false;
+
+  game.load.bitmapFont('font_times', 'assets/fonts/Times.png', 'assets/fonts/Times.xml');
+  game.load.bitmapFont('font_joy', 'assets/fonts/JOY.png', 'assets/fonts/JOY.xml');
+  //game.load.bitmapFont('font_joy2', 'assets/fonts/JOY2.png', 'assets/fonts/JOY2.xml');
+
+  // JSON assets
+  game.load.json('texte', 'assets/texteDeutsch/text.json');
+  game.load.json('zones', 'assets/texteDeutsch/zones.json');
+
+  // graphic assets
+  for (i = 0; i < 20; ++i) {
+    game.load.sprite('gesicht_' + i, 'assets/grafiken/Gesichter.' + i + '.png');
+  }
+  for (i = 0; i < 34; ++i) {
+    game.load.sprite('icons3_' + i, 'assets/grafiken/Icons3Deutch.' + i + '.png');
+  }
+
+  // Raum assets
+  var raumBobNum = {
+    "1":13, "10":0, "11":1, "12":3, "13":2, "14":7, "15":11, "16":0, "17":5, "18":1,
+    "19":4, "2":9, "20":16, "21":0, "22":0, "23":0, "24":5, "25":0, "26":1, "3":25,
+    "4":14, "5":2, "6":14, "7":3, "8":6
+  }
+  for (var r in raumBobNum)
+    if(raumBobNum.hasOwnProperty(r)) {
+      for(i = 0; i <= raumBobNum[r]; ++i) {
+        game.load.sprite('raum_' + r + '_bob_'+ i, 'assets/grafiken/Raum' + r + '.Bobs.' + i + '.png');
+      }
+      game.load.sprite('raum_' + r, 'assets/grafiken/Raum' + r + '.Pic.png');
+    }
+  game.load.sprite('raum_5_1', 'assets/grafiken/Raum5_1.Pic.png');
+  game.load.sprite('raum_11_1', 'assets/grafiken/Raum11_1.Pic.png');
 }
+
 
 function switchScreen(s)
 {
@@ -188,7 +228,7 @@ JOY.raumFunc[1] = function()
        Goto parser
     }
     if (JOY.geg1 == 7 && JOY.state.transport[11] == 1) {
-       //showText(JOY.state.ereignis[3]);
+       //showText(JOY.ereignis[3]);
        showText(JOY.ereignis[3])
 
        Call 'clickmouse$'
@@ -241,7 +281,7 @@ JOY.raumFunc[1] = function()
     Reset Zone 2
     Set Zone 2 , 61 , 20 To 67 , 30
     if (JOY.state.flag[56] = 0) {
-       showText(JOY.state.ereignis[10]);
+       showText(JOY.ereignis[10]);
        Call 'clickmouse$'
        Call 'screco$'
        JOY.state.flag[56] = 1
@@ -295,7 +335,7 @@ JOY.raumFunc[1] = function()
  }
  if (JOY.verb == 7) {
     if (JOY.geg1 == 2 && geg2 == 14 && JOY.state.transport[2] == 2) {
-       benutze = 1;
+       JOY.benutze = 1;
        g = 2;
        ablegen();
        JOY.state.transport[2] = 1;
@@ -314,7 +354,7 @@ JOY.raumFunc[1] = function()
        }
     }
     if (JOY.geg1 == 11 && geg2 == 7) {
-       benutze = 1;
+       JOY.benutze = 1;
        g = 11;
        ablegen();
        JOY.state.transport[11] = 1
@@ -322,18 +362,18 @@ JOY.raumFunc[1] = function()
        Gosub test_recall
     }
     if (JOY.geg1 == 33 && geg2 == 14) {
-       benutze = 1
+       [JOY.benutze] = 1
        JOY.state.flag[1] = 0;
        g = 33;
        ablegen();
-       showText(JOY.state.ereignis[7]);
+       showText(JOY.ereignis[7]);
        Call 'clickmouse$'
        Call 'screco$'
        punkte(100);
     }
     if (JOY.geg1 == 134 && geg2 == 7 && JOY.state.handlung[2] == 2) {
-       benutze = 1
-       showText(JOY.state.ereignis[39]);
+       JOY.benutze = 1
+       showText(JOY.ereignis[39]);
        Call 'clickmouse$'
        Call 'screco$'
        g = 134;
@@ -347,7 +387,7 @@ JOY.raumFunc[1] = function()
        punkte(102);
     }
     if (JOY.geg1 == 203 && geg2 == 12) {
-       benutze = 1;
+       JOY.benutze = 1;
        g = 203;
        ablegen();
        Bset.<> 1 , JOY.state.flag[58]
@@ -429,7 +469,7 @@ JOY.raumFunc[1] = function()
  if (JOY.verb == 10 && geg1 = 14 && JOY.state.flag[1] == 1) {
     if (JOY.state.handlung[3] = 5 && JOY.state.handlung[4] = 0) {
        JOY.state.handlung[4] = 1
-       showText(JOY.state.ereignis[29]);
+       showText(JOY.ereignis[29]);
        Call 'clickmouse$'
        JOY.state.person[2] = 0
        JOY.state.person[16] = 20
@@ -440,7 +480,7 @@ JOY.raumFunc[1] = function()
     Gosub initraum
  }
  if (JOY.verb == 11 && JOY.state.flag[56] == 1) {
-    showText(JOY.state.ereignis[11]);
+    showText(JOY.ereignis[11]);
     Call 'clickmouse$'
     Call 'screco$'
     Call 'verb_raus$'
@@ -450,7 +490,7 @@ JOY.raumFunc[1] = function()
     Goto parser
  }
  if (JOY.verb == 12 && geg1 == 2) {
-    showText(JOY.state.ereignis[80]);
+    showText(JOY.ereignis[80]);
     Call 'clickmouse$'
     Call 'screco$'
     Pop
@@ -458,7 +498,7 @@ JOY.raumFunc[1] = function()
  }
  if (JOY.verb == 13 && geg1 == 162 && pers == 5 && JOY.state.handlung[1] == 2) {
     gib = 1
-    showText(JOY.state.ereignis[34]);
+    showText(JOY.ereignis[34]);
     Call 'clickmouse$'
     Call 'screco$'
     g = 162
