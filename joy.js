@@ -11,7 +11,6 @@ JOY = {
     person: Array(20),    // room number each person is in
     personen: Array(10),  // list of portraits displayed up top
     reden: Array(20),
-    ereignis: Array(102),
     invent: Array(24),
     raumaddierer: Array(26),
     c: Array(9),
@@ -54,7 +53,10 @@ JOY = {
 
   // Raum routinen
   initRaum: [],
-  raumFunc: []
+  raumFunc: [],
+
+  // assets
+  ereignis: []  
 };
 
 // Load all game assets
@@ -187,7 +189,7 @@ JOY.raumFunc[1] = function()
     }
     if (JOY.geg1 == 7 && JOY.state.transport[11] == 1) {
        //showText(JOY.state.ereignis[3]);
-       showText(ereignis[3])
+       showText(JOY.ereignis[3])
 
        Call 'clickmouse$'
 
