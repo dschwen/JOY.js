@@ -7,12 +7,8 @@ var texte = {};
 process.argv.forEach(function(val, index, array) {
   if (index < 2) return;
   
-  var data = fs.readFileSync(val,'ascii');
-  console.log(data);
-
-  var file = [];
-  
-  texte[val] = room;
+  var data = fs.readFileSync(val,'binary').replace(/^\n/,'').replace(/\n*\n$/,'');
+  texte[val] = data.split("\n*\n");
 });
 
 console.log(JSON.stringify(texte));
