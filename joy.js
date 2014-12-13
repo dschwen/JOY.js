@@ -57,6 +57,12 @@ JOY = {
   raumFunc: []
 };
 
+// Load all game assets
+function preload()
+{
+  game.load.json('zones', 'assets/daten/zones.json');
+}
+
 function switchScreen(s)
 {
   JOY.screen = s;
@@ -787,3 +793,86 @@ Procedure p$
    Ink 1 , 0
    Text 232 , 30 , Str$ ( p ) - " "
 End Proc
+
+ Label init_befehle:
+ Screen Display 1 , 128 , 309 , ,
+ Load pfad$ + "Grafiken/Befehle2.Pic" , 8
+ Unpack 8 To 1
+
+ Erase 8
+ Get Cblock 2 , 0 , 0 , 320 , 90
+ Load pfad$ + "Grafiken/Befehle.Pic" , 8
+ Unpack 8 To 1
+
+ Erase 8
+ Gosub inventory
+ Ink 0 , 5
+ If half = 1
+    Screen Display 1 , 128 , , 160 , 90
+ EndIf
+ Screen 1
+ Call 'font$' [ "JOY" , 6 ]
+ Reserve Zone 28
+ Set Zone 1 , 0 , 9 To 57 , 90
+ Set Zone 2 , 58 , 9 To 115 , 44
+ Set Zone 3 , 58 , 46 To 115 , 68
+ Set Zone 4 , 58 , 68 To 115 , 90
+ feld = 5
+ For j = 1 To 3
+    For i = 1 To 8
+       x = 100 + i * 24
+       y = - 6 + j * 24
+       Set Zone feld , x , y To x + 16 , y + 16
+       Inc feld
+    Next
+ Next
+ If spr = 0
+    Call 'befehle_hoch$'
+ Else
+    spr = 0
+ EndIf
+ Call 'verb_rein$'
+ Return
+
+function ladeTexte:
+ Screen 1
+ Set Input 42 , - 1
+ anz# = Float 1
+ Ink 6
+ Get Cblock 1 , 0 , 0 , 320 , 11
+ If Not Exist ( pfad$ )
+    Screen 0
+    Gr Writing 0
+    Ink 1 , 0
+    Text 70 , 60 , "BITTE LEGEN SIE DIE ZWEITE DISK EIN"
+    While Not Exist ( pfad$ )
+    Wend
+    Cls 0
+ EndIf
+ Screen 1
+ Open In 1 , pfad$ + "Texte/Ereignisse.Txt"
+ For i = 1 To 102
+    Bar 1 , 1 To 1 + anz# , 6
+    Line Input # 1 , ereignis$ ( i )
+    anz# = anz# + Float 3.1000001430511475
+    ereignis$ ( i ) = ereignis$ ( i ) + "*" + Chr$ ( 10 )
+ Next
+ Close 1
+ Put Cblock 1 , 0 , 0
+ Return
+
+ Label inventory:
+ Screen 1
+ Call 'iconbank$' [ 1 ]
+ zaehler = 0
+ For y = 1 To 3
+    For x = 1 To 8
+       Inc zaehler
+       If inventar$ ( zaehler ) > 0
+          Paste Icon 100 + x * 24 , - 6 + y * 24 , inventar$ ( zaehler )
+       Else
+          Cls 0 , 100 + x * 24 , - 6 + y * 24 To ( 100 + x * 24 ) + 16 , ( - 6 + y * 24 ) + 16
+       EndIf
+    Next
+ Next
+ Return
