@@ -107,32 +107,45 @@ function preload() {
   game.load.sprite('raum_11_1', 'assets/grafiken/Raum11_1.Pic.png');
 }
 
+function create()
+{
+  // interface and room 1
+
+  // setup handlers
+  game.input.onDown.add(mouseClick, this);
+}
+
+
+// mouse handler
+function mouseClick()
+{
+  JOY.geg1 = 0;
+  JOY.geg2 = 0;
+  JOY.pers = 0;
+
+  testScreen();
+  JOY.geg1 = JOY.geg;
+  schreibeSatz();
+
+  if (game.input.mouse.button == 1 && game.input.activePointer.isDown)
+  {
+    verbAusfuehren();
+    verbWaehlen();
+  }
+  else if (game.input.mouse.button == 2)
+  {
+    vermRm();
+    schreibeSatz();
+  }
+}
+
 // main game loop
 function update()
 {
-//Label parser:
-JOY.geg1 = 0;
-JOY.geg2 = 0;
-mc = 0
-While mc = 0
-   taste$ = Inkey$
-   If taste$ = Chr$ ( 27 )
-      Gosub beenden
-   EndIf
-   pers = 0
-   mc = Mouse Click
-   Gosub test_screen
-   geg1 = geg
-   Gosub schreibe_satz
-Wend
-If mc = 2
-   Gosub verb_rm
-   Gosub schreibe_satz
-EndIf
-If mc = 1
-   Gosub verb_ausf�hren
-   Gosub verb_w�hlen
-EndIf
+  JOY.pers = 0;
+  testScreen();
+  JOY.geg1 = JOY.geg;
+  schreibeSatz();
 }
 
 function switchScreen(s)
@@ -143,7 +156,7 @@ function switchScreen(s)
 // which of the three screen sections (personen, raum, befehle) did the user click
 function mouseScreen()
 {
-  var i, my;
+  var i, my = game.input.y;
   for (i=0; i < JOY.screenh.length; ++i)
     if (my >= JOY.screeny[i] && my < (JOY.screeny[i] + JOY.screenh[i]))
       return i;
@@ -153,7 +166,7 @@ function mouseScreen()
 function mouseZone()
 {
   var z = JOY.state.zones[JOY.screen];
-  var i, mx, my;
+  var i, mx = game.input.x, my = game.input.y;
   for (i=0; i < z.length; ++i)
   {
     if (mx >= z[i][0] && my >= z[i][1] && mx < (z[i][0]+z[i][2]) && my < (z[i][1]+z[i][3]))
