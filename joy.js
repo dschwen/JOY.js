@@ -918,3 +918,274 @@ function ladeTexte:
     Next
  Next
  Return
+
+function initialisieren()
+{
+  var i;
+  // Screen Open 1 , 320 , 90 , 64 , Lowres
+
+  // personen
+  // Screen Open 3 , 320 , 34 , 32 , Lowres
+  // Screen Display 3 , 128 , 47 , ,
+  Reserve Zone 10
+  for (i = 0; i <= 9; ++i) {
+    //Set Zone i + 1 , 31 * i , 0 To 31 * i + 30 , 38
+  }
+
+  //Screen Open 4 , 320 , 128 , 64 , Lowres
+  //Screen Display 4 , 128 , 80 , ,
+  //Flash Off
+  //Curs Off
+  //Cls 0
+  if (half == 1) {
+    Screen Display 3 , 128 , 47 , 160 ,
+  }
+
+  // Label init_spiel:
+  for (i = 1; i <= 24; ++i) {
+    JOY.state.inventar[i] = 0;
+  }
+  JOY.state.inventar[1] = 15;
+
+  JOY.geg[0] = "                                                ";
+  //iconbank = 0;
+  JOY.state.zeit = 0;
+  JOY.state.punkte = 0;
+
+  JOY.verb = 1;
+  JOY.gehe = 0;
+  JOY.oeffne = 0;
+  JOY.druecke = 0;
+  JOY.schliesse = 0;
+  JOY.ziehe = 0;
+  JOY.raum = 1;
+
+  JOY.state.lab = Math.floor(Math.Random * 3) + 1;
+
+  etage = 2
+  versuch = 0
+  z = 6
+  s = 0
+  bm = 1
+  cc16 = 0x8f
+  cc17 = 0xc
+  Restore verben
+  For i = 1 To 16
+    Read verb$ ( i )
+  Next
+  Restore objekte
+  For i = 1 To 255
+    Read geg$ ( i ) , transport$ ( i )
+Next
+ Restore r�ume
+ For i = 1 To 26
+    Read raum$ ( i ) , zur�ck$ ( i )
+    betreten$ ( i ) = 0
+ Next
+ betreten$ ( 1 ) = 1
+ Restore personen
+ For i = 1 To 20
+    Read person$ ( i ) , person$ ( i )
+    reden$ ( i ) = 0
+ Next
+ Restore raumaddierer
+ For i = 1 To 26
+    Read raumaddierer$ ( i )
+ Next
+ Restore fahrstuhl_daten
+ For i = 1 To 9
+    Read fahrx$ ( i ) , fahry$ ( i )
+ Next
+ For i = 1 To 6
+    handlung$ ( i ) = 0
+ Next
+ For i = 1 To 69
+    flag$ ( i ) = 0
+ Next
+ JOY.state.flag[1] = 2
+ JOY.state.flag[5] = 1
+ JOY.state.flag[47] = 1
+ JOY.state.flag[48] = 2
+ JOY.state.flag[50] = 1
+ JOY.state.flag[58] = 1
+ JOY.state.betreten[1] = 1
+ Screen Open 0 , 320 , 128 , 64 , Lowres
+ Screen Display 0 , 128 , 80 , ,
+ Flash Off
+ Curs Off
+ Cls 0
+ Colour 1 , 0xfff
+ Call 'font$' [ "JOY" , 6 ]
+ If half = 1
+    Screen Display 0 , 128 , 80 , 160 ,
+ EndIf
+ Screen 4
+ Call 'maus_an$'
+ If geladen = 0
+    If Not Exist ( pfad$ )
+       Screen 0
+       Gr Writing 0
+       Ink 1 , 0
+       Text 70 , 60 , "BITTE LEGEN SIE DIE ZWEITE DISK EIN"
+       While Not Exist ( pfad$ )
+       Wend
+       Cls 0
+    EndIf
+    Load pfad$ + "Grafiken/Icons3.Abk"
+    Make Icon Mask
+    Call 'iconbank$' [ 2 ]
+    Load pfad$ + "Grafiken/Gesichter.Abk"
+    No Icon Mask
+    Call 'iconbank$' [ 1 ]
+    Load pfad$ + "Grafiken/Icons.Abk"
+    No Icon Mask
+    Load pfad$ + "Grafiken/Mauspfeil.Abk"
+    Change Mouse 4
+    Bank Swap 1 , 11
+    Load pfad$ + "Grafiken/Raum1.Bobs.Abk"
+    Gosub init_befehle
+    Gosub ladetexte
+    geladen = 1
+ EndIf
+ Screen 3
+ Call 'iconbank$' [ 2 ]
+ Get Icon Palette
+ Priority Reverse On
+ Load pfad$ + "Grafiken/Raum1.Pic" , 8
+ Unpack 8 To 2
+
+ Erase 8
+ Screen 2
+ For i = 0 To 31
+    Colour i , 0x0
+ Next
+ Load pfad$ + "Daten/Raum1.Zones" , 8
+ Bob 2 , 54 , 41 , 3
+ Bob 5 , 305 , 34 , 5
+ Bob 8 , 57 , 123 , 2
+ Set Input 42 , - 1
+ Open In 1 , pfad$ + "Texte/Raum1.Umgebung.Txt"
+ Line Input # 1 , umgebung$
+ umgebung$ = umgebung$ + "*" + Chr$ ( 10 )
+ Close 1
+ Open In 1 , pfad$ + "Texte/Raum1.Objekte.Txt"
+ For i = 1 To 18
+    Line Input # 1 , objekt$ ( i )
+    objekt$ ( i ) = objekt$ ( i ) + "*" + Chr$ ( 10 )
+ Next
+ Close 1
+ invent$ ( 1 ) = objekt$ ( 15 )
+ Screen 0
+ Get Palette 2
+ Call 'screco$'
+ Screen To Front 0
+ Screen 2
+ Get Sprite Palette
+ Screen 4
+ Cls 32
+ Screen 0
+ Reserve Zone 20
+ Call 'init_zones$'
+ Set Zone 2 , 50 , 39 To 61 , 51
+ Set Zone 5 , 303 , 32 To 313 , 47
+ Set Zone 8 , 57 , 123 To 85 , 126
+ Set Zone 16 , 281 , 0 To 319 , 54
+ Call 'cursor$'
+ X Mouse = 128
+ Y Mouse = 45
+ Show On
+ Fade 10 To 2
+ Wait 200
+ Call 'txt$' [ ereignis$ ( 1 ) ]
+ Call 'clickmouse$'
+ Call 'txt$' [ ereignis$ ( 64 ) ]
+ Call 'clickmouse$'
+ Call 'screco$'
+ code = Rnd ( 2 ) + 1
+ Mid$ ( ereignis$ ( 65 ) , 48 , 1 ) = ( Str$ ( code ) - " " )
+ a$ = ""
+ Clear Key
+ Call 'txt$' [ ereignis$ ( 65 ) ]
+ While a$ = ""
+    a$ = Inkey$
+ Wend
+ If Upper$ ( a$ ) = Mid$ ( "JOY" , code , 1 )
+    Call 'txt$' [ ereignis$ ( 66 ) ]
+    Call 'clickmouse$'
+    Call 'screco$'
+    Call 'verb_rein$'
+    Return
+ Else
+    go = 3
+    Goto game_over
+ EndIf
+
+ Label init_neu:
+ iconbank = 0
+ Screen Open 1 , 320 , 90 , 64 , Lowres
+ Screen Display 1 , 128 , 309 , ,
+ Flash Off
+ Curs Off
+ Cls 0
+ Screen Open 2 , 320 , 128 , 64 , Lowres
+ Screen Display 2 , 128 , 80 , ,
+ Flash Off
+ Curs Off
+ Cls 0
+ Screen Open 3 , 320 , 34 , 32 , Lowres
+ Screen Display 3 , 128 , 47 , ,
+ Flash Off
+ Curs Off
+ Cls 0
+ Reserve Zone 10
+ For i = 0 To 9
+    Set Zone i + 1 , 31 * i , 0 To 31 * i + 30 , 38
+ Next
+ Screen Open 4 , 320 , 128 , 64 , Lowres
+ Screen Display 4 , 128 , 80 , ,
+ Flash Off
+ Curs Off
+ Cls 0
+ Screen Open 0 , 320 , 128 , 64 , Lowres
+ Screen Display 0 , 128 , 80 , ,
+ Flash Off
+ Curs Off
+ Cls 0
+ Colour 1 , 0xfff
+ Colour 30 , 0xfff
+ Call 'maus_aus$'
+ Call 'font$' [ "JOY" , 6 ]
+ If Not Exist ( pfad$ )
+    Screen 0
+    Gr Writing 0
+    Ink 1 , 0
+    Text 70 , 60 , "BITTE LEGEN SIE DIE ZWEITE DISK EIN"
+    While Not Exist ( pfad$ ) 
+    Wend
+    Cls 0
+ EndIf
+ Load pfad$ + "Grafiken/Icons3.Abk"
+ Make Icon Mask
+ Call 'iconbank$' [ 2 ]
+ Load pfad$ + "Grafiken/Gesichter.Abk"
+ No Icon Mask
+ Call 'iconbank$' [ 1 ]
+ Load pfad$ + "Grafiken/Icons.Abk" , 2
+ No Icon Mask
+ Load pfad$ + "Grafiken/Mauspfeil.Abk"
+ Change Mouse 4
+ Bank Swap 1 , 11
+ Show On
+ If go = 6
+    spr = 1
+ EndIf
+ Gosub init_befehle
+ Screen 3
+ Call 'iconbank$' [ 2 ]
+ Get Icon Palette
+ Priority Reverse On
+ Screen 4
+ Cls 32
+ Screen 0
+ Reserve Zone 20
+ Return
