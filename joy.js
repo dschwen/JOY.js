@@ -1,4 +1,4 @@
-var game = new Phaser.Game(320, 240, Phaser.AUTO, '', { preload: preload, create: create, update: update }, false, false);
+var game = new Phaser.Game(320, 252, Phaser.AUTO, '', { preload: preload, create: create, update: update }, false, false);
 
 JOY = {
   state: {
@@ -49,10 +49,13 @@ JOY = {
   benutze: 0,
   pers: 0,
   geg1: 0,
+  geg2: 0,
   gehe: 0,
 
   // AMOS state
   screen: 0,
+  screenh: [128,90,0,34],
+  screeny: [34,34+128,0,0],
 
   // Raum routinen
   initRaum: [],
@@ -104,25 +107,70 @@ function preload() {
   game.load.sprite('raum_11_1', 'assets/grafiken/Raum11_1.Pic.png');
 }
 
+// main game loop
+function update()
+{
+//Label parser:
+JOY.geg1 = 0;
+JOY.geg2 = 0;
+mc = 0
+While mc = 0
+   taste$ = Inkey$
+   If taste$ = Chr$ ( 27 )
+      Gosub beenden
+   EndIf
+   pers = 0
+   mc = Mouse Click
+   Gosub test_screen
+   geg1 = geg
+   Gosub schreibe_satz
+Wend
+If mc = 2
+   Gosub verb_rm
+   Gosub schreibe_satz
+EndIf
+If mc = 1
+   Gosub verb_ausf�hren
+   Gosub verb_w�hlen
+EndIf
+}
 
 function switchScreen(s)
 {
   JOY.screen = s;
 }
 
+// which of the three screen sections (personen, raum, befehle) did the user click
 function mouseScreen()
 {
-  // which of the three screen sections (personen, raum, befehle) did the user click
+  var i, my;
+  for (i=0; i < JOY.screenh.length; ++i)
+    if (my >= JOY.screeny[i] && my < (JOY.screeny[i] + JOY.screenh[i]))
+      return i;
+  return 0;
+}
+
+function mouseZone()
+{
+  var z = JOY.state.zones[JOY.screen];
+  var i, mx, my;
+  for (i=0; i < z.length; ++i)
+  {
+    if (mx >= z[i][0] && my >= z[i][1] && mx < (z[i][0]+z[i][2]) && my < (z[i][1]+z[i][3]))
+      return i + 1;
+  }
   return 0;
 }
 
 function testScreen()
 {
+  var mz;
+
   switch (mouseScreen())
   {
     case 0:
       switchScreen(0);
-      mz = Mouse Zone
+      mz = mouseZone();
       JOY.geg = JOY.state.raumaddierer[JOY.state.raum - 1 ] + mz;
       if (JOY.geg == JOY.state.raumaddierer[JOY.state.raum - 1]) {
         JOY.geg = 0;
@@ -131,7 +179,7 @@ function testScreen()
 
     case 1:
       switchScreen(1);
-      mz = Mouse Zone
+      mz = mouseZone();
       if (mz > 4) {
         JOY.geg = JOY.state.inventar[mz - 4];
       } else {
@@ -141,7 +189,7 @@ function testScreen()
 
     case 3;
       switchScreen(3);
-      mz = Mouse Zone
+      mz = mouseZone();
       JOY.geg = 0;
       pers = JOY.state.personen[mz];
       break;
@@ -1132,6 +1180,7 @@ Next
  Flash Off
  Curs Off
  Cls 0
+
  Screen Open 3 , 320 , 34 , 32 , Lowres
  Screen Display 3 , 128 , 47 , ,
  Flash Off
@@ -1160,7 +1209,7 @@ Next
     Gr Writing 0
     Ink 1 , 0
     Text 70 , 60 , "BITTE LEGEN SIE DIE ZWEITE DISK EIN"
-    While Not Exist ( pfad$ ) 
+    While Not Exist ( pfad$ )
     Wend
     Cls 0
  EndIf
