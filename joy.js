@@ -55,6 +55,9 @@ JOY = {
     raum2: 0
   },
 
+  // globals
+  geladen: 0,
+
   // parser state
   verb: 0,
   benutze: 0,
@@ -2168,77 +2171,52 @@ function initRaum()
 
 function initZones()
 {
-   SwitchScreen(0);
-   JOY.state.zones[JOY.screen] = JOY.raumZones[JOY.state.raum];
-   /*
-   anz = Deek ( Start ( 8 ) + Length ( 8 ) - 2 )
-   For i = 1 To anz
-      adr = Start ( 8 ) + ( i - 1 ) * 8
-      x1 = Deek ( adr )
-      y1 = Deek ( adr + 2 )
-      x2 = Deek ( adr + 4 )
-      y2 = Deek ( adr + 6 )
-      if (x2 <> 0) {
-         Set Zone i , x1 , y1 To x2 , y2
-      }
-   Next
-   */
+  SwitchScreen(0);
+  JOY.state.zones[JOY.screen] = JOY.raumZones[JOY.state.raum];
 }
 
 function font(f, groesse)
 {
-   if (Not Upper$ ( Right$ ( f$ , 5 ) ) = ".FONT") {
-      f$ = f$ + ".Font"
-   }
-   i = 1
-   While Font ( i ) <> ""
-      if (Upper$ ( Left$ ( Font ( i ) , 30 ) - " " ) = Upper$ ( f$ )) {
-         if (Val ( Mid$ ( Font ( i ) , 31 , 2 ) ) = groesse) {
-            Set Font i
-            Exit
-         }
-      }
-      Inc i
-   Wend
+  // set the selected font for output
 }
 
 function mausAus()
 {
-   Limit Mouse X Mouse , Y Mouse To X Mouse , Y Mouse
+  // Limit Mouse X Mouse , Y Mouse To X Mouse , Y Mouse
 }
 
 function mausAn()
 {
-   Limit Mouse 128 , 47 To 447 , 297
+  // Limit Mouse 128 , 47 To 447 , 297
 }
 
 function verbRaus()
 {
-  Shared verb
   SwitchScreen(1);
-  Call 'iconbank$' [ 0 ]
+  //Call 'iconbank$' [ 0 ]
 
   if (JOY.verb < 10) {
-    Paste Icon 0 , verb * 9 , verb
+    //Paste Icon 0 , JOY.verb * 9 , JOY.verb
   } else {
-    Paste Icon 58 , ( verb - 9 ) * 9 , verb
+    //Paste Icon 58 , ( JOY.verb - 9 ) * 9 , JOY.verb
   }
 }
 
 function verbRein()
 {
   SwitchScreen(1);
-  Call 'iconbank$' [ 0 ]
+  //Call 'iconbank$' [ 0 ]
   if (JOY.verb < 10) {
-    Paste Icon 0 , verb * 9 , verb + 15
+    //Paste Icon 0 , verb * 9 , verb + 15
   } else {
-    Paste Icon 58 , ( verb - 9 ) * 9 , verb + 15
+    //Paste Icon 58 , ( verb - 9 ) * 9 , verb + 15
   }
 }
 
 function lopri(x , y , txt)
 {
-   Text 16 + x * 8 , 54 + y * 8 , txt$
+  //Text 16 + x * 8 , 54 + y * 8 , txt$
+  console.log("lopri",x,y,txt);
 }
 
 Procedure cursorweg$
@@ -2440,8 +2418,8 @@ function initialisieren()
     Screen Display 0 , 128 , 80 , 160 ,
  }*/
  SwitchScreen(4);
- Call 'maus_an$'
- if (geladen = 0) {
+ //Call 'maus_an$'
+ if (JOY.geladen === 0) {
     if (Not Exist ( pfad$ )) {
        SwitchScreen(0);
        Gr Writing 0
@@ -2463,9 +2441,9 @@ function initialisieren()
     Change Mouse 4
     Bank Swap 1 , 11
     Load pfad$ + "Grafiken/Raum1.Bobs.Abk"
-    Gosub init_befehle
-    Gosub ladetexte
-    geladen = 1
+    initBefehle();
+    ladeTexte();
+    JOY.geladen = 1;
  }
  SwitchScreen(3);
  Call 'iconbank$' [ 2 ]
@@ -2505,7 +2483,9 @@ function initialisieren()
   Cls 32
   SwitchScreen(0);
   Reserve Zone 20
-  Call 'init_zones$'
+
+  initZones();
+
   SetZone(2, 50, 39, 61, 51);
   SetZone(5, 303, 32, 313, 47);
   SetZone(8, 57, 123, 85, 126);
@@ -2517,7 +2497,7 @@ function initialisieren()
   Fade 10 To 2
   Wait 200
 
-  showText(ereignis$ ( 1 ));
+  showText(JOY.ereignis[1]);
   //Call 'clickmouse$'
 
   // "Copy protection"
@@ -2547,77 +2527,77 @@ function initialisieren()
   initNeu();
  }
 
- function initNeu()
- {
- iconbank = 0
- Screen Open 1 , 320 , 90 , 64 , Lowres
- Screen Display 1 , 128 , 309 , ,
- Flash Off
- Curs Off
- Cls 0
- Screen Open 2 , 320 , 128 , 64 , Lowres
- Screen Display 2 , 128 , 80 , ,
- Flash Off
- Curs Off
- Cls 0
+function initNeu()
+{
+  /*
+  iconbank = 0
+  Screen Open 1 , 320 , 90 , 64 , Lowres
+  Screen Display 1 , 128 , 309 , ,
+  Flash Off
+  Curs Off
+  Cls 0
+  Screen Open 2 , 320 , 128 , 64 , Lowres
+  Screen Display 2 , 128 , 80 , ,
+  Flash Off
+  Curs Off
+  Cls 0
 
- Screen Open 3 , 320 , 34 , 32 , Lowres
- Screen Display 3 , 128 , 47 , ,
- Flash Off
- Curs Off
- Cls 0
- Reserve Zone 10
- For i = 0 To 9
+  Screen Open 3 , 320 , 34 , 32 , Lowres
+  Screen Display 3 , 128 , 47 , ,
+  Flash Off
+  Curs Off
+  Cls 0
+  Reserve Zone 10
+  For i = 0 To 9
     Set Zone i + 1 , 31 * i , 0 To 31 * i + 30 , 38
- Next
- Screen Open 4 , 320 , 128 , 64 , Lowres
- Screen Display 4 , 128 , 80 , ,
- Flash Off
- Curs Off
- Cls 0
- Screen Open 0 , 320 , 128 , 64 , Lowres
- Screen Display 0 , 128 , 80 , ,
- Flash Off
- Curs Off
- Cls 0
- Colour 1 , 0xfff
- Colour 30 , 0xfff
- Call 'maus_aus$'
- Call 'font$' [ "JOY" , 6 ]
- if (Not Exist ( pfad$ )) {
-    SwitchScreen(0);
-    Gr Writing 0
-    Ink 1 , 0
-    Text 70 , 60 , "BITTE LEGEN SIE DIE ZWEITE DISK EIN"
-    While Not Exist ( pfad$ )
-    Wend
-    Cls 0
- }
- Load pfad$ + "Grafiken/Icons3.Abk"
- Make Icon Mask
- Call 'iconbank$' [ 2 ]
- Load pfad$ + "Grafiken/Gesichter.Abk"
- No Icon Mask
- Call 'iconbank$' [ 1 ]
- Load pfad$ + "Grafiken/Icons.Abk" , 2
- No Icon Mask
- Load pfad$ + "Grafiken/Mauspfeil.Abk"
- Change Mouse 4
- Bank Swap 1 , 11
- Show On
- if (go = 6) {
+  Next
+  Screen Open 4 , 320 , 128 , 64 , Lowres
+  Screen Display 4 , 128 , 80 , ,
+  Flash Off
+  Curs Off
+  Cls 0
+  Screen Open 0 , 320 , 128 , 64 , Lowres
+  Screen Display 0 , 128 , 80 , ,
+  Flash Off
+  Curs Off
+  Cls 0
+  Colour 1 , 0xfff
+  Colour 30 , 0xfff
+  */
+  //Call 'maus_aus$'
+  //Call 'font$' [ "JOY" , 6 ]
+  Load pfad$ + "Grafiken/Icons3.Abk"
+  Make Icon Mask
+  Call 'iconbank$' [ 2 ]
+
+  Load pfad$ + "Grafiken/Gesichter.Abk"
+  No Icon Mask
+
+  Call 'iconbank$' [ 1 ]
+  Load pfad$ + "Grafiken/Icons.Abk" , 2
+  No Icon Mask
+
+  Load pfad$ + "Grafiken/Mauspfeil.Abk"
+  Change Mouse 4
+  Bank Swap 1 , 11
+  Show On
+
+  if (go = 6) {
     spr = 1
- }
- Gosub init_befehle
- SwitchScreen(3);
- Call 'iconbank$' [ 2 ]
- Get Icon Palette
- Priority Reverse On
- SwitchScreen(4);
- Cls 32
- SwitchScreen(0);
- Reserve Zone 20
- Return
+  }
+
+  initBefehle();
+  SwitchScreen(3);
+  Call 'iconbank$' [ 2 ]
+
+  //Get Icon Palette
+  //Priority Reverse On
+
+  SwitchScreen(4);
+  //Cls 32
+  SwitchScreen(0);
+  //Reserve Zone 20
+}
 
 function showText(t)
 {
@@ -2675,4 +2655,9 @@ function showText(t)
     Gr Writing 1
  End Proc
  */
+}
+
+function iconbank(bm)
+{
+  JOY.bank = "gesicht_";
 }
