@@ -1,0 +1,17 @@
+Call 'txt\$' \[ (.*) \]\n
+showText($1);\n
+
+([a-z]+)\$ \( ([^)]+) \)
+JOY.state.$1[$2]
+
+Call 'punkte\$' \[ (.*) \]\n
+punkte($1);\n
+
+Gosub ablegen\n
+ablegen();\n
+
+Gosub aufnehmen\n
+aufnehmen();\n
+
+Screen ([0123]+)\n
+switchScreen($1);\n

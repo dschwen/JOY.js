@@ -1,0 +1,2 @@
+
+ls Raum*.Bo* | cut -c5- | cut -d. -f 1,3| sed 's/\./ /'| awk '{ if ($1 != o) { if(o>0) print "\"" o "\":" m ","; o=$1; m=0 } if ($2>m) m=$2 }' | sort

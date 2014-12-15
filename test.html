@@ -6,7 +6,7 @@
 <script src="phaser-examples/examples/_site/js/jquery-2.0.3.min.js" type="text/javascript"></script>
 <script src="phaser/build/phaser.js"></script>
 <script>
-var game = new Phaser.Game(320, 240, Phaser.AUTO, '', { preload: preload, create: create, update: update }, false, false);
+var game = new Phaser.Game(320, 255, Phaser.AUTO, '', { preload: preload, create: create, update: update }, false, false);
 
 function preload() {
   game.scale.scaleMode = Phaser.ScaleManager.USER_SCALE;
@@ -24,15 +24,15 @@ var text;
 
 function create() {
   game.stage.backgroundColor = '#700';
-  //text = game.add.bitmapText(20, 20, 'joy','Bitmap Fonts!',18);
+  text = game.add.bitmapText(20, 20, 'joy','Bitmap Fonts!',6);
   //text = game.add.bitmapText(20, 20, 'joy','BITMAP FONTS!', 6);
-  text = game.add.bitmapText(20, 20, '64erII','Bitmap Fonts!',8);
-  text.tint = 0x000077;
+  //text = game.add.bitmapText(20, 20, '64erII','Bitmap Fonts!',8);
+  text.tint = 0xffff00;
 }
 
 function update() {
-  text.setText('Bitmap Fonts!\nx: ' + Math.round(game.input.x) + ' y: ' + Math.round(game.input.y));
-  //text.setText('BITMAP FONTS!\nX: ' + Math.round(game.input.x) + ' Y: ' + Math.round(game.input.y));
+  //text.setText('Bitmap Fonts!\nx: ' + Math.round(game.input.x) + ' y: ' + Math.round(game.input.y));
+  text.setText('Ü BITMAP FONTS!\nX: ' + Math.round(game.input.x) + ' Y: ' + Math.round(game.input.y));
 }
 
 function resize(scale, parentBounds)
@@ -47,6 +47,11 @@ function resize(scale, parentBounds)
   m = Math.max(Math.min(wm, hm), 1);
 
   scale.setUserScale(m,m,0,0);
+
+  x = Math.floor((w - game.width*m)/2);
+  game.canvas.style.left = x + 'px';
+  y = Math.floor((h - game.height*m)/2);
+  game.canvas.style.top = y + 'px';
 }
 </script>
 <style>
@@ -57,6 +62,12 @@ canvas {
   /* image-rendering: -webkit-optimize-contrast; */
   image-rendering: optimize-contrast;
   -ms-interpolation-mode: nearest-neighbor;
+
+  position: absolute;
+}
+body {
+  margin: 0;
+  background-color: black;
 }
 </style>
 </head>
