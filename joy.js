@@ -51,6 +51,7 @@ JOY = {
   geg1: 0,
   geg2: 0,
   gehe: 0,
+  unterhaltung: null,
 
   // AMOS state
   screen: 0,
@@ -81,6 +82,7 @@ function preload() {
   // JSON assets
   game.load.json('texte', 'assets/texteDeutsch/text.json');
   game.load.json('zones', 'assets/texteDeutsch/zones.json');
+  game.load.json('unterhaltung', 'assets/texteDeutsch/unterhaltung.json');
 
   // graphic assets
   for (i = 0; i < 20; ++i) {
@@ -89,6 +91,8 @@ function preload() {
   for (i = 0; i < 34; ++i) {
     game.load.sprite('icons3_' + i, 'assets/grafiken/Icons3Deutch.' + i + '.png');
   }
+  game.load.sprite('befehle', 'assets/grafiken/BefehleDeutch.Pic.png');
+  game.load.sprite('befehle2', 'assets/grafiken/Befehle2.Pic.png');
 
   // Raum assets
   var raumBobNum = {
@@ -127,15 +131,21 @@ function mouseClick()
   JOY.geg1 = JOY.geg;
   schreibeSatz();
 
-  if (game.input.mouse.button == 1 && game.input.activePointer.isDown)
+  if (JOY.unterhaltung != null)
   {
-    verbAusfuehren();
-    verbWaehlen();
+    // we are in a conversation
   }
-  else if (game.input.mouse.button == 2)
+  else
   {
-    vermRm();
-    schreibeSatz();
+    // regular game mode
+    if (game.input.mouse.button == 1 && game.input.activePointer.isDown) {
+      verbAusfuehren();
+      verbWaehlen();
+    }
+    else if (game.input.mouse.button == 2) {
+      vermRm();
+      schreibeSatz();
+    }
   }
 }
 
