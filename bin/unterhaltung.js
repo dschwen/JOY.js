@@ -28,25 +28,26 @@ process.argv.forEach(function(val, index, array) {
     var r = [];
     while (data[j] && data[j] != '*') {
       r.push(data[j++]);
-      console.log(r);
     }
     j++;
     return r.join('\n');
   }
 
   var befehl = "";
+
   do
   {
     if (befehl == "") {
       befehl = input();
     }
-    if (befehl = "TEXT") {
+    if (befehl == "TEXT") {
       unterhaltung.antwort[i] = input();
+      befehl = "";
     }
     if (befehl == "") {
       befehl = input();
     }
-    if (befehl = "J/N") {
+    if (befehl == "J/N") {
       unterhaltung.ja[i] = input();
       unterhaltung.nein[i] = input();
       befehl = "";
