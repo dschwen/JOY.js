@@ -52,13 +52,13 @@
 
  Label beenden:
  Call 'befehle_runter$'
- switchScreen(1);
+ SwitchScreen(1);
  Get Cblock 3 , 0 , 0 , 320 , 90
  Goto nochmal
 
  Label schreibe_satz:
  If Not Mouse Screen = 3
-    switchScreen(1);
+    SwitchScreen(1);
     Ink 0 , 5
     If geg$ ( geg1 ) = "RÜCK"
        If verb = 10
@@ -74,21 +74,21 @@
     EndIf
     Text 2 , 6 , verb$ ( verb ) + " " + geg$ ( geg1 ) + geg$ ( 0 )
  Else
-    switchScreen(1);
+    SwitchScreen(1);
     Text 2 , 6 , verb$ ( verb ) + " " + person$ ( pers ) + geg$ ( 0 )
  EndIf
  Return
 
  Label schreibe_satzteil:
  If Not Mouse Screen = 3
-    switchScreen(1);
+    SwitchScreen(1);
     Ink 0 , 5
     If ( geg$ ( geg2 ) = "RÜCK" ) Or ( geg1 = geg2 )
        geg2 = 0
     EndIf
     Text 2 , 6 , verb$ ( verb ) + " " + geg$ ( geg1 ) + " AN " + geg$ ( geg2 ) + geg$ ( 0 )
  Else
-    switchScreen(1);
+    SwitchScreen(1);
     Text 2 , 6 , verb$ ( verb ) + " " + geg$ ( geg1 ) + " AN " + person$ ( pers ) + geg$ ( 0 )
  EndIf
  Return
@@ -181,7 +181,7 @@
  If Mouse Screen = 3
     verb2 = verb
     verb = 16
-    switchScreen(1);
+    SwitchScreen(1);
     Text 2 , 6 , "REDE MIT " + person$ ( pers ) + geg$ ( 0 )
     Gosub "Raum" + Str$ ( raum ) - " "
     Gosub raum_alle
@@ -257,14 +257,14 @@
     EndIf
  Loop
  Inc anzahl
- switchScreen(0);
+ SwitchScreen(0);
  Screen Copy 4 , 118 , 1 , 201 , anzahl * 8 + 5 To 0 , 118 , 1 , 11100000
  Ink 1
  Box 119 , 2 To 201 , anzahl * 8 + 3
  Return
 
  Label init_text:
- switchScreen(0);
+ SwitchScreen(0);
  Gr Writing 0
  Ink 1 , 0
  y = 1
@@ -296,7 +296,7 @@
        //Call 'clickmouse$'
     EndIf
     If Mouse Screen = 1
-       switchScreen(1);
+       SwitchScreen(1);
        mz = Mouse Zone
        If mz > 4
           Call 'txt$' [ invent$ ( mz - 4 ) ]
@@ -362,7 +362,7 @@
  Return
 
  Label verb_w�hlen:
- switchScreen(1);
+ SwitchScreen(1);
  mz = Mouse Zone
  If Mouse Screen = 1 And mz > 0 And mz < 5
     If mz = 1
@@ -372,12 +372,12 @@
        Paste Icon 0 , verb * 9 , verb + 15
        If verb = 6
           Gosub handlung
-          switchScreen(1);
+          SwitchScreen(1);
           Text 2 , 6 , "UMSCHAUEN: " + raum$ ( raum )
           Call 'txt$' [ umgebung$ ]
           //Call 'clickmouse$'
           Call 'screco$'
-          switchScreen(1);
+          SwitchScreen(1);
           Text 2 , 6 , geg$ ( 0 )
           Text 2 , 6 , verb$ ( verb ) + geg$ ( 0 )
           Paste Icon 0 , verb * 9 , verb
@@ -400,7 +400,7 @@
           Call 'maus_aus$'
           Gosub initraum
           Call 'maus_an$'
-          switchScreen(1);
+          SwitchScreen(1);
           Call 'iconbank$' [ 0 ]
           Paste Icon 58 , ( verb - 9 ) * 9 , verb
           verb = verb2
@@ -413,7 +413,7 @@
        Call 'verb_raus$'
        verb2 = verb
        verb = 14
-       switchScreen(1);
+       SwitchScreen(1);
        Ink 0 , 5
        Text 2 , 6 , "SPIELSTAND SPEICHERN" + geg$ ( 0 )
        Paste Icon 58 , 46 , 29
@@ -426,7 +426,7 @@
           //Call 'clickmouse$'
           Call 'screco$'
           verb = verb2
-          switchScreen(1);
+          SwitchScreen(1);
           Paste Icon 58 , 46 , 14
           Call 'verb_rein$'
           Pop
@@ -447,7 +447,7 @@
        If wrpro = 80
           Call 'txt$' [ Chr$ ( 10 ) + "DIESE DISKETTE IST SCHREIBGESCH�TZT !!!" + Chr$ ( 10 ) + "*" + Chr$ ( 10 ) ]
           Call 'screco$'
-          switchScreen(1);
+          SwitchScreen(1);
           Paste Icon 58 , 46 , 14
           Call 'verb_rein$'
           Pop
@@ -455,7 +455,7 @@
        Else If wrpro = 81
           Call 'txt$' [ Chr$ ( 10 ) + "DIESE DISKETTE IST NICHT VALIDIERT !!!" + Chr$ ( 10 ) + "*" + Chr$ ( 10 ) ]
           Call 'screco$'
-          switchScreen(1);
+          SwitchScreen(1);
           Paste Icon 58 , 46 , 14
           Call 'verb_rein$'
           Pop
@@ -508,7 +508,7 @@
        Close 1
        verb = verb2
        Call 'screco$'
-       switchScreen(1);
+       SwitchScreen(1);
        Paste Icon 58 , 46 , 14
        Call 'verb_rein$'
        Pop
@@ -518,7 +518,7 @@
        Call 'verb_raus$'
        verb2 = verb
        verb = 15
-       switchScreen(1);
+       SwitchScreen(1);
        Ink 0 , 5
        Text 2 , 6 , "SPIELSTAND LADEN" + geg$ ( 0 )
        Paste Icon 58 , 68 , 30
@@ -532,7 +532,7 @@
           //Call 'clickmouse$'
           Call 'screco$'
           verb = verb2
-          switchScreen(1);
+          SwitchScreen(1);
           Paste Icon 58 , 68 , 15
           Call 'verb_rein$'
           Pop
@@ -572,7 +572,7 @@
        Next
        Close 1
        verb = verb2
-       switchScreen(1);
+       SwitchScreen(1);
        Paste Icon 58 , 68 , 15
        Call 'verb_rein$'
        Gosub inventory
@@ -599,7 +599,7 @@
     file$ = Dir Next
  Until file$ = ""
  Screen Copy 4 , 118 , 1 , 201 , 77 To 0 , 118 , 1 , 11100000
- switchScreen(0);
+ SwitchScreen(0);
  Ink 1
  Box 119 , 2 To 199 , 75
  Gosub zeige_namen
@@ -622,7 +622,7 @@
  Wend
  If ym < 0 Or ym > 9
     Call 'screco$'
-    switchScreen(1);
+    SwitchScreen(1);
     If verb = 14
        Paste Icon 58 , 46 , 14
     Else
@@ -636,7 +636,7 @@
  Return
 
  Label zeige_namen:
- switchScreen(0);
+ SwitchScreen(0);
  Gr Writing 0
  Ink 1 , 0
  For i = 1 To 9
@@ -739,7 +739,7 @@
 
  Label test_screen:
  If Mouse Screen = 0
-    switchScreen(0);
+    SwitchScreen(0);
     mz = Mouse Zone
     geg = raumaddierer$ ( raum - 1 ) + mz
     If geg = raumaddierer$ ( raum - 1 )
@@ -747,7 +747,7 @@
     EndIf
  EndIf
  If Mouse Screen = 1
-    switchScreen(1);
+    SwitchScreen(1);
     mz = Mouse Zone
     If mz > 4
        geg = inventar$ ( mz - 4 )
@@ -756,7 +756,7 @@
     EndIf
  EndIf
  If Mouse Screen = 3
-    switchScreen(3);
+    SwitchScreen(3);
     mz = Mouse Zone
     geg = 0
     pers = personen$ ( mz )
@@ -785,11 +785,11 @@
        flag$ ( 2 ) = 1
        transport$ ( 8 ) = 0
        transport$ ( 9 ) = 1
-       switchScreen(2);
-       Bob Off 8
+       SwitchScreen(2);
+       BobOff(8);
        Bob(9, 57, 123, 2);
        Call 'screco$'
-       switchScreen(0);
+       SwitchScreen(0);
        Reset Zone 8
        setZone(9, 57, 123, 85, 127);
     EndIf
@@ -808,11 +808,11 @@
  If verb = 2 And geg1 = 14 And flag$ ( 1 ) = 0 And transport$ ( 2 ) = 1
     oeffne = 1
     flag$ ( 1 ) = 1
-    switchScreen(2);
-    Bob Off 2
+    SwitchScreen(2);
+    BobOff(2);
     Bob(14, 49, 0, 4);
     Call 'screco$'
-    switchScreen(0);
+    SwitchScreen(0);
     Reset Zone 2
     setZone(2, 61, 20, 67, 30);
     If flag$ ( 56 ) = 0
@@ -836,11 +836,11 @@
  If verb = 3 And geg1 = 14 And flag$ ( 1 ) = 1 And transport$ ( 2 ) = 1
     schliesse = 1
     flag$ ( 1 ) = 0
-    switchScreen(2);
-    Bob Off 14
+    SwitchScreen(2);
+    BobOff(14);
     Bob(2, 54, 41, 3);
     Call 'screco$'
-    switchScreen(0);
+    SwitchScreen(0);
     setZone(2, 50, 39, 61, 51);
  EndIf
  If verb = 4
@@ -850,7 +850,7 @@
           g = geg1
           Gosub aufnehmen
        Else
-          switchScreen(2);
+          SwitchScreen(2);
           Bob(14, 49, 0, 8);
           g = 2
           mz = 2
@@ -872,16 +872,16 @@
        Gosub ablegen
        transport$ ( 2 ) = 1
        If ( flag$ ( 1 ) = 0 Or flag$ ( 1 ) = 2 )
-          switchScreen(2);
+          SwitchScreen(2);
           Bob(2, 54, 41, 3);
           Call 'screco$'
-          switchScreen(0);
+          SwitchScreen(0);
           setZone(2, 50, 39, 61, 51);
        Else
-          switchScreen(2);
+          SwitchScreen(2);
           Bob(14, 49, 0, 4);
           Call 'screco$'
-          switchScreen(0);
+          SwitchScreen(0);
           setZone(2, 61, 20, 67, 30);
        EndIf
     EndIf
@@ -913,7 +913,7 @@
        handlung$ ( 2 ) = 3
        person$ ( 3 ) = 1
        Gosub personendisplay
-       switchScreen(2);
+       SwitchScreen(2);
        Bob(6, 136, 81, 6);
        Call 'screco$'
        Call 'punkte$' [ 102 ]
@@ -942,7 +942,7 @@
        schalte = 1
        flag$ ( 3 ) = 1
        If flag$ ( 4 ) = 1
-          switchScreen(2);
+          SwitchScreen(2);
           Bob(6, 136, 81, 6);
           Call 'screco$'
        EndIf
@@ -952,7 +952,7 @@
        flag$ ( 4 ) = 1
        Gosub test_recall
        If flag$ ( 3 ) = 1
-          switchScreen(2);
+          SwitchScreen(2);
           Bob(6, 136, 81, 6);
           Call 'screco$'
        EndIf
@@ -967,8 +967,8 @@
        If ( handlung$ ( 2 ) = 0 Or handlung$ ( 2 ) = 3 )
           schalte = 1
           flag$ ( 3 ) = 0
-          switchScreen(2);
-          Bob Off 6
+          SwitchScreen(2);
+          BobOff(6);
           Call 'screco$'
        Else
           Call 'txt$' [ Chr$ ( 10 ) + "DENK AN HERBERT !!!" + Chr$ ( 10 ) + "*" + Chr$ ( 10 ) ]
@@ -982,8 +982,8 @@
        If ( handlung$ ( 2 ) = 0 Or handlung$ ( 2 ) = 3 )
           schalte = 1
           flag$ ( 4 ) = 0
-          switchScreen(2);
-          Bob Off 6
+          SwitchScreen(2);
+          BobOff(6);
           Call 'screco$'
        Else
           Call 'txt$' [ Chr$ ( 10 ) + "DENK AN HERBERT !!!" + Chr$ ( 10 ) + "*" + Chr$ ( 10 ) ]
@@ -1105,12 +1105,12 @@
  If verb = 2 And geg1 = 32 And flag$ ( 6 ) = 0
     oeffne = 1
     flag$ ( 6 ) = 1
-    switchScreen(2);
-    Bob Off 13
+    SwitchScreen(2);
+    BobOff(13);
     Bob(14, 196, 8, 3);
     If transport$ ( 31 ) = 1
        Bob(13, 201, 16, 4);
-       switchScreen(0);
+       SwitchScreen(0);
        setZone(13, 201, 14, 211, 30);
     EndIf
     Call 'screco$'
@@ -1118,12 +1118,12 @@
  If verb = 3 And geg1 = 32 And flag$ ( 6 ) = 1
     schliesse = 1
     flag$ ( 6 ) = 0
-    switchScreen(2);
-    Bob Off 14
+    SwitchScreen(2);
+    BobOff(14);
     If transport$ ( 31 ) = 1
-       switchScreen(0);
+       SwitchScreen(0);
        setZone(13, 205, 19, 220, 37);
-       switchScreen(2);
+       SwitchScreen(2);
        Bob(13, 205, 19, 2);
     EndIf
     Call 'screco$'
@@ -1162,14 +1162,14 @@
     If geg1 = 22 And flag$ ( 7 ) = 0
        schalte = 1
        flag$ ( 7 ) = 1
-       switchScreen(2);
+       SwitchScreen(2);
        Bob(4, 101, 55, 5);
        Call 'screco$'
     EndIf
     If geg1 = 24 And flag$ ( 8 ) = 0
        schalte = 1
        flag$ ( 8 ) = 1
-       switchScreen(2);
+       SwitchScreen(2);
        Bob(6, 126, 54, 6);
        Call 'screco$'
     EndIf
@@ -1178,15 +1178,15 @@
     If geg1 = 22 And flag$ ( 7 ) = 1
        schalte = 1
        flag$ ( 7 ) = 0
-       switchScreen(2);
-       Bob Off 4
+       SwitchScreen(2);
+       BobOff(4);
        Call 'screco$'
     EndIf
     If geg1 = 24 And flag$ ( 8 ) = 1
        schalte = 1
        flag$ ( 8 ) = 0
-       switchScreen(2);
-       Bob Off 6
+       SwitchScreen(2);
+       BobOff(6);
        Call 'screco$'
     EndIf
  EndIf
@@ -1222,9 +1222,9 @@
        flag$ ( 11 ) = 1
        flag$ ( 12 ) = 0
        flag$ ( 13 ) = 0
-       switchScreen(2);
-       Bob Off 4
-       Bob Off 5
+       SwitchScreen(2);
+       BobOff(4);
+       BobOff(5);
        Bob(3, 131, 73, 4);
        Call 'screco$'
     EndIf
@@ -1233,9 +1233,9 @@
        flag$ ( 11 ) = 0
        flag$ ( 12 ) = 1
        flag$ ( 13 ) = 0
-       switchScreen(2);
-       Bob Off 3
-       Bob Off 5
+       SwitchScreen(2);
+       BobOff(3);
+       BobOff(5);
        Bob(4, 129, 84, 5);
        Call 'screco$'
     EndIf
@@ -1244,20 +1244,20 @@
        flag$ ( 11 ) = 0
        flag$ ( 12 ) = 0
        flag$ ( 13 ) = 1
-       switchScreen(2);
-       Bob Off 3
-       Bob Off 4
+       SwitchScreen(2);
+       BobOff(3);
+       BobOff(4);
        Bob(5, 129, 95, 6);
        Call 'screco$'
     EndIf
     If geg1 = 41 And flag$ ( 9 ) = 0
        oeffne = 1
        flag$ ( 9 ) = 1
-       switchScreen(2);
+       SwitchScreen(2);
        Bob(6, 100, 56, 3);
        If transport$ ( 36 ) = 1
           Bob(1, 126, 68, 7);
-          switchScreen(0);
+          SwitchScreen(0);
           setZone(1, 127, 66, 131, 72);
        EndIf
        Call 'screco$'
@@ -1265,11 +1265,11 @@
     If geg1 = 42 And flag$ ( 10 ) = 0
        oeffne = 1
        flag$ ( 10 ) = 1
-       switchScreen(2);
+       SwitchScreen(2);
        Bob(7, 127, 29, 2);
        If transport$ ( 37 ) = 1
           Bob(2, 153, 36, 8);
-          switchScreen(0);
+          SwitchScreen(0);
           setZone(2, 155, 36, 158, 40);
        EndIf
        Call 'screco$'
@@ -1285,38 +1285,38 @@
     If geg1 = 38 And flag$ ( 11 ) = 1
        schliesse = 1
        flag$ ( 11 ) = 0
-       switchScreen(2);
-       Bob Off 3
+       SwitchScreen(2);
+       BobOff(3);
        Call 'screco$'
     EndIf
     If geg1 = 39 And flag$ ( 12 ) = 1
        schliesse = 1
        flag$ ( 12 ) = 0
-       switchScreen(2);
-       Bob Off 4
+       SwitchScreen(2);
+       BobOff(4);
        Call 'screco$'
     EndIf
     If geg1 = 40 And flag$ ( 13 ) = 1
        schliesse = 1
        flag$ ( 13 ) = 0
-       switchScreen(2);
-       Bob Off 5
+       SwitchScreen(2);
+       BobOff(5);
        Call 'screco$'
     EndIf
     If geg1 = 41 And flag$ ( 9 ) = 1
        schliesse = 1
        flag$ ( 9 ) = 0
-       switchScreen(2);
-       Bob Off 6
-       Bob Off 1
+       SwitchScreen(2);
+       BobOff(6);
+       BobOff(1);
        Call 'screco$'
     EndIf
     If geg1 = 42 And flag$ ( 10 ) = 1
        schliesse = 1
        flag$ ( 10 ) = 0
-       switchScreen(2);
-       Bob Off 7
-       Bob Off 2
+       SwitchScreen(2);
+       BobOff(7);
+       BobOff(2);
        Call 'screco$'
     EndIf
  EndIf
@@ -1335,7 +1335,7 @@
     If geg1 = 45 And flag$ ( 52 ) = 0
        schalte = 1
        flag$ ( 52 ) = 1
-       switchScreen(2);
+       SwitchScreen(2);
        Bob(10, 154, 63, 9);
        Call 'screco$'
     EndIf
@@ -1343,8 +1343,8 @@
  If verb = 9 And geg1 = 45 And flag$ ( 52 ) = 1
     schalte = 1
     flag$ ( 52 ) = 0
-    switchScreen(2);
-    Bob Off 10
+    SwitchScreen(2);
+    BobOff(10);
     Call 'screco$'
  EndIf
  If verb = 11 And ( flag$ ( 9 ) = 1 Or flag$ ( 10 ) = 1 Or flag$ ( 11 ) = 1 Or flag$ ( 12 ) = 1 Or flag$ ( 13 ) = 1 Or flag$ ( 52 ) = 1 )
@@ -1367,7 +1367,7 @@
        If person$ ( 7 ) = 5
           flag$ ( 59 ) = 2
        EndIf
-       switchScreen(2);
+       SwitchScreen(2);
        Bob(2, 103, 28, 2);
        Call 'screco$'
        Pop
@@ -1376,21 +1376,21 @@
     If geg1 = 52 And flag$ ( 15 ) = 0
        oeffne = 1
        flag$ ( 15 ) = 1
-       switchScreen(2);
+       SwitchScreen(2);
        Bob(3, 119, 39, 3);
        Call 'screco$'
     EndIf
     If geg1 = 53 And flag$ ( 16 ) = 0
        oeffne = 1
        flag$ ( 16 ) = 1
-       switchScreen(2);
+       SwitchScreen(2);
        Bob(4, 132, 47, 4);
        Call 'screco$'
     EndIf
     If geg1 = 54 And flag$ ( 17 ) = 0
        oeffne = 1
        flag$ ( 17 ) = 1
-       switchScreen(2);
+       SwitchScreen(2);
        Bob(5, 122, 40, 5);
        Call 'screco$'
     EndIf
@@ -1400,29 +1400,29 @@
        schliesse = 1
        flag$ ( 14 ) = 0
        flag$ ( 59 ) = 0
-       switchScreen(2);
-       Bob Off 2
+       SwitchScreen(2);
+       BobOff(2);
        Call 'screco$'
     EndIf
     If geg1 = 52 And flag$ ( 15 ) = 1
        schliesse = 1
        flag$ ( 15 ) = 0
-       switchScreen(2);
-       Bob Off 3
+       SwitchScreen(2);
+       BobOff(3);
        Call 'screco$'
     EndIf
     If geg1 = 53 And flag$ ( 16 ) = 1
        schliesse = 1
        flag$ ( 16 ) = 0
-       switchScreen(2);
-       Bob Off 4
+       SwitchScreen(2);
+       BobOff(4);
        Call 'screco$'
     EndIf
     If geg1 = 54 And flag$ ( 17 ) = 1
        schliesse = 1
        flag$ ( 17 ) = 0
-       switchScreen(2);
-       Bob Off 5
+       SwitchScreen(2);
+       BobOff(5);
        Call 'screco$'
     EndIf
  EndIf
@@ -1432,8 +1432,8 @@
        flag$ ( 14 ) = 0
        Call 'txt$' [ Chr$ ( 10 ) + Chr$ ( 34 ) + "T����H ZUUUU !!!" + Chr$ ( 34 ) + Chr$ ( 10 ) + "*" + Chr$ ( 10 ) ]
        //Call 'clickmouse$'
-       switchScreen(2);
-       Bob Off 2
+       SwitchScreen(2);
+       BobOff(2);
        Call 'screco$'
     EndIf
  EndIf
@@ -1478,7 +1478,7 @@
        flag$ ( 22 ) = 1
        geg$ ( 57 ) = geg$ ( 57 ) + "(AN)"
        If flag$ ( 19 ) = 1
-          switchScreen(2);
+          SwitchScreen(2);
           Bob(1, 34, 44, 2);
        EndIf
        Call 'screco$'
@@ -1489,7 +1489,7 @@
        schalte = 1
        flag$ ( 19 ) = 1
        If flag$ ( 22 ) = 1
-          switchScreen(2);
+          SwitchScreen(2);
           Bob(1, 34, 44, 2);
           Call 'screco$'
        EndIf
@@ -1503,9 +1503,9 @@
        If Not geg$ ( 70 ) = "MONITOR(AN)"
           geg$ ( 70 ) = geg$ ( 70 ) + "(AN)"
        EndIf
-       switchScreen(2);
+       SwitchScreen(2);
        Bob(2, 168, 42, 3);
-       switchScreen(0);
+       SwitchScreen(0);
        Reset Zone 15
        setZone(7, 166, 39, 194, 65);
        Flash 18 , "(F00,40)(000,40)"
@@ -1517,7 +1517,7 @@
        schalte = 1
        flag$ ( 21 ) = 1
        If flag$ ( 23 ) = 1
-          switchScreen(2);
+          SwitchScreen(2);
           Bob(3, 221, 34, 4);
           Call 'screco$'
        EndIf
@@ -1528,7 +1528,7 @@
        flag$ ( 23 ) = 1
        geg$ ( 66 ) = geg$ ( 66 ) + "(AN)"
        If flag$ ( 21 ) = 1
-          switchScreen(2);
+          SwitchScreen(2);
           Bob(3, 221, 34, 4);
        EndIf
        Call 'screco$'
@@ -1541,9 +1541,9 @@
        geg$ ( 70 ) = geg$ ( 70 ) + "(AN)"
        flag$ ( 20 ) = 1
        If flag$ ( 29 ) = 1
-          switchScreen(2);
+          SwitchScreen(2);
           Bob(2, 168, 42, 3);
-          switchScreen(0);
+          SwitchScreen(0);
           Reset Zone 15
           setZone(7, 166, 39, 194, 65);
           Flash 18 , "(F00,40)(000,40)"
@@ -1559,26 +1559,26 @@
        flag$ ( 22 ) = 0
        geg$ ( 57 ) = geg$ ( 57 ) - "(AN)"
        If flag$ ( 19 ) = 1
-          switchScreen(2);
-          Bob Off 1
+          SwitchScreen(2);
+          BobOff(1);
           Call 'screco$'
        EndIf
     EndIf
     If geg1 = 58 And flag$ ( 19 ) = 1
        schalte = 1
        flag$ ( 19 ) = 0
-       switchScreen(2);
-       Bob Off 1
+       SwitchScreen(2);
+       BobOff(1);
        Call 'screco$'
     EndIf
     If geg1 = 62 And flag$ ( 20 ) = 1
        schalte = 1
        flag$ ( 20 ) = 0
        geg$ ( 70 ) = geg$ ( 70 ) - "(AN)"
-       switchScreen(2);
-       Bob Off 2
+       SwitchScreen(2);
+       BobOff(2);
        Call 'screco$'
-       switchScreen(0);
+       SwitchScreen(0);
        Reset Zone 7
        setZone(15, 166, 39, 194, 65);
     EndIf
@@ -1586,26 +1586,26 @@
        schalte = 1
        flag$ ( 29 ) = 0
        geg$ ( 63 ) = geg$ ( 63 ) - "(AN)"
-       switchScreen(2);
-       Bob Off 2
+       SwitchScreen(2);
+       BobOff(2);
        Call 'screco$'
-       switchScreen(0);
+       SwitchScreen(0);
        Reset Zone 7
        setZone(15, 166, 39, 194, 65);
     EndIf
     If geg1 = 64 And flag$ ( 21 ) = 1
        schalte = 1
        flag$ ( 21 ) = 0
-       switchScreen(2);
-       Bob Off 3
+       SwitchScreen(2);
+       BobOff(3);
        Call 'screco$'
     EndIf
     If geg1 = 66 And flag$ ( 23 ) = 1
        schalte = 1
        flag$ ( 23 ) = 0
        geg$ ( 66 ) = geg$ ( 66 ) - "(AN)"
-       switchScreen(2);
-       Bob Off 3
+       SwitchScreen(2);
+       BobOff(3);
        Call 'screco$'
     EndIf
  EndIf
@@ -1653,10 +1653,10 @@
        flag$ ( 25 ) = 1
        Gosub initraum6_2
        If transport$ ( 77 ) = 1 And flag$ ( 26 ) = 0 And flag$ ( 28 ) = 0
-          switchScreen(2);
+          SwitchScreen(2);
           Bob(6, 186, 64, 7);
           Call 'screco$'
-          switchScreen(0);
+          SwitchScreen(0);
           setZone(6, 188, 64, 200, 67);
           flag$ ( 28 ) = 1
        EndIf
@@ -1681,7 +1681,7 @@
     If geg1 = 37 And geg2 = 79
        benutze = 1
        flag$ ( 27 ) = 1
-       switchScreen(0);
+       SwitchScreen(0);
        Reset Zone 8
        setZone(20, 230, 61, 249, 67);
        g = 37
@@ -1700,8 +1700,8 @@
           Goto parser
        EndIf
        If transport$ ( 77 ) = 1 And flag$ ( 26 ) = 0
-          switchScreen(2);
-          Bob Off 6
+          SwitchScreen(2);
+          BobOff(6);
           Call 'screco$'
        EndIf
        If transport$ ( 77 ) = 2 And flag$ ( 26 ) = 0
@@ -1711,10 +1711,10 @@
        EndIf
        benutze = 1
        flag$ ( 26 ) = 1
-       switchScreen(0);
+       SwitchScreen(0);
        Reset Zone 6
        setZone(6, 195, 14, 209, 18);
-       switchScreen(2);
+       SwitchScreen(2);
        Bob(6, 194, 6, 12);
        Call 'screco$'
        Call 'rot$'
@@ -1734,10 +1734,10 @@
        Call 'screco$'
        g = 110
        Gosub ablegen
-       switchScreen(2);
+       SwitchScreen(2);
        Bob(17, 73, 8, 9);
        Call 'screco$'
-       switchScreen(0);
+       SwitchScreen(0);
        setZone(17, 76, 14, 83, 23);
        transport$ ( 88 ) = 1
        Call 'punkte$' [ 489 ]
@@ -1754,7 +1754,7 @@
  EndIf
  If verb = 12 And geg1 = 77 And flag$ ( 26 ) = 1
     flag$ ( 26 ) = 0
-    switchScreen(0);
+    SwitchScreen(0);
     Get Palette 2
  EndIf
  Return
@@ -1796,7 +1796,7 @@
  If verb = 2 And geg1 = 108 And flag$ ( 33 ) = 0
     oeffne = 1
     flag$ ( 33 ) = 1
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(13, 121, 23, 4);
     Call 'screco$'
  EndIf
@@ -1806,8 +1806,8 @@
        ziehe = 1
        flag$ ( 31 ) = 1
        flag$ ( 32 ) = 0
-       switchScreen(2);
-       Bob Off 10
+       SwitchScreen(2);
+       BobOff(10);
        Bob(9, 21, 86, 2);
        Call 'screco$'
     EndIf
@@ -1816,8 +1816,8 @@
        ziehe = 1
        flag$ ( 31 ) = 0
        flag$ ( 32 ) = 1
-       switchScreen(2);
-       Bob Off 9
+       SwitchScreen(2);
+       BobOff(9);
        Bob(10, 21, 97, 3);
        Call 'screco$'
     EndIf
@@ -1825,8 +1825,8 @@
  If verb = 3 And geg1 = 108 And flag$ ( 33 ) = 1
     schliesse = 1
     flag$ ( 33 ) = 0
-    switchScreen(2);
-    Bob Off 13
+    SwitchScreen(2);
+    BobOff(13);
     Call 'screco$'
  EndIf
  If ( verb = 3 Or verb = 5 )
@@ -1834,16 +1834,16 @@
        schliesse = 1
        druecke = 1
        flag$ ( 31 ) = 0
-       switchScreen(2);
-       Bob Off 9
+       SwitchScreen(2);
+       BobOff(9);
        Call 'screco$'
     EndIf
     If geg1 = 105 And flag$ ( 32 ) = 1
        schliesse = 1
        druecke = 1
        flag$ ( 32 ) = 0
-       switchScreen(2);
-       Bob Off 10
+       SwitchScreen(2);
+       BobOff(10);
        Call 'screco$'
     EndIf
  EndIf
@@ -1866,7 +1866,7 @@
  If verb = 2 And geg1 = 112 And flag$ ( 34 ) = 0
     oeffne = 1
     flag$ ( 34 ) = 1
-    switchScreen(2);
+    SwitchScreen(2);
     If handlung$ ( 6 ) = 4
        Bob(2, 52, 55, 3);
        person$ ( 13 ) = 9
@@ -1876,17 +1876,17 @@
        person$ ( 13 ) = 0
     EndIf
     Call 'screco$'
-    switchScreen(0);
+    SwitchScreen(0);
     Reset Zone 1
     setZone(2, 52, 56, 97, 117);
  EndIf
  If verb = 3 And geg1 = 113 And flag$ ( 34 ) = 1
     schliesse = 1
     flag$ ( 34 ) = 0
-    switchScreen(2);
+    SwitchScreen(2);
     Bob Off
     Call 'screco$'
-    switchScreen(0);
+    SwitchScreen(0);
     Reset Zone 2
     setZone(1, 52, 56, 97, 117);
     person$ ( 13 ) = 0
@@ -1906,7 +1906,7 @@
        Gosub ablegen
        Gosub testinventar
        Call 'iconbank$' [ 1 ]
-       switchScreen(0);
+       SwitchScreen(0);
        For i = 1 To 24
           If inventar$ ( i ) = 0
              inventar$ ( i ) = 203
@@ -1953,7 +1953,7 @@
     Call 'screco$'
     Gosub testinventar
     Call 'iconbank$' [ 1 ]
-    switchScreen(0);
+    SwitchScreen(0);
     For i = 1 To 24
        If inventar$ ( i ) = 0
           inventar$ ( i ) = 222
@@ -1963,7 +1963,7 @@
     Next
     Gosub inventory
     transport$ ( 222 ) = 2
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(4, 190, 21, 3);
     Call 'screco$'
     Pop
@@ -1986,7 +1986,7 @@
     g = 127
     mz = 20
     Gosub aufnehmen
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(5, 10, 52, 5);
     Call 'screco$'
     Call 'punkte$' [ 564 ]
@@ -1999,8 +1999,8 @@
        g = 132
        mz = 11
        Gosub aufnehmen
-       switchScreen(2);
-       Bob Off 1
+       SwitchScreen(2);
+       BobOff(1);
        Call 'screco$'
        Pop
        Goto parser
@@ -2010,8 +2010,8 @@
        g = 131
        mz = 11
        Gosub aufnehmen
-       switchScreen(2);
-       Bob Off 2
+       SwitchScreen(2);
+       BobOff(2);
        Call 'screco$'
        Pop
        Goto parser
@@ -2021,8 +2021,8 @@
        g = 133
        mz = 11
        Gosub aufnehmen
-       switchScreen(2);
-       Bob Off 3
+       SwitchScreen(2);
+       BobOff(3);
        Call 'screco$'
        Pop
        Goto parser
@@ -2042,15 +2042,15 @@
  If verb = 2 And geg1 = 136 And flag$ ( 35 ) = 0
     oeffne = 1
     flag$ ( 35 ) = 1
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(2, 184, 22, 2);
     Call 'screco$'
  EndIf
  If verb = 3 And geg1 = 137 And flag$ ( 35 ) = 1
     schliesse = 1
     flag$ ( 35 ) = 0
-    switchScreen(2);
-    Bob Off 2
+    SwitchScreen(2);
+    BobOff(2);
     Call 'screco$'
  EndIf
  If verb = 10
@@ -2078,15 +2078,15 @@
  If verb = 2 And geg1 = 139 And flag$ ( 36 ) = 0
     oeffne = 1
     flag$ ( 36 ) = 1
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(2, 55, 35, 2);
     Call 'screco$'
  EndIf
  If verb = 3 And geg1 = 139 And flag$ ( 36 ) = 1
     schliesse = 1
     flag$ ( 36 ) = 0
-    switchScreen(2);
-    Bob Off 2
+    SwitchScreen(2);
+    BobOff(2);
     Call 'screco$'
  EndIf
  If verb = 10
@@ -2121,10 +2121,10 @@
     g = 142
     mz = 5
     Gosub aufnehmen
-    switchScreen(0);
+    SwitchScreen(0);
     setZone(4, 201, 111, 236, 124);
-    switchScreen(2);
-    Bob Off 4 : Wait Vbl
+    SwitchScreen(2);
+    BobOff(4); : Wait Vbl
     Bob(4, 201, 112, 4);
     Call 'screco$'
  EndIf
@@ -2135,14 +2135,14 @@
     If geg1 = 147 And flag$ ( 37 ) = 0
        oeffne = 1
        flag$ ( 37 ) = 1
-       switchScreen(2);
+       SwitchScreen(2);
        Bob(5, 100, 36, 7);
        Call 'screco$'
     EndIf
     If geg1 = 148 And flag$ ( 38 ) = 0
        oeffne = 1
        flag$ ( 38 ) = 1
-       switchScreen(2);
+       SwitchScreen(2);
        Bob(6, 280, 30, 8);
        Call 'screco$'
     EndIf
@@ -2151,15 +2151,15 @@
     If geg1 = 147 And flag$ ( 37 ) = 1
        schliesse = 1
        flag$ ( 37 ) = 0
-       switchScreen(2);
-       Bob Off 5
+       SwitchScreen(2);
+       BobOff(5);
        Call 'screco$'
     EndIf
     If geg1 = 148 And flag$ ( 38 ) = 1
        schliesse = 1
        flag$ ( 38 ) = 0
-       switchScreen(2);
-       Bob Off 6
+       SwitchScreen(2);
+       BobOff(6);
        Call 'screco$'
     EndIf
  EndIf
@@ -2176,7 +2176,7 @@
     EndIf
     If geg1 = 148 And flag$ ( 38 ) = 1
        gehe = 1
-       switchScreen(0);
+       SwitchScreen(0);
        Paste Bob 117 , 45 , 2
        Limit Mouse 245 , 125 To 317 , 167
        Reset Zone
@@ -2236,7 +2236,7 @@
                 Call 'txt$' [ ereignis$ ( 88 ) ]
                 //Call 'clickmouse$'
                 person$ ( 18 ) = 1
-                switchScreen(2);
+                SwitchScreen(2);
                 Cls 0
                 Call 'roller_blind$'
                 Call 'befehle_runter$'
@@ -2389,8 +2389,8 @@
           g = 162
           mz = 20
           Gosub aufnehmen
-          switchScreen(2);
-          Bob Off 13
+          SwitchScreen(2);
+          BobOff(13);
           Call 'screco$'
           Pop
           Goto parser
@@ -2457,10 +2457,10 @@
     If geg1 = 169 And flag$ ( 40 ) = 0
        oeffne = 1
        flag$ ( 40 ) = 1
-       switchScreen(0);
+       SwitchScreen(0);
        Reset Zone 3
        setZone(4, 160, 44, 187, 71);
-       switchScreen(2);
+       SwitchScreen(2);
        Bob(4, 160, 40, 4);
        Call 'screco$'
     EndIf
@@ -2472,38 +2472,38 @@
     If geg1 = 170 And flag$ ( 40 ) = 1
        schliesse = 1
        flag$ ( 40 ) = 0
-       switchScreen(0);
+       SwitchScreen(0);
        Reset Zone 4
        setZone(3, 160, 44, 187, 71);
-       switchScreen(2);
-       Bob Off 4
+       SwitchScreen(2);
+       BobOff(4);
        Call 'screco$'
     EndIf
  EndIf
  If verb = 4 And geg1 = 167 And flag$ ( 41 ) = 0
     ziehe = 1
     flag$ ( 41 ) = 1
-    switchScreen(0);
+    SwitchScreen(0);
     Reset Zone 1
     setZone(1, 114, 74, 188, 116);
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(1, 112, 72, 5);
     Call 'screco$'
  EndIf
  If verb = 5 And geg1 = 167 And flag$ ( 41 ) = 1
     druecke = 1
     flag$ ( 41 ) = 0
-    switchScreen(0);
+    SwitchScreen(0);
     Reset Zone 1
     setZone(1, 52, 78, 118, 117);
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(1, 53, 72, 5);
     Call 'screco$'
  EndIf
  If verb = 7 And ( geg1 = 163 Or geg1 = 239 ) And geg2 = 170
     flag$ ( 40 ) = 2
     benutze = 1
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(4, 150, 40, 6);
     Call 'screco$'
     g = 163
@@ -2536,7 +2536,7 @@
        //Call 'clickmouse$'
        Call 'screco$'
        flag$ ( 43 ) = 1
-       switchScreen(2);
+       SwitchScreen(2);
        Bob(2, 125, 11, 2);
        Call 'screco$'
     EndIf
@@ -2546,7 +2546,7 @@
        //Call 'clickmouse$'
        Call 'screco$'
        flag$ ( 44 ) = 1
-       switchScreen(2);
+       SwitchScreen(2);
        Bob(3, 175, 11, 2);
        Call 'screco$'
     EndIf
@@ -2556,7 +2556,7 @@
        //Call 'clickmouse$'
        Call 'screco$'
        flag$ ( 45 ) = 1
-       switchScreen(2);
+       SwitchScreen(2);
        Bob(4, 225, 11, 2);
        Call 'screco$'
     EndIf
@@ -2600,17 +2600,17 @@
     If geg1 = 182 And flag$ ( 46 ) = 0
        oeffne = 1
        flag$ ( 46 ) = 1
-       switchScreen(2);
+       SwitchScreen(2);
        Bob(1, 15, 67, 2);
        Call 'screco$'
     EndIf
     If geg1 = 186 And flag$ ( 47 ) = 0
        oeffne = 1
        flag$ ( 47 ) = 1
-       switchScreen(2);
-       Bob Off 5
+       SwitchScreen(2);
+       BobOff(5);
        Call 'screco$'
-       switchScreen(0);
+       SwitchScreen(0);
        Reset Zone 5
        setZone(5, 228, 11, 273, 77);
        setZone(6, 270, 11, 302, 98);
@@ -2620,17 +2620,17 @@
     If geg1 = 182 And flag$ ( 46 ) = 1
        schliesse = 1
        flag$ ( 46 ) = 0
-       switchScreen(2);
-       Bob Off 1
+       SwitchScreen(2);
+       BobOff(1);
        Call 'screco$'
     EndIf
     If geg1 = 186 And flag$ ( 47 ) = 1
        schliesse = 1
        flag$ ( 47 ) = 0
-       switchScreen(2);
+       SwitchScreen(2);
        Bob(5, 206, 6, 3);
        Call 'screco$'
-       switchScreen(0);
+       SwitchScreen(0);
        Reset Zone 5
        Reset Zone 6
        setZone(5, 270, 11, 302, 98);
@@ -2643,7 +2643,7 @@
     Call 'screco$'
     Gosub testinventar
     Call 'iconbank$' [ 1 ]
-    switchScreen(0);
+    SwitchScreen(0);
     For i = 1 To 24
        If inventar$ ( i ) = 0
           inventar$ ( i ) = 223
@@ -2668,8 +2668,8 @@
        If flag$ ( 48 ) = 0
           oeffne = 1
           flag$ ( 48 ) = 1
-          switchScreen(2);
-          Bob Off 8
+          SwitchScreen(2);
+          BobOff(8);
           Bob(9, 157, 22, 12);
           Call 'screco$'
           person$ ( 16 ) = 20
@@ -2695,9 +2695,9 @@
  If verb = 3 And geg1 = 196 And etage = 5 And flag$ ( 48 ) = 1
     schliesse = 1
     flag$ ( 48 ) = 0
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(8, 168, 67, 14);
-    Bob Off 9
+    BobOff(9);
     Call 'screco$'
     person$ ( 16 ) = 0
     Gosub personendisplay
@@ -2705,7 +2705,7 @@
  If verb = 7 And geg1 = 2 And geg2 = 196 And etage = 5
     benutze = 1
     flag$ ( 48 ) = 0
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(8, 168, 67, 14);
     Call 'screco$'
     g = 2
@@ -2730,7 +2730,7 @@
     person$ ( 2 ) = 20
     Gosub personendisplay
     handlung$ ( 4 ) = 2
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(9, 157, 22, 13);
     Call 'screco$'
     Call 'punkte$' [ 78 ]
@@ -2778,7 +2778,7 @@
 
  Label raum21:
  If verb = 8 And geg1 = 198
-    switchScreen(0);
+    SwitchScreen(0);
     Reset Zone 1
     setZone(4, 112, 78, 146, 102);
     Call 'txt$' [ Chr$ ( 10 ) + "O.K." + Chr$ ( 10 ) + "*" + Chr$ ( 10 ) ]
@@ -2788,7 +2788,7 @@
     Goto parser
  EndIf
  If verb = 9 And geg1 = 201
-    switchScreen(0);
+    SwitchScreen(0);
     Reset Zone 4
     setZone(1, 112, 78, 146, 102);
     Call 'txt$' [ Chr$ ( 10 ) + "O.K." + Chr$ ( 10 ) + "*" + Chr$ ( 10 ) ]
@@ -2824,7 +2824,7 @@
  If verb = 7
     If geg1 = 218
        Add flag$ ( 50 ) , 1 , 1 To 4
-       switchScreen(0);
+       SwitchScreen(0);
        If flag$ ( 50 ) = 1
           Fade 3 , , , , , , , , , , , 0xad5 , , , , 0xad5 , , , , , 0xad5 , 0xad5 , 0xad5 , 0xad5 , 0xad5 , 0xad5 , 0xad5 , 0xad5 , 0xad5 , 0xad5 , 0xad5 , 0xad5
        EndIf
@@ -2855,37 +2855,37 @@
        Call 'txt$' [ ereignis$ ( 85 ) ]
        //Call 'clickmouse$'
        Call 'screco$'
-       switchScreen(1);
+       SwitchScreen(1);
        Ink 0 , 5
        Text 2 , 6 , "�FFNE BATTERIEFACH" + geg$ ( 0 )
        Call 'txt$' [ Chr$ ( 10 ) + "O.K." + Chr$ ( 10 ) + "*" + Chr$ ( 10 ) ]
        //Call 'clickmouse$'
        Call 'screco$'
-       switchScreen(1);
+       SwitchScreen(1);
        Ink 0 , 5
        Text 2 , 6 , "NIMM BATTERIEN" + geg$ ( 0 )
        Call 'txt$' [ Chr$ ( 10 ) + "DIE KANNST DU NICHT NEHMEN !" + Chr$ ( 10 ) + "*" + Chr$ ( 10 ) ]
        //Call 'clickmouse$'
        Call 'screco$'
-       switchScreen(1);
+       SwitchScreen(1);
        Ink 0 , 5
        Text 2 , 6 , "PUL RAU� BATTERIEN" + geg$ ( 0 )
        Call 'txt$' [ Chr$ ( 10 ) + "O.K." + Chr$ ( 10 ) + "*" + Chr$ ( 10 ) ]
        //Call 'clickmouse$'
        Call 'screco$'
-       switchScreen(1);
+       SwitchScreen(1);
        Ink 0 , 5
        Text 2 , 6 , "REI� AB FINGERNAGEL" + geg$ ( 0 )
        Call 'txt$' [ Chr$ ( 10 ) + "O.K." + Chr$ ( 10 ) + "*" + Chr$ ( 10 ) ]
        //Call 'clickmouse$'
        Call 'screco$'
-       switchScreen(1);
+       SwitchScreen(1);
        Ink 0 , 5
        Text 2 , 6 , "SCHMEI� AUS FENSTER BATTERIEN+LAMEBOY" + geg$ ( 0 )
        Call 'txt$' [ Chr$ ( 10 ) + "O.K." + Chr$ ( 10 ) + "*" + Chr$ ( 10 ) ]
        //Call 'clickmouse$'
        Call 'screco$'
-       switchScreen(1);
+       SwitchScreen(1);
        Ink 0 , 5
        Text 2 , 6 , "SCHREI AN GERD" + geg$ ( 0 )
        Call 'txt$' [ Chr$ ( 10 ) + "O.K." + Chr$ ( 10 ) + "*" + Chr$ ( 10 ) ]
@@ -2928,7 +2928,7 @@
        Call 'txt$' [ ereignis$ ( 96 ) ]
        //Call 'clickmouse$'
        Call 'screco$'
-       switchScreen(2);
+       SwitchScreen(2);
        Bob(1, 65, 19, 1);
        Call 'screco$'
        Pop
@@ -2937,7 +2937,7 @@
     If geg1 = 229 And flag$ ( 67 ) = 0
        flag$ ( 67 ) = 1
        oeffne = 1
-       switchScreen(2);
+       SwitchScreen(2);
        Bob(2, 171, 19, 2);
        Call 'screco$'
     EndIf
@@ -2948,8 +2948,8 @@
        Call 'txt$' [ ereignis$ ( 97 ) ]
        //Call 'clickmouse$'
        Call 'screco$'
-       switchScreen(2);
-       Bob Off 1
+       SwitchScreen(2);
+       BobOff(1);
        Call 'screco$'
        Pop
        Goto parser
@@ -2957,16 +2957,16 @@
     If geg1 = 229 And flag$ ( 67 ) = 1
        flag$ ( 67 ) = 0
        schliesse = 1
-       switchScreen(2);
-       Bob Off 2
+       SwitchScreen(2);
+       BobOff(2);
        Call 'screco$'
     EndIf
  EndIf
  If verb = 5 And geg1 = 230
-    switchScreen(2);
-    Bob Off 3
+    SwitchScreen(2);
+    BobOff(3);
     Call 'screco$'
-    switchScreen(0);
+    SwitchScreen(0);
     For i = 7 To 14
        Reset Zone i
     Next
@@ -2974,7 +2974,7 @@
     Goto parser
  EndIf
  If verb = 7 And geg1 = 231
-    switchScreen(0);
+    SwitchScreen(0);
     Limit Mouse 339 , 99 To 436 , 114
     X Mouse = X Hard ( wx )
     Y Mouse = Y Hard ( wy )
@@ -2988,7 +2988,7 @@
        Wait Vbl
     Wend
     Gr Writing 1
-    switchScreen(2);
+    SwitchScreen(2);
     Bob 3 , wx , wy , 3
     Call 'screco$'
     Gosub r24_zones
@@ -3022,14 +3022,14 @@
  If verb = 7 And geg1 = 172 And geg2 = 239
     Call 'txt$' [ ereignis$ ( 98 ) ]
     //Call 'clickmouse$'
-    switchScreen(2);
-    Bob Off 2
+    SwitchScreen(2);
+    BobOff(2);
     Call 'screco$'
     g = 172
     Gosub ablegen
     Gosub testinventar
     Call 'iconbank$' [ 1 ]
-    switchScreen(0);
+    SwitchScreen(0);
     For i = 1 To 24
        If inventar$ ( i ) = 0
           inventar$ ( i ) = 239
@@ -3099,13 +3099,13 @@
 
  Label raum26:
  If verb = 1 And geg1 = 249
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(5, 101, 1, 2);
     If transport$ ( 132 ) = 0
        Bob(4, 126, 16, 1);
     EndIf
     Call 'screco$'
-    switchScreen(0);
+    SwitchScreen(0);
     Reset Zone
     setZone(6, 156, 17, 170, 30);
     setZone(7, 123, 38, 141, 50);
@@ -3138,9 +3138,9 @@
        Call 'txt$' [ Chr$ ( 10 ) + "DAS KANNST DU DIR NICHT LEISTEN." + Chr$ ( 10 ) + "*" + Chr$ ( 10 ) ]
        //Call 'clickmouse$'
        Call 'screco$'
-       switchScreen(2);
-       Bob Off 4
-       Bob Off 5
+       SwitchScreen(2);
+       BobOff(4);
+       BobOff(5);
        Call 'screco$'
        Call 'init_zones$'
        Pop
@@ -3151,9 +3151,9 @@
           Call 'txt$' [ Chr$ ( 10 ) + "HAST DU SCHON." + Chr$ ( 10 ) + "*" + Chr$ ( 10 ) ]
           //Call 'clickmouse$'
           Call 'screco$'
-          switchScreen(2);
-          Bob Off 4
-          Bob Off 5
+          SwitchScreen(2);
+          BobOff(4);
+          BobOff(5);
           Call 'screco$'
           Call 'init_zones$'
           Pop
@@ -3173,9 +3173,9 @@
           g = 254
           mz = 9
           Gosub aufnehmen
-          switchScreen(2);
-          Bob Off 4
-          Bob Off 5
+          SwitchScreen(2);
+          BobOff(4);
+          BobOff(5);
           Call 'screco$'
           Call 'init_zones$'
           Pop
@@ -3184,9 +3184,9 @@
           Call 'txt$' [ Chr$ ( 10 ) + "DU HAST KEIN GELD." + Chr$ ( 10 ) + "*" + Chr$ ( 10 ) ]
           //Call 'clickmouse$'
           Call 'screco$'
-          switchScreen(2);
-          Bob Off 4
-          Bob Off 5
+          SwitchScreen(2);
+          BobOff(4);
+          BobOff(5);
           Call 'screco$'
           Call 'init_zones$'
           Pop
@@ -3231,7 +3231,7 @@
        flag$ ( 42 ) = 0
        Gosub testinventar
        Call 'iconbank$' [ 1 ]
-       switchScreen(0);
+       SwitchScreen(0);
        For i = 1 To 24
           If inventar$ ( i ) = 0
              inventar$ ( i ) = 165
@@ -3355,7 +3355,7 @@
     Call 'txt$' [ ereignis$ ( 58 ) ]
     //Call 'clickmouse$'
     Call 'screco$'
-    switchScreen(0);
+    SwitchScreen(0);
     Fade 3
     Wait 100
     Call 'punkte$' [ 1001 ]
@@ -3375,7 +3375,7 @@
     reden$ ( 7 ) = 1
     If raum = 4
        Gosub personendisplay
-       switchScreen(2);
+       SwitchScreen(2);
        Bob(1, 111, 42, 8);
        Call 'screco$'
     EndIf
@@ -3383,7 +3383,7 @@
  If zeit = 25
     flag$ ( 14 ) = 1
     If raum = 4
-       switchScreen(2);
+       SwitchScreen(2);
        Bob(2, 103, 28, 2);
        Bob(1, 111, 42, 8);
        Call 'screco$'
@@ -3398,8 +3398,8 @@
     person$ ( 9 ) = 5
     If raum = 4
        Gosub personendisplay
-       switchScreen(2);
-       Bob Off 1
+       SwitchScreen(2);
+       BobOff(1);
        Call 'screco$'
     EndIf
     If raum = 5
@@ -3415,8 +3415,8 @@
  If zeit = 27
     flag$ ( 14 ) = 0
     If raum = 4
-       switchScreen(2);
-       Bob Off 2
+       SwitchScreen(2);
+       BobOff(2);
        Call 'screco$'
     EndIf
  EndIf
@@ -3424,7 +3424,7 @@
     person$ ( 8 ) = 1
     If raum = 1
        Gosub personendisplay
-       switchScreen(2);
+       SwitchScreen(2);
        Bob(19, 0, 34, 10);
        Call 'screco$'
     EndIf
@@ -3433,13 +3433,13 @@
     person$ ( 8 ) = 4
     If raum = 1
        Gosub personendisplay
-       switchScreen(2);
-       Bob Off 19
+       SwitchScreen(2);
+       BobOff(19);
        Call 'screco$'
     EndIf
     If raum = 4
        Gosub personendisplay
-       switchScreen(2);
+       SwitchScreen(2);
        Bob(1, 145, 55, 7);
        Call 'screco$'
     EndIf
@@ -3447,7 +3447,7 @@
  If zeit = 33
     flag$ ( 17 ) = 1
     If raum = 4
-       switchScreen(2);
+       SwitchScreen(2);
        Bob(5, 122, 40, 5);
        Call 'screco$'
     EndIf
@@ -3456,13 +3456,13 @@
     person$ ( 8 ) = 7
     If raum = 4
        Gosub personendisplay
-       switchScreen(2);
-       Bob Off 1
+       SwitchScreen(2);
+       BobOff(1);
        Call 'screco$'
     EndIf
     If raum = 7
        Gosub personendisplay
-       switchScreen(2);
+       SwitchScreen(2);
        Bob(5, 203, 0, 3);
        Call 'screco$'
     EndIf
@@ -3470,8 +3470,8 @@
  If zeit = 35
     flag$ ( 17 ) = 0
     If raum = 4
-       switchScreen(2);
-       Bob Off 5
+       SwitchScreen(2);
+       BobOff(5);
        Call 'screco$'
     EndIf
  EndIf
@@ -3480,8 +3480,8 @@
     Gosub personendisplay
     reden$ ( 8 ) = 1
     If raum = 7
-       switchScreen(2);
-       Bob Off 5
+       SwitchScreen(2);
+       BobOff(5);
        Call 'screco$'
     EndIf
     If raum = 8
@@ -3506,7 +3506,7 @@
     person$ ( 8 ) = 7
     If raum = 7
        Gosub personendisplay
-       switchScreen(2);
+       SwitchScreen(2);
        Bob(5, 205, 96, 4);
        Call 'screco$'
     EndIf
@@ -3515,13 +3515,13 @@
     person$ ( 8 ) = 11
     If raum = 7
        Gosub personendisplay
-       switchScreen(2);
-       Bob Off 5
+       SwitchScreen(2);
+       BobOff(5);
        Call 'screco$'
     EndIf
     If raum = 11
        Gosub personendisplay
-       switchScreen(2);
+       SwitchScreen(2);
        Bob(3, 138, 83, 2);
        Call 'screco$'
     EndIf
@@ -3530,8 +3530,8 @@
     person$ ( 8 ) = 14
     If raum = 11
        Gosub personendisplay
-       switchScreen(2);
-       Bob Off 3
+       SwitchScreen(2);
+       BobOff(3);
        Call 'screco$'
     EndIf
     If raum = 14
@@ -3541,7 +3541,7 @@
        Unpack 8 To 2
 
        If flag$ ( 36 ) = 1
-          switchScreen(2);
+          SwitchScreen(2);
           Bob(2, 55, 35, 2);
        EndIf
        Call 'roller_blind$'
@@ -3551,7 +3551,7 @@
        Unpack 8 To 2
 
        If flag$ ( 36 ) = 1
-          switchScreen(2);
+          SwitchScreen(2);
           Bob(2, 55, 35, 2);
        EndIf
        Call 'roller_blind$'
@@ -3563,7 +3563,7 @@
        Unpack 8 To 2
 
        If flag$ ( 36 ) = 1
-          switchScreen(2);
+          SwitchScreen(2);
           Bob(2, 55, 35, 2);
        EndIf
        Call 'roller_blind$'
@@ -3607,18 +3607,18 @@
     Call 'txt$' [ Chr$ ( 10 ) + "INZWISCHEN..." + Chr$ ( 10 ) + "*" + Chr$ ( 10 ) ]
     //Call 'clickmouse$'
     Call 'maus_aus$'
-    switchScreen(2);
+    SwitchScreen(2);
     Cls 0
     Call 'roller_blind$'
-    switchScreen(3);
+    SwitchScreen(3);
     Cls 0
     Call 'test_joy2$'
-    switchScreen(2);
+    SwitchScreen(2);
     Load pfad$ + "Grafiken/Raum23.Pic" , 8
     Unpack 8 To 2
 
     Erase 8
-    switchScreen(0);
+    SwitchScreen(0);
     Get Palette 2
     Call 'roller_blind$'
     Call 'txt$' [ ereignis$ ( 25 ) ]
@@ -3730,9 +3730,9 @@
  If transport$ ( g ) = 1
     Gosub testinventar
     Call 'iconbank$' [ 1 ]
-    switchScreen(0);
+    SwitchScreen(0);
     Reset Zone mz
-    switchScreen(2);
+    SwitchScreen(2);
     Bob Off mz
     Call 'screco$'
     For i = 1 To 24
@@ -3790,7 +3790,7 @@
 
  Label personendisplay:
  Call 'iconbank$' [ 2 ]
- switchScreen(3);
+ SwitchScreen(3);
  person = 1
  i = 0
  For j = 1 To 10
@@ -3811,13 +3811,13 @@
  raum2 = raum
  raum = r
  Call 'maus_aus$'
- switchScreen(2);
+ SwitchScreen(2);
  Bob Off
  Wait Vbl
  Cls 0
  Call 'roller_blind$'
  Call 'test_joy2$'
- switchScreen(2);
+ SwitchScreen(2);
  Load pfad$ + "Grafiken/Raum" + ( Str$ ( raum ) - " " ) + ".Bobs.Abk"
  If raum = 11 And flag$ ( 68 ) = 1 And zeit > 47
     Load pfad$ + "Grafiken/Raum11_1.Pic" , 8
@@ -3858,15 +3858,15 @@
  If flag$ ( 54 ) = 1
     person$ ( 1 ) = raum
  EndIf
- switchScreen(0);
+ SwitchScreen(0);
  Flash Off
  Get Palette 2
  Call 'init_zones$'
  Gosub "INITRAUM" + ( Str$ ( raum ) - " " )
- switchScreen(3);
+ SwitchScreen(3);
  Cls 0
  Gosub personendisplay
- switchScreen(0);
+ SwitchScreen(0);
  Call 'cursor$'
  If raum2 = 19
     Bank Swap 1 , 11
@@ -3892,62 +3892,62 @@
  EndIf
  If transport$ ( 2 ) = 1
     If flag$ ( 1 ) = 0 Or flag$ ( 1 ) = 2
-       switchScreen(2);
+       SwitchScreen(2);
        Bob(2, 54, 41, 3);
-       switchScreen(0);
+       SwitchScreen(0);
        setZone(2, 50, 39, 61, 51);
     Else
-       switchScreen(2);
+       SwitchScreen(2);
        Bob(14, 49, 0, 4);
-       switchScreen(0);
+       SwitchScreen(0);
        setZone(2, 61, 20, 67, 30);
     EndIf
  Else
     If flag$ ( 1 ) = 1
-       switchScreen(2);
+       SwitchScreen(2);
        Bob(14, 49, 0, 8);
     EndIf
  EndIf
  If transport$ ( 5 ) = 1
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(5, 305, 34, 5);
-    switchScreen(0);
+    SwitchScreen(0);
     setZone(5, 306, 33, 316, 47);
  EndIf
  If flag$ ( 5 ) = 0
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(16, 282, 0, 7);
-    switchScreen(0);
+    SwitchScreen(0);
     setZone(18, 281, 0, 319, 54);
  Else
-    switchScreen(0);
+    SwitchScreen(0);
     setZone(16, 281, 0, 319, 54);
  EndIf
  If flag$ ( 3 ) = 1 And flag$ ( 4 ) = 1 And ( handlung$ ( 2 ) = 0 Or handlung$ ( 2 ) = 3 )
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(6, 136, 81, 6);
  EndIf
  If handlung$ ( 2 ) > 0 And handlung$ ( 2 ) < 3
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(6, 136, 81, 9);
  EndIf
  If flag$ ( 2 ) = 0
     If transport$ ( 8 ) = 1
-       switchScreen(2);
+       SwitchScreen(2);
        Bob(8, 57, 123, 2);
-       switchScreen(0);
+       SwitchScreen(0);
        setZone(8, 57, 123, 85, 128);
     EndIf
  Else
     If transport$ ( 9 ) = 1
-       switchScreen(2);
+       SwitchScreen(2);
        Bob(9, 57, 123, 2);
-       switchScreen(0);
+       SwitchScreen(0);
        setZone(9, 57, 123, 85, 128);
     EndIf
  EndIf
  If person$ ( 8 ) = 1
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(19, 0, 34, 10);
  EndIf
  Return
@@ -3958,64 +3958,64 @@
  EndIf
  Flash 22 , "(88f,20)(009,20)"
  If transport$ ( 31 ) = 1 And flag$ ( 6 ) = 0
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(13, 205, 19, 2);
-    switchScreen(0);
+    SwitchScreen(0);
     setZone(13, 205, 19, 220, 37);
  EndIf
  If flag$ ( 6 ) = 1
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(14, 196, 8, 3);
     If transport$ ( 31 ) = 1
-       switchScreen(2);
+       SwitchScreen(2);
        Bob(13, 201, 16, 4);
-       switchScreen(0);
+       SwitchScreen(0);
        setZone(13, 201, 14, 211, 30);
     EndIf
  EndIf
  If flag$ ( 7 ) = 1
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(4, 101, 55, 5);
  EndIf
  If flag$ ( 8 ) = 1
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(6, 126, 54, 6);
  EndIf
  Return
 
  Label initraum3:
  If flag$ ( 9 ) = 1
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(6, 100, 56, 3);
     If transport$ ( 36 ) = 1
        Bob(1, 126, 68, 7);
-       switchScreen(0);
+       SwitchScreen(0);
        setZone(1, 127, 66, 131, 72);
     EndIf
  EndIf
  If flag$ ( 10 ) = 1
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(7, 127, 29, 2);
     If transport$ ( 37 ) = 1
        Bob(2, 153, 36, 8);
-       switchScreen(0);
+       SwitchScreen(0);
        setZone(2, 155, 36, 158, 40);
     EndIf
  EndIf
  If flag$ ( 11 ) = 1
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(3, 131, 73, 4);
  EndIf
  If flag$ ( 12 ) = 1
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(4, 129, 84, 5);
  EndIf
  If flag$ ( 13 ) = 1
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(5, 129, 95, 6);
  EndIf
  If flag$ ( 52 ) = 1
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(10, 154, 63, 9);
  EndIf
  Return
@@ -4036,11 +4036,11 @@
     flag$ ( 17 ) = 1
  EndIf
  If flag$ ( 14 ) = 1
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(2, 103, 28, 2);
  EndIf
  If flag$ ( 15 ) = 1
-    switchScreen(2);
+    SwitchScreen(2);
     If flag$ ( 26 ) = 1
        Bob(3, 119, 39, 6);
     Else
@@ -4048,40 +4048,40 @@
     EndIf
  EndIf
  If flag$ ( 16 ) = 1
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(4, 132, 47, 4);
  EndIf
  If flag$ ( 17 ) = 1
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(5, 122, 40, 5);
  EndIf
  If person$ ( 7 ) = 4
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(1, 111, 42, 8);
  EndIf
  If person$ ( 8 ) = 4
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(1, 145, 55, 7);
  EndIf
  Return
 
  Label initraum5:
  If flag$ ( 19 ) = 1 And flag$ ( 22 ) = 1
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(1, 34, 44, 2);
  EndIf
  If flag$ ( 20 ) = 1 And flag$ ( 29 ) = 1
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(2, 168, 42, 3);
-    switchScreen(0);
+    SwitchScreen(0);
     setZone(7, 166, 39, 194, 65);
     Flash 18 , "(F00,40)(000,40)"
  Else
-    switchScreen(0);
+    SwitchScreen(0);
     setZone(15, 166, 39, 194, 65);
  EndIf
  If flag$ ( 21 ) = 1 And flag$ ( 23 ) = 1
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(3, 221, 34, 4);
  EndIf
  Return
@@ -4095,99 +4095,99 @@
     EndIf
  EndIf
  If flag$ ( 27 ) = 0
-    switchScreen(0);
+    SwitchScreen(0);
     setZone(8, 230, 61, 249, 67);
  Else
-    switchScreen(0);
+    SwitchScreen(0);
     setZone(20, 230, 61, 249, 67);
  EndIf
  If transport$ ( 76 ) = 1
-    switchScreen(0);
+    SwitchScreen(0);
     setZone(5, 110, 57, 114, 65);
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(5, 110, 57, 6);
  EndIf
  If transport$ ( 77 ) = 1
     If flag$ ( 28 ) = 0
-       switchScreen(0);
+       SwitchScreen(0);
        setZone(6, 147, 64, 157, 67);
-       switchScreen(2);
+       SwitchScreen(2);
        Bob(6, 145, 64, 7);
     Else
-       switchScreen(0);
+       SwitchScreen(0);
        setZone(6, 188, 64, 200, 67);
-       switchScreen(2);
+       SwitchScreen(2);
        Bob(6, 186, 64, 7);
     EndIf
  EndIf
  If transport$ ( 78 ) = 1
-    switchScreen(0);
+    SwitchScreen(0);
     setZone(7, 202, 64, 208, 67);
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(7, 200, 65, 5);
  EndIf
  If transport$ ( 88 ) = 1
-    switchScreen(0);
+    SwitchScreen(0);
     setZone(17, 76, 14, 83, 23);
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(17, 73, 8, 9);
  EndIf
  If transport$ ( 89 ) = 1
-    switchScreen(0);
+    SwitchScreen(0);
     setZone(18, 40, 19, 47, 28);
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(18, 37, 13, 8);
  EndIf
  If flag$ ( 26 ) = 1
-    switchScreen(0);
+    SwitchScreen(0);
     setZone(6, 195, 14, 209, 18);
     Call 'rot$'
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(6, 194, 6, 12);
  EndIf
 
  Label initraum6_2:
  If flag$ ( 25 ) = 0
     If flag$ ( 24 ) = 0
-       switchScreen(0);
+       SwitchScreen(0);
        setZone(13, 119, 63, 181, 70);
-       switchScreen(2);
+       SwitchScreen(2);
        Bob(15, 122, 6, 2);
        Bob(13, 89, 0, 11);
     EndIf
     If flag$ ( 24 ) = 1
-       switchScreen(0);
+       SwitchScreen(0);
        setZone(13, 119, 63, 181, 70);
-       switchScreen(2);
+       SwitchScreen(2);
        Bob(15, 122, 6, 3);
        Bob(13, 89, 0, 11);
     EndIf
     If flag$ ( 24 ) = 2
-       switchScreen(0);
+       SwitchScreen(0);
        setZone(13, 119, 63, 181, 70);
-       switchScreen(2);
+       SwitchScreen(2);
        Bob(15, 122, 6, 4);
        Bob(13, 89, 0, 11);
     EndIf
  Else
     If flag$ ( 24 ) = 0
-       switchScreen(0);
+       SwitchScreen(0);
        setZone(13, 117, 4, 121, 70);
-       switchScreen(2);
+       SwitchScreen(2);
        Bob(15, 122, 6, 2);
        Bob(13, 89, 0, 10);
     EndIf
     If flag$ ( 24 ) = 1
-       switchScreen(0);
+       SwitchScreen(0);
        setZone(13, 117, 4, 121, 70);
-       switchScreen(2);
+       SwitchScreen(2);
        Bob(15, 122, 6, 3);
        Bob(13, 89, 0, 10);
     EndIf
     If flag$ ( 24 ) = 2
-       switchScreen(0);
+       SwitchScreen(0);
        setZone(13, 117, 4, 121, 70);
-       switchScreen(2);
+       SwitchScreen(2);
        Bob(15, 122, 6, 4);
        Bob(13, 89, 0, 10);
     EndIf
@@ -4196,15 +4196,15 @@
 
  Label initraum7:
  If flag$ ( 5 ) = 1
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(1, 249, 38, 2);
  EndIf
  If person$ ( 8 ) = 7 And zeit > 33 And zeit < 37
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(5, 203, 0, 3);
  EndIf
  If person$ ( 8 ) = 7 And zeit > 39 And zeit < 43
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(5, 205, 96, 4);
  EndIf
  Return
@@ -4214,27 +4214,27 @@
     flag$ ( 33 ) = 1
  EndIf
  If flag$ ( 31 ) = 1
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(9, 21, 86, 2);
  EndIf
  If flag$ ( 32 ) = 1
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(10, 21, 97, 3);
  EndIf
  If flag$ ( 33 ) = 1
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(13, 121, 23, 4);
  EndIf
  Return
 
  Label initraum9:
  If flag$ ( 34 ) = 0
-    switchScreen(0);
+    SwitchScreen(0);
     setZone(1, 52, 56, 97, 117);
  Else
-    switchScreen(0);
+    SwitchScreen(0);
     setZone(2, 52, 56, 97, 117);
-    switchScreen(2);
+    SwitchScreen(2);
     If handlung$ ( 6 ) = 4
        Bob(2, 52, 55, 3);
        person$ ( 13 ) = 9
@@ -4249,30 +4249,30 @@
 
  Label initraum11:
  If person$ ( 8 ) = 11
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(3, 138, 83, 2);
  EndIf
  If flag$ ( 62 ) = 1
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(4, 190, 21, 3);
  EndIf
  Return
 
  Label initraum12:
  If flag$ ( 64 ) = 1
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(5, 10, 52, 5);
  EndIf
  If transport$ ( 121 ) = 1
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(1, 24, 3, 2);
  EndIf
  If transport$ ( 122 ) = 1
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(2, 72, 2, 3);
  EndIf
  If transport$ ( 123 ) = 1
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(3, 152, 6, 4);
  EndIf
  Return
@@ -4282,25 +4282,25 @@
     flag$ ( 35 ) = 1
  EndIf
  If flag$ ( 35 ) = 1
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(2, 184, 22, 2);
  EndIf
  Return
 
  Label initraum14:
  flag$ ( 36 ) = 1
- switchScreen(2);
+ SwitchScreen(2);
  Bob(2, 55, 35, 2);
  If handlung$ ( 3 ) = 5
-    switchScreen(0);
+    SwitchScreen(0);
     setZone(4, 201, 111, 236, 124);
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(4, 200, 111, 3);
  EndIf
  If handlung$ ( 3 ) = 6
-    switchScreen(0);
+    SwitchScreen(0);
     setZone(4, 201, 111, 236, 124);
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(4, 201, 112, 4);
  EndIf
  Return
@@ -4316,60 +4316,60 @@
     flag$ ( 38 ) = 1
  EndIf
  If transport$ ( 145 ) = 1
-    switchScreen(0);
+    SwitchScreen(0);
     setZone(3, 15, 109, 35, 125);
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(3, 17, 105, 9);
  EndIf
  If flag$ ( 37 ) = 1
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(5, 100, 36, 7);
  EndIf
  If flag$ ( 38 ) = 1
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(4, 280, 30, 8);
  EndIf
  Return
 
  Label initraum16:
  If transport$ ( 162 ) = 1
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(13, 272, 93, 2);
  EndIf
  Return
 
  Label initraum17:
  If flag$ ( 40 ) = 0
-    switchScreen(0);
+    SwitchScreen(0);
     setZone(3, 160, 44, 187, 71);
  EndIf
  If flag$ ( 40 ) = 1
-    switchScreen(0);
+    SwitchScreen(0);
     setZone(4, 160, 44, 187, 71);
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(4, 160, 40, 4);
  EndIf
  If flag$ ( 40 ) = 2
-    switchScreen(0);
+    SwitchScreen(0);
     setZone(4, 160, 44, 187, 71);
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(4, 150, 40, 6);
  EndIf
  If flag$ ( 41 ) = 0
-    switchScreen(0);
+    SwitchScreen(0);
     setZone(1, 52, 78, 188, 117);
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(1, 53, 72, 5);
  Else
-    switchScreen(0);
+    SwitchScreen(0);
     setZone(1, 114, 74, 188, 116);
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(1, 112, 72, 5);
  EndIf
  If transport$ ( 172 ) = 1
-    switchScreen(0);
+    SwitchScreen(0);
     setZone(6, 249, 82, 264, 105);
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(6, 248, 82, 3);
  EndIf
  Return
@@ -4381,22 +4381,22 @@
  flag$ ( 45 ) = 0
  flag$ ( Rnd ( 2 ) + 43 ) = 1
  If flag$ ( 43 ) = 1
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(2, 125, 11, 2);
  EndIf
  If flag$ ( 44 ) = 1
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(3, 175, 11, 2);
  EndIf
  If flag$ ( 45 ) = 1
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(4, 225, 11, 2);
  EndIf
  Return
 
  Label initraum19:
  If flag$ ( 46 ) = 1
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(1, 15, 67, 2);
  EndIf
  Return
@@ -4407,80 +4407,80 @@
  person$ ( 15 ) = 0
  person$ ( 16 ) = 0
  If etage = 3
-    switchScreen(0);
+    SwitchScreen(0);
     setZone(1, 114, 42, 133, 55);
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(1, 113, 42, 9);
     person$ ( 15 ) = 20
  EndIf
  If etage = 4
-    switchScreen(0);
+    SwitchScreen(0);
     setZone(3, 108, 50, 117, 64);
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(3, 110, 49, 11);
  EndIf
  If etage = 7
-    switchScreen(0);
+    SwitchScreen(0);
     setZone(2, 104, 38, 120, 69);
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(2, 100, 38, 10);
     person$ ( 14 ) = 20
  EndIf
  If Not etage = 5
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(8, 168, 67, 14);
  EndIf
  If etage = 5
     If flag$ ( 48 ) = 1
        If handlung$ ( 4 ) = 2
           person$ ( 2 ) = 20
-          switchScreen(2);
+          SwitchScreen(2);
           Bob(9, 157, 22, 13);
        Else
           person$ ( 16 ) = 20
-          switchScreen(2);
+          SwitchScreen(2);
           Bob(9, 157, 22, 12);
        EndIf
     EndIf
     If flag$ ( 48 ) = 0
-       switchScreen(2);
+       SwitchScreen(2);
        Bob(8, 168, 67, 14);
     EndIf
  EndIf
- switchScreen(2);
+ SwitchScreen(2);
  Bob 4 , 118 , 41 , etage + 1
  Return
 
  Label initraum21:
  If handlung$ ( 6 ) = 2
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(1, 157, 69, 2);
  EndIf
  Return
 
  Label initraum22:
  If transport$ ( 210 ) = 1
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(7, 163, 98, 2);
-    switchScreen(0);
+    SwitchScreen(0);
     setZone(7, 162, 98, 174, 110);
  EndIf
  If transport$ ( 211 ) = 1
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(8, 215, 46, 2);
-    switchScreen(0);
+    SwitchScreen(0);
     setZone(8, 215, 46, 226, 58);
  EndIf
  If transport$ ( 212 ) = 1
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(9, 241, 46, 2);
-    switchScreen(0);
+    SwitchScreen(0);
     setZone(9, 241, 46, 252, 58);
  EndIf
  Return
 
  Label initraum23:
- switchScreen(0);
+ SwitchScreen(0);
  Palette , , , , , , , , , , , , , , , , , , , 0xf00 , 0xf77 , 0xc , 0xfbb , 0xccc , 0xff0 , 0x23 , 0x17 , 0xb0 , 0x0 , 0xaaf , 0x44f
  Return
 
@@ -4492,16 +4492,16 @@
  wx = 220
  wy = 19
  If flag$ ( 67 ) = 1
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(2, 171, 19, 2);
  EndIf
- switchScreen(2);
+ SwitchScreen(2);
  Bob(3, 220, 19, 3);
  Gosub r24_zones
  Return
 
  Label r24_zones:
- switchScreen(0);
+ SwitchScreen(0);
  Set Zone 7 , wx + 0 , wy + 0 To wx + 7 , wy + 6
  Set Zone 8 , wx + 8 , wy + 0 To wx + 104 , wy + 6
  Set Zone 9 , wx + 7 , wy + 43 To wx + 25 , wy + 56
@@ -4513,9 +4513,9 @@
 
  Label initraum25:
  If Not transport$ ( 239 ) = 2
-    switchScreen(2);
+    SwitchScreen(2);
     Bob(2, 70, 46, 1);
-    switchScreen(0);
+    SwitchScreen(0);
     setZone(2, 70, 46, 77, 53);
  EndIf
  Return
@@ -4641,7 +4641,7 @@
  Call 'maus_an$'
  If geladen = 0
     If Not Exist ( pfad$ )
-       switchScreen(0);
+       SwitchScreen(0);
        Gr Writing 0
        Ink 1 , 0
        Text 70 , 60 , "BITTE LEGEN SIE DIE ZWEITE DISK EIN"
@@ -4665,7 +4665,7 @@
     Gosub ladetexte
     geladen = 1
  EndIf
- switchScreen(3);
+ SwitchScreen(3);
  Call 'iconbank$' [ 2 ]
  Get Icon Palette
  Priority Reverse On
@@ -4673,7 +4673,7 @@
  Unpack 8 To 2
 
  Erase 8
- switchScreen(2);
+ SwitchScreen(2);
  For i = 0 To 31
     Colour i , 0x0
  Next
@@ -4693,15 +4693,15 @@
  Next
  Close 1
  invent$ ( 1 ) = objekt$ ( 15 )
- switchScreen(0);
+ SwitchScreen(0);
  Get Palette 2
  Call 'screco$'
  Screen To Front 0
- switchScreen(2);
+ SwitchScreen(2);
  Get Sprite Palette
  Screen 4
  Cls 32
- switchScreen(0);
+ SwitchScreen(0);
  Reserve Zone 20
  Call 'init_zones$'
  setZone(2, 50, 39, 61, 51);
@@ -4774,7 +4774,7 @@
  Call 'maus_aus$'
  Call 'font$' [ "JOY" , 6 ]
  If Not Exist ( pfad$ )
-    switchScreen(0);
+    SwitchScreen(0);
     Gr Writing 0
     Ink 1 , 0
     Text 70 , 60 , "BITTE LEGEN SIE DIE ZWEITE DISK EIN"
@@ -4798,13 +4798,13 @@
     spr = 1
  EndIf
  Gosub init_befehle
- switchScreen(3);
+ SwitchScreen(3);
  Call 'iconbank$' [ 2 ]
  Get Icon Palette
  Priority Reverse On
  Screen 4
  Cls 32
- switchScreen(0);
+ SwitchScreen(0);
  Reserve Zone 20
  Return
 
@@ -4813,7 +4813,7 @@
     Call 'befehle_runter$'
  EndIf
  If go = 6
-    switchScreen(0);
+    SwitchScreen(0);
     Fade 1
     Wait 20
     Rainbow Del
@@ -4850,14 +4850,14 @@
     name$ = "GOK"
  EndIf
  Call 'maus_aus$'
- switchScreen(3);
+ SwitchScreen(3);
  Cls 0
- switchScreen(2);
+ SwitchScreen(2);
  Bob Off
  Wait Vbl
  Cls 0
  Call 'roller_blind$'
- switchScreen(0);
+ SwitchScreen(0);
  Flash Off
  Bank Swap 1 , 11
  Change Mouse 4
@@ -4868,7 +4868,7 @@
  Unpack 8 To 2
 
  Erase 8
- switchScreen(0);
+ SwitchScreen(0);
  Get Palette 2
  Call 'cursor$'
  Reset Zone
@@ -4988,12 +4988,12 @@
 
  Label highscores2:
  If go2 = 4
-    switchScreen(2);
+    SwitchScreen(2);
     Cls 0
     Call 'roller_blind$'
     Erase All
     If Not Exist ( pfad$ )
-       switchScreen(0);
+       SwitchScreen(0);
        Gr Writing 0
        Ink 1 , 0
        Text 70 , 60 , "BITTE LEGEN SIE DIE ZWEITE DISK EIN"
@@ -5092,7 +5092,7 @@
  EndIf
 
  Label go2:
- switchScreen(1);
+ SwitchScreen(1);
  Get Cblock 3 , 0 , 0 , 320 , 90
 
  Label nochmal:
@@ -5100,16 +5100,16 @@
  Call 'ja_nein$'
  If Param = 1
     Call 'befehle_runter$'
-    switchScreen(3);
+    SwitchScreen(3);
     Cls 0
-    switchScreen(2);
+    SwitchScreen(2);
     Bob Off
     Wait Vbl
     Cls 0
     Call 'roller_blind$'
     Hide On
     If Not Exist ( pfad$ )
-       switchScreen(0);
+       SwitchScreen(0);
        Gr Writing 0
        Ink 1 , 0
        Text 70 , 60 , "BITTE LEGEN SIE DIE ZWEITE DISK EIN"
@@ -5154,7 +5154,7 @@
  Call 'maus_aus$'
  Call 'befehle_runter$'
  Screen Close 1
- switchScreen(2);
+ SwitchScreen(2);
  Bob Off
  Wait Vbl
  Cls 0
@@ -5377,7 +5377,7 @@
        Screen Display 1 , 128 , 43 , ,
        Flash 2 , "(F00,50)(000,50)"
        Screen Display 0 , 127 , 60 , ,
-       switchScreen(0);
+       SwitchScreen(0);
        Shift Off
        Colour 17 , cc16
        Colour 16 , cc17
@@ -5423,7 +5423,7 @@
        Call 'cursor$'
        Call 'font$' [ "JOY" , 6 ]
        If Not Exist ( pfad$ )
-          switchScreen(0);
+          SwitchScreen(0);
           Gr Writing 0
           Ink 1 , 0
           Text 70 , 60 , "BITTE LEGEN SIE DIE ZWEITE DISK EIN"
@@ -5432,13 +5432,13 @@
           Cls 0
        EndIf
        Gosub init_befehle
-       switchScreen(3);
+       SwitchScreen(3);
        Call 'iconbank$' [ 2 ]
        Get Icon Palette
        Priority Reverse On
        Screen 4
        Cls 32
-       switchScreen(0);
+       SwitchScreen(0);
        Reserve Zone 20
        r = 2
        Gosub initraum
@@ -5659,7 +5659,7 @@
 
  Erase 3
  Screen Close 1
- switchScreen(0);
+ SwitchScreen(0);
  Rainbow 0 , 0 , 80 , 80
  Clip 80 , 6 To 224 , 118
  Double Buffer
@@ -6025,7 +6025,7 @@
 
  Label fs_gewonnen:
  flag$ ( 60 ) = 1
- switchScreen(0);
+ SwitchScreen(0);
  Fade 1
  Wait 20
  Rainbow Del
@@ -6041,20 +6041,20 @@
  halt = 0
  Call 'maus_aus$'
  Call 'befehle_runter$'
- switchScreen(2);
- Bob Off 2
+ SwitchScreen(2);
+ BobOff(2);
  Wait Vbl
  Cls 0
  Call 'roller_blind$'
  Gosub personendisplay
  Call 'test_joy2$'
- switchScreen(2);
+ SwitchScreen(2);
  Load pfad$ + "Grafiken/FAR.Bobs.Abk"
  Load pfad$ + "Grafiken/FAR.Pic" , 8
  Unpack 8 To 2
 
  Erase 8
- switchScreen(0);
+ SwitchScreen(0);
  Flash Off
  Get Sprite Palette
  Reset Zone
@@ -6085,26 +6085,26 @@
     Pop
     Goto parser
  EndIf
- switchScreen(0);
+ SwitchScreen(0);
  mz = Mouse Zone
  If mz = 0
     Goto fahrstuhl2
  EndIf
  Call 'maus_aus$'
  If Not mz = 8
-    switchScreen(2);
+    SwitchScreen(2);
     Bob 1 , fahrx$ ( mz ) , fahry$ ( mz ) , mz + 1
     Call 'screco$'
  EndIf
  If mz = 8
     If halt = 1
        halt = 0
-       switchScreen(2);
-       Bob Off 8
+       SwitchScreen(2);
+       BobOff(8);
        Call 'screco$'
     Else
        halt = 1
-       switchScreen(2);
+       SwitchScreen(2);
        Bob 8 , fahrx$ ( 8 ) , fahry$ ( 8 ) , 9
        Call 'screco$'
     EndIf
@@ -6113,8 +6113,8 @@
  Wend
  Call 'maus_an$'
  If Not mz = 8
-    switchScreen(2);
-    Bob Off 1
+    SwitchScreen(2);
+    BobOff(1);
     Call 'screco$'
  EndIf
  If mz = 1
@@ -6152,26 +6152,26 @@
  nummer$ = ""
  Call 'maus_aus$'
  Call 'befehle_runter$'
- switchScreen(2);
+ SwitchScreen(2);
  Bob Off
  Wait Vbl
  Cls 0
  Call 'roller_blind$'
  Call 'test_joy2$'
- switchScreen(2);
+ SwitchScreen(2);
  Load pfad$ + "Grafiken/TRE.Bobs.Abk"
  Load pfad$ + "Grafiken/TRE.Pic" , 8
  Unpack 8 To 2
 
  Get Sprite Palette
  Erase 8
- switchScreen(0);
+ SwitchScreen(0);
  Flash Off
  Get Palette 2
  Reset Zone
- switchScreen(2);
+ SwitchScreen(2);
  Call 'font$' [ "JOY2" , 9 ]
- switchScreen(0);
+ SwitchScreen(0);
  setZone(1, 118, 28, 144, 55);
  setZone(2, 155, 28, 181, 55);
  setZone(3, 192, 28, 218, 55);
@@ -6184,20 +6184,20 @@
  Limit Mouse
  Call 'cursor$'
  If versuch = 2
-    switchScreen(0);
+    SwitchScreen(0);
     Flash 18 , "(040,10)(000,10)"
  EndIf
  If versuch > 2
-    switchScreen(0);
+    SwitchScreen(0);
     Flash 18 , "(f00,10)(000,10)"
  EndIf
  Call 'roller_blind$'
  Call 'maus_an$'
  Get Cblock 4 , 132 , 6 , 71 , 14
- switchScreen(2);
+ SwitchScreen(2);
  Gr Writing 0
  Ink 19 , 0
- switchScreen(0);
+ SwitchScreen(0);
 
  Label tresor2:
  mk = Mouse Key
@@ -6207,7 +6207,7 @@
  If mk = 2
     Call 'maus_an$'
     Del Cblock 4
-    switchScreen(0);
+    SwitchScreen(0);
     Call 'font$' [ "JOY" , 6 ]
     If versuch > 2
        go = 5
@@ -6219,43 +6219,43 @@
     Pop
     Goto parser
  EndIf
- switchScreen(0);
+ SwitchScreen(0);
  mz = Mouse Zone
  If mz = 0
     Goto tresor2
  EndIf
  If Len ( nummer$ ) < 4
     nummer$ = nummer$ + Str$ ( mz ) - " "
-    switchScreen(2);
+    SwitchScreen(2);
     Put Cblock 4 , 132 , 6
     Text 138 , 9 , nummer$
     Call 'screco$'
  EndIf
  Call 'maus_aus$'
- switchScreen(0);
+ SwitchScreen(0);
  x1 = XScreen(XMouse())
  y1 = YScreen(YMouse())
- switchScreen(2);
+ SwitchScreen(2);
  Bob 1 , ( x1 - 117 ) / 37 * 37 + 118 , ( y1 - 27 ) / 37 * 37 + 28 , mz + 1
  Call 'screco$'
  While Mouse Key = 1
  Wend
- Bob Off 1
+ BobOff(1);
  Call 'screco$'
  Call 'maus_an$'
  If Len ( nummer$ ) = 4
     Inc versuch
     nummer$ = ""
-    switchScreen(2);
+    SwitchScreen(2);
     Put Cblock 4 , 132 , 6
     Call 'screco$'
  EndIf
  If versuch = 2
-    switchScreen(0);
+    SwitchScreen(0);
     Flash 18 , "(040,10)(000,10)"
  EndIf
  If versuch = 3
-    switchScreen(0);
+    SwitchScreen(0);
     Flash 18 , "(f00,10)(000,10)"
  EndIf
  Goto tresor2
@@ -6265,38 +6265,38 @@
  laenge = 0
  Call 'maus_aus$'
  Call 'befehle_runter$'
- switchScreen(2);
+ SwitchScreen(2);
  Bob Off
  Wait Vbl
  Cls 0
  Call 'roller_blind$'
  Call 'test_joy2$'
- switchScreen(2);
+ SwitchScreen(2);
  Load pfad$ + "Grafiken/TEL.Bobs.Abk"
  Load pfad$ + "Grafiken/TEL.Pic" , 8
  Unpack 8 To 2
 
  Erase 8
  Load pfad$ + "Daten/TEL.Zones" , 8
- switchScreen(2);
+ SwitchScreen(2);
  Call 'font$' [ "JOY" , 6 ]
- switchScreen(0);
+ SwitchScreen(0);
  Flash Off
  Get Palette 2
  Reset Zone
  Call 'init_zones$'
- switchScreen(2);
+ SwitchScreen(2);
  Ink 1 , 0
  Box 10 , 10 To 41 , 20
  Text 15 , 17 , nummer$
  Limit Mouse 225 , 80 To 340 , 207
- switchScreen(0);
+ SwitchScreen(0);
  Call 'cursor$'
  Call 'roller_blind$'
  Call 'maus_an$'
 
  Label telefon2:
- switchScreen(0);
+ SwitchScreen(0);
  mc = Mouse Key
  mz = Mouse Zone
  If mc = 0
@@ -6317,7 +6317,7 @@
        Inc laenge
        nummer$ = Right$ ( nummer$ , Len ( nummer$ ) - 1 ) + "0"
     EndIf
-    switchScreen(2);
+    SwitchScreen(2);
     Ink 0
     Bar 15 , 13 To 37 , 18
     Ink 1 , 0
@@ -6325,15 +6325,15 @@
     Call 'screco$'
  EndIf
  Call 'maus_aus$'
- switchScreen(0);
+ SwitchScreen(0);
  x1 = XScreen(XMouse())
  y1 = YScreen(YMouse())
- switchScreen(2);
+ SwitchScreen(2);
  Bob 1 , ( x1 - 113 ) / 28 * 28 + 114 , ( y1 - 8 ) / 28 * 28 + 9 , mz + 1
  Call 'screco$'
  While Mouse Key = 1
  Wend
- Bob Off 1
+ BobOff(1);
  Call 'screco$'
  Call 'maus_an$'
  If mz = 12
@@ -6435,7 +6435,7 @@
  Label l�sch_nummer:
  nummer$ = "....."
  laenge = 0
- switchScreen(2);
+ SwitchScreen(2);
  Ink 0
  Bar 15 , 13 To 37 , 18
  Ink 1 , 0
@@ -6444,11 +6444,11 @@
  Return
 
  Label labyrinth:
- switchScreen(2);
+ SwitchScreen(2);
  Cls 0
  Call 'roller_blind$'
  Call 'maus_aus$'
- switchScreen(1);
+ SwitchScreen(1);
  Get Cblock 3 , 0 , 0 , 320 , 90
  Call 'befehle_runter$'
  richtung = 9
@@ -6459,7 +6459,7 @@
  Call 'iconbank$' [ 2 ]
  Load pfad$ + "Grafiken/LAB.Icons.Abk"
  Make Icon Mask
- switchScreen(0);
+ SwitchScreen(0);
  Get Icon Palette
  Load pfad$ + "Grafiken/Befehle3.Pic" , 8
  Unpack 8 To 1
@@ -6479,12 +6479,12 @@
  Call 'maus_an$'
  Limit Mouse 315 , 217 To 377 , 279
  sprung = 0
- switchScreen(0);
+ SwitchScreen(0);
  Do
 
     Label labyrinth2:
     a$ = ""
-    switchScreen(1);
+    SwitchScreen(1);
     Call 'iconbank$' [ 0 ]
     While Mouse Key = 0
        a$ = Inkey$
@@ -6701,7 +6701,7 @@
  Load pfad$ + "Grafiken/Icons3.Abk"
  Make Icon Mask
  Call 'befehle_runter$'
- switchScreen(1);
+ SwitchScreen(1);
  Put Cblock 3 , 0 , 0
  Get Icon Palette
  Call 'font$' [ "JOY" , 6 ]
@@ -6725,7 +6725,7 @@
  Return
 
  Label aufbau:
- switchScreen(2);
+ SwitchScreen(2);
  Call 'iconbank$' [ 2 ]
  Restore aufbau_daten_normal
  Paste Icon 155 , 59 , Peek ( Start ( 8 ) + ( y * 32 + x ) )
@@ -6771,7 +6771,7 @@
  Call 'maus_aus$'
  Call 'befehle_runter$'
  Screen Close 1
- switchScreen(2);
+ SwitchScreen(2);
  Bob Off
  Wait Vbl
  Cls 0
@@ -6830,7 +6830,7 @@
  Get Palette 0
  Screen Hide 1
  Paste Icon 20 , 0 , stein
- switchScreen(0);
+ SwitchScreen(0);
  Call 'font$' [ "JOY" , 6 ]
  Call 'level$'
  Call 'klackstrisse$'
@@ -6844,7 +6844,7 @@
     Dec warteu
     If Jleft ( 1 ) And x > 1 And y > 0 And feld$ ( x - 1 , y ) = 0 And wrl = 0
        wrl = 1
-       switchScreen(1);
+       SwitchScreen(1);
        Ink 0
        Bar ( x - 1 ) * 10 , y * 5 To x * 10 - 1 , y * 5 + 4
        feld$ ( x , y ) = 0
@@ -6857,7 +6857,7 @@
     If Jright ( 1 ) And x < 4 And y > 0 And wrl = 0
        If feld$ ( x + 1 , y ) = 0
           wrl = 1
-          switchScreen(1);
+          SwitchScreen(1);
           Ink 0
           Bar ( x - 1 ) * 10 , y * 5 To x * 10 - 1 , y * 5 + 4
           feld$ ( x , y ) = 0
@@ -6880,7 +6880,7 @@
     If warter <= 0
        warter = wr
        If feld$ ( x , y + 1 ) = 0
-          switchScreen(1);
+          SwitchScreen(1);
           Ink 0
           Bar ( x - 1 ) * 10 , y * 5 To x * 10 - 1 , y * 5 + 5
           feld$ ( x , y ) = 0
@@ -6909,7 +6909,7 @@
           EndIf
           Gosub pruef_vert
           If pruef = 3
-             switchScreen(1);
+             SwitchScreen(1);
              Ink 0
              Bar ( x - 1 ) * 10 , y * 5 To x * 10 - 1 , ( y + 3 ) * 5 - 1
              Inc p
@@ -6945,7 +6945,7 @@
        EndIf
     EndIf
  Loop
- switchScreen(2);
+ SwitchScreen(2);
  Cls 0
  Call 'roller_blind$'
  Screen Close 2
@@ -6989,7 +6989,7 @@
  Call 'cursor$'
  Call 'font$' [ "JOY" , 6 ]
  If Not Exist ( pfad$ )
-    switchScreen(0);
+    SwitchScreen(0);
     Gr Writing 0
     Ink 1 , 0
     Text 70 , 60 , "BITTE LEGEN SIE DIE ZWEITE DISK EIN"
@@ -6998,13 +6998,13 @@
     Cls 0
  EndIf
  Gosub init_befehle
- switchScreen(3);
+ SwitchScreen(3);
  Call 'iconbank$' [ 2 ]
  Get Icon Palette
  Priority Reverse On
  Screen 4
  Cls 32
- switchScreen(0);
+ SwitchScreen(0);
  Reserve Zone 20
  If flag$ ( 69 ) = 0
     flag$ ( 69 ) = 1
@@ -7043,7 +7043,7 @@
  Return
 
  Label zeile_weg:
- switchScreen(1);
+ SwitchScreen(1);
  Ink 0
  Bar ( i - pruef ) * 10 , y * 5 To i * 10 - 1 , y * 5 + 4
  Screen Copy 1 , ( i - pruef ) * 10 , 4 , i * 10 , y * 5 To 1 , ( i - pruef ) * 10 , 9
@@ -7078,7 +7078,7 @@
  If half = 1
     Screen Display 1 , 128 , , 160 , 90
  EndIf
- switchScreen(1);
+ SwitchScreen(1);
  Call 'font$' [ "JOY" , 6 ]
  Reserve Zone 28
  setZone(1, 0, 9, 57, 90);
@@ -7103,13 +7103,13 @@
  Return
 
  Label ladetexte:
- switchScreen(1);
+ SwitchScreen(1);
  Set Input 42 , - 1
  anz# = Float 1
  Ink 6
  Get Cblock 1 , 0 , 0 , 320 , 11
  If Not Exist ( pfad$ )
-    switchScreen(0);
+    SwitchScreen(0);
     Gr Writing 0
     Ink 1 , 0
     Text 70 , 60 , "BITTE LEGEN SIE DIE ZWEITE DISK EIN"
@@ -7117,7 +7117,7 @@
     Wend
     Cls 0
  EndIf
- switchScreen(1);
+ SwitchScreen(1);
  Open In 1 , pfad$ + "Texte/Ereignisse.Txt"
  For i = 1 To 102
     Bar 1 , 1 To 1 + anz# , 6
@@ -7130,7 +7130,7 @@
  Return
 
  Label inventory:
- switchScreen(1);
+ SwitchScreen(1);
  Call 'iconbank$' [ 1 ]
  zaehler = 0
  For y = 1 To 3
@@ -7527,7 +7527,7 @@
     Shared name$
     zeilen = 0
     stelle = 2
-    switchScreen(0);
+    SwitchScreen(0);
     Do
        stelle2 = Instr$ ( t$ , Chr$ ( 10 ) , stelle )
        txt$ = Mid$ ( t$ , stelle , stelle2 - stelle )
@@ -7575,7 +7575,7 @@
     Gr Writing 1
  End Proc
  Procedure cursor$
-    switchScreen(0);
+    SwitchScreen(0);
     Flash 17 , "(777,2)(888,2)(999,2)(aaa,2)(bbb,2)(ccc,2)(ddd,2)(eee,2)(fff,2)(eee,2)(ddd,2)(ccc,2)(bbb,2)(aaa,2)(999,2)(888,2)"
  End Proc
  Procedure clickmouse$
@@ -7630,7 +7630,7 @@
  End Proc
  Procedure eingabe$ [ x , y , laenge , eingabe$ , sprung , m ]
     Shared name$
-    switchScreen(0);
+    SwitchScreen(0);
     Gr Writing 1
     Gosub farbe
     Text x , y , eingabe$ + " "
@@ -7688,7 +7688,7 @@
  End Proc [ eingabe$ ]
  Procedure ja_nein$
     Call 'iconbank$' [ 0 ]
-    switchScreen(1);
+    SwitchScreen(1);
     Put Cblock 2 , 0 , 0
     Get Icon Palette
     Call 'befehle_hoch$'
@@ -7789,7 +7789,7 @@
     Label unterhaltung:
     Gosub init_fragen
     Screen Copy 4 , 1 , 1 , 316 , anzahl * 8 + 4 To 0 , 1 , 1 , 11100000
-    switchScreen(0);
+    SwitchScreen(0);
     Ink 1
     Box 2 , 2 To 315 , ( anzahl * 8 ) + 3
     Gr Writing 0
@@ -7840,7 +7840,7 @@
     Next
     If ja$ ( fragen$ ( frage ) ) <> ""
        Call 'befehle_runter$'
-       switchScreen(1);
+       SwitchScreen(1);
        Get Cblock 3 , 0 , 0 , 320 , 90
        Call 'ja_nein$'
        If Param = 1
@@ -7868,7 +7868,7 @@
     Return
 
     Label zeige_fragen:
-    switchScreen(0);
+    SwitchScreen(0);
     Ink 1 , 0
     y = 1
     For i = 1 To 11
@@ -7881,7 +7881,7 @@
     Return
 
     Label befehlsinit:
-    switchScreen(1);
+    SwitchScreen(1);
     Call 'befehle_runter$'
     Call 'iconbank$' [ 0 ]
     Put Cblock 3 , 0 , 0
@@ -7903,13 +7903,13 @@
     Return
  End Proc
  Procedure rot$
-    switchScreen(0);
+    SwitchScreen(0);
     For i = 0 To 31
        Colour i , Colour ( i ) And 111100000000
     Next
  End Proc
  Procedure init_zones$
-    switchScreen(0);
+    SwitchScreen(0);
     Reset Zone
     anz = Deek ( Start ( 8 ) + Length ( 8 ) - 2 )
     For i = 1 To anz
@@ -7946,7 +7946,7 @@
  End Proc
  Procedure verb_raus$
     Shared verb
-    switchScreen(1);
+    SwitchScreen(1);
     Call 'iconbank$' [ 0 ]
     If verb < 10
        Paste Icon 0 , verb * 9 , verb
@@ -7956,7 +7956,7 @@
  End Proc
  Procedure verb_rein$
     Shared verb
-    switchScreen(1);
+    SwitchScreen(1);
     Call 'iconbank$' [ 0 ]
     If verb < 10
        Paste Icon 0 , verb * 9 , verb + 15
@@ -7989,9 +7989,9 @@
     Next
  End Proc
  Procedure make_screen$
-    switchScreen(1);
+    SwitchScreen(1);
     Get Block 1 , 0 , 0 , 40 , 80 , 1
-    switchScreen(0);
+    SwitchScreen(0);
     Put Block 2
     Put Block 1 , 119 , 19
     Screen Swap
@@ -7999,14 +7999,14 @@
  End Proc
  Procedure p$
     Shared p
-    switchScreen(0);
+    SwitchScreen(0);
     Ink 1 , 0
     Text 232 , 30 , Str$ ( p ) - " "
  End Proc
  Procedure klackstrisse$
     Shared kates , level , wr , wu
     Inc kates
-    switchScreen(0);
+    SwitchScreen(0);
     Ink 1 , 0
     Text 232 , 37 , Str$ ( kates ) - " "
     If kates Mod 5 = 0 And kates > 0
@@ -8020,7 +8020,7 @@
  End Proc
  Procedure level$
     Shared level
-    switchScreen(0);
+    SwitchScreen(0);
     Ink 1 , 0
     Text 232 , 44 , Str$ ( level ) - " "
  End Proc
