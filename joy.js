@@ -270,20 +270,20 @@ function schreibeSatz()
     //Ink 0 , 5
     if (JOY.state.geg[JOY.geg1] == "RÜCK") {
       if (JOY.verb == 10) {
-        //Text(2, 6, verb$ ( verb ) + geg$ ( geg1 ) + geg$ ( 0 ));
+        Text(2, 6, JOY.verben[JOY.verb] + " " + JOY.state.geg[JOY.geg1] /*+ geg$ ( 0 )*/);
         return;
       } else {
         JOY.geg1 = 0;
       }
     }
     if (JOY.geg1 == 227 && JOY.verb == 10) {
-      //Text(2, 6, verb$ ( verb ) + geg$ ( geg1 ) + geg$ ( 0 ));
+      Text(2, 6, JOY.verben[JOY.verb] + " " + JOY.state.geg[JOY.geg1] /*+ geg$ ( 0 )*/);
       return;
     }
-    //Text(2, 6, verb$ ( verb ) + " " + geg$ ( geg1 ) + geg$ ( 0 ));
+    Text(2, 6, JOY.verben[JOY.verb] + " " + JOY.state.geg[JOY.geg1] /*+ geg$ ( 0 )*/);
   } else {
     SwitchScreen(1);
-    //Text(2, 6, verb$ ( verb ) + " " + person$ ( pers ) + geg$ ( 0 ));
+    Text(2, 6, JOY.verben[JOY.verb] + " " + JOY.state.personName[JOY.pers] /*+ geg$ ( 0 )*/);
   }
 }
 
@@ -296,10 +296,10 @@ function schreibeSatzteil()
     if ( JOY.state.geg[JOY.geg2] == "RÜCK" || JOY.geg1 == JOY.geg2) {
       geg2 = 0;
     }
-    // Text(2, 6, verb$ ( verb ) + " " + geg$ ( geg1 ) + " AN " + geg$ ( geg2 ) + geg$ ( 0 ));
+    Text(2, 6, JOY.verben[JOY.verb] + " " + JOY.state.geg[JOY.geg1] + " AN " + JOY.state.geg[JOY.geg2] /*+ geg$ ( 0 )*/);
   } else {
     SwitchScreen(1);
-    //Text(2, 6, verb$ ( verb ) + " " + geg$ ( geg1 ) + " AN " + person$ ( pers ) + geg$ ( 0 ));
+    Text(2, 6, JOY.verben[JOY.verb] + " " + JOY.state.geg[JOY.geg1] + " AN " + JOY.state.personName[JOY.pers] /*+ geg$ ( 0 )*/);
   }
 }
 
