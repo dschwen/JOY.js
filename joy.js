@@ -1,6 +1,8 @@
 /*jshint eqnull:true */
 
-var game = new Phaser.Game(320, 252, Phaser.AUTO, '', { preload: preload, /*loadUpdate: loadUpdate,*/ create: create, update: update }, false, false);
+//var game = new Phaser.Game(320, 252, Phaser.AUTO, '', { preload: preload, /*loadUpdate: loadUpdate,*/ create: create, update: update/*, render: render */}, false, false);
+var game = new Phaser.Game(320, 252, Phaser.CANVAS, '', { preload: preload, /*loadUpdate: loadUpdate,*/ create: create, update: update, render: render}, false, false);
+//Phaser.AUTO
 
 JOY = {
   state: {
@@ -151,6 +153,12 @@ function create()
   initialisieren();
 }
 
+function render() {
+  var z = JOY.state.zones[0];
+  for (var i=0; i<z.length; ++i) {
+    game.debug.rectangle(new Phaser.Rectangle(z[i][0],z[i][1]+JOY.screeny[0], z[i][2]-z[i][0], z[i][3]-z[i][1]),'#0fffff', false);
+  }
+}
 
 // mouse handler
 function mouseClick()
