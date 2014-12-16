@@ -1,3 +1,5 @@
+/*jshint eqnull:true */
+
 var game = new Phaser.Game(320, 252, Phaser.AUTO, '', { preload: preload, create: create, update: update }, false, false);
 
 JOY = {
@@ -131,6 +133,11 @@ function preload() {
   game.load.sprite('raum_11_1', 'assets/grafiken/Raum11_1.Pic.png');
 }
 
+function loadUpdate()
+{
+  console.log("Preloading:", game.load.progress);
+}
+
 function create()
 {
   // interface and room 1
@@ -182,7 +189,7 @@ function update()
 }
 
 // AMOS Functions
-function SwitchScreen(s) { JOY.screen = s; }
+function SwitchScreen(s) { JOY.screen = s==2 ? 0 : s; }
 function YScreen(y) { return y - JOY.screeny[JOY.screen]; }
 function XScreen(x) { return x; }
 function YMouse() { return game.input.y; }
@@ -198,8 +205,11 @@ function BobOff(n) {
 }
 function Bob(n,x,y,i) {
   BobOff(n);
-  var b = JOY.bobs[JOY.screen];
-  b[n] = game.add.sprite(x, y+JOY.screeny[JOY.screen], JOY.bank + i);
+  JOY.bobs[JOY.screen][n] = game.add.sprite(x, y+JOY.screeny[JOY.screen], JOY.bank + i);
+}
+function Unpack(key) {
+  BobOff(0);
+  JOY.bobs[JOY.screen][0] = game.add.sprite(x, y+JOY.screeny[JOY.screen], key);
 }
 function ClrBobs() {
   var i, b = JOY.bobs[JOY.screen];
@@ -241,20 +251,20 @@ function schreibeSatz()
     //Ink 0 , 5
     if (JOY.state.geg[JOY.geg1] == "RÜCK") {
       if (JOY.verb == 10) {
-        //Text 2 , 6 , verb$ ( verb ) + geg$ ( geg1 ) + geg$ ( 0 )
+        //Text(2, 6, verb$ ( verb ) + geg$ ( geg1 ) + geg$ ( 0 ));
         return;
       } else {
         JOY.geg1 = 0;
       }
     }
     if (JOY.geg1 == 227 && JOY.verb == 10) {
-      //Text 2 , 6 , verb$ ( verb ) + geg$ ( geg1 ) + geg$ ( 0 )
+      //Text(2, 6, verb$ ( verb ) + geg$ ( geg1 ) + geg$ ( 0 ));
       return;
     }
-    //Text 2 , 6 , verb$ ( verb ) + " " + geg$ ( geg1 ) + geg$ ( 0 )
+    //Text(2, 6, verb$ ( verb ) + " " + geg$ ( geg1 ) + geg$ ( 0 ));
   } else {
     SwitchScreen(1);
-    //Text 2 , 6 , verb$ ( verb ) + " " + person$ ( pers ) + geg$ ( 0 )
+    //Text(2, 6, verb$ ( verb ) + " " + person$ ( pers ) + geg$ ( 0 ));
   }
 }
 
@@ -267,10 +277,10 @@ function schreibeSatzteil()
     if ( JOY.state.geg[JOY.geg2] == "RÜCK" || JOY.geg1 == JOY.geg2) {
       geg2 = 0;
     }
-    // Text 2 , 6 , verb$ ( verb ) + " " + geg$ ( geg1 ) + " AN " + geg$ ( geg2 ) + geg$ ( 0 )
+    // Text(2, 6, verb$ ( verb ) + " " + geg$ ( geg1 ) + " AN " + geg$ ( geg2 ) + geg$ ( 0 ));
   } else {
     SwitchScreen(1);
-    //Text 2 , 6 , verb$ ( verb ) + " " + geg$ ( geg1 ) + " AN " + person$ ( pers ) + geg$ ( 0 )
+    //Text(2, 6, verb$ ( verb ) + " " + geg$ ( geg1 ) + " AN " + person$ ( pers ) + geg$ ( 0 ));
   }
 }
 
@@ -294,7 +304,7 @@ function verbRm()
        Bar 10 , 10 To 310 , 47
        Ink 1 , 0
        Box 11 , 11 To 309 , 46
-       Text 65 , 20 , "WIEVIELE KLICKS LANG WILLST DU WARTEN ?"
+       Text(65, 20, "WIEVIELE KLICKS LANG WILLST DU WARTEN ?");
        Call 'eingabe$' [ 150 , 28 , 10 , "" , 1 , 2 ]
        if (Val ( Param$ ) > 0) {
           Call 'befehle_runter$'
@@ -310,84 +320,84 @@ function verbRm()
     //Goto parser
     return false;
   }
- if (ms == 1) {
+  if (ms == 1) {
     if (mouseZone() == 2 && ( YScreen(YMouse()) / 9 + 9 == 10 )) {
-       verbRaus();
-       JOY.verb2 = JOY.verb;
-       JOY.verb = 10;
-       //Paste Icon 58 , ( verb - 9 ) * 9 , verb + 15
-       JOY.r = 1;
+      verbRaus();
+      JOY.verb2 = JOY.verb;
+      JOY.verb = 10;
+      //Paste Icon 58 , ( verb - 9 ) * 9 , verb + 15
+      JOY.r = 1;
 
-       //Label gehe_zu:
-       initRText();
-       initText();
-       var rm = 0;
-       /*
-       While Mouse Click <> 1
-          ym = ( YScreen(YMouse()) + 4 ) / 8
-          if (ym > 0 && ym < anzahl) {
-             if (rtext$ ( ym ) = raum) {
-                Gosub init_text
-                rm = ym
-                Goto gehe_zu2
-             }
-          }
-          if (ym <> rm && ym > 0 && ym < anzahl) {
-             Gosub init_text
-             Ink 17 , 1
-             t = Text Length ( raum$ ( rtext$ ( ym ) ) )
-             Text 160 - t / 2 , ym * 8 + 1 , raum$ ( rtext$ ( ym ) )
-             rm = ym
-          }
-          if (ym <> rm && ym = anzahl) {
-             Gosub init_text
-             Ink 17 , 1
-             t = Text Length ( "WEITER" )
-             Text 160 - t / 2 , ym * 8 + 1 , "WEITER"
-             rm = ym
-          }
-          if (ym < 1 || ym > anzahl) {
-             Gosub init_text
-             rm = 0
-          }
-          Label gehe_zu2:
-       Wend
-       if (ym < 0 || ym > anzahl) {
-          Call 'screco$'
-          Return
-       }
-       if (ym = anzahl) {
-          if (r = 27) {
-             r = 1
-          }
-          //Call 'screco$'
-          geheZu();
-          return;
-       }
-       if (ym > 0 && ym < anzahl && Not rtext$ ( ym ) = raum) {
-          if (!pruefSprung())
-            return false;
-          JOY.gehe = 1;
-          initRaum();
-          Return
-       }
-       // Call 'screco$'
-       */
+      //Label gehe_zu:
+      initRText();
+      initText();
+      var rm = 0;
+      /*
+      While Mouse Click <> 1
+        ym = ( YScreen(YMouse()) + 4 ) / 8
+        if (ym > 0 && ym < anzahl) {
+           if (rtext$ ( ym ) = raum) {
+              Gosub init_text
+              rm = ym
+              Goto gehe_zu2
+           }
+        }
+        if (ym <> rm && ym > 0 && ym < anzahl) {
+           Gosub init_text
+           Ink 17 , 1
+           t = Text Length ( raum$ ( rtext$ ( ym ) ) )
+           Text 160 - t / 2 , ym * 8 + 1 , raum$ ( rtext$ ( ym ) )
+           rm = ym
+        }
+        if (ym <> rm && ym = anzahl) {
+           Gosub init_text
+           Ink 17 , 1
+           t = Text Length ( "WEITER" )
+           Text 160 - t / 2 , ym * 8 + 1 , "WEITER"
+           rm = ym
+        }
+        if (ym < 1 || ym > anzahl) {
+           Gosub init_text
+           rm = 0
+        }
+        Label gehe_zu2:
+      Wend
+      if (ym < 0 || ym > anzahl) {
+        Call 'screco$'
+        Return
+      }
+      if (ym = anzahl) {
+        if (r = 27) {
+           r = 1
+        }
+        //Call 'screco$'
+        geheZu();
+        return;
+      }
+      if (ym > 0 && ym < anzahl && Not rtext$ ( ym ) = raum) {
+        if (!pruefSprung())
+          return false;
+        JOY.gehe = 1;
+        initRaum();
+        Return
+      }
+      // Call 'screco$'
+      */
     }
- }
- if (ms == 3) {
+  }
+  if (ms == 3) {
     JOY.verb2 = JOY.verb;
     JOY.verb = 16;
     SwitchScreen(1);
-    Text 2 , 6 , "REDE MIT " + person$ ( pers ) + geg$ ( 0 )
+    Text(2, 6, "REDE MIT " + JOY.state.personName[JOY.pers] + JOY.state.geg[0]);
 
     //Gosub "Raum" + Str$ ( raum ) - " "
     if (!JOY.raumFunc[JOY.state.raum]()) return false;
     if (!raumAlle()) return false;
 
     JOY.verb = JOY.verb2;
- }
- return true;
+  }
+  return true;
 }
 
 // return false = pop; goto parser
@@ -400,7 +410,7 @@ function pruefSprung()
     }
     if (JOY.state.handlung[3] == 5 && JOY.state.handlung[4] == 0) {
       JOY.state.handlung[4] = 1;
-      showText(ereignis$ ( 29 ));
+      showText(JOY.ereignis[29]);
       //Call 'clickmouse$'
       JOY.state.person[2] = 0;
       JOY.state.person[16] = 20;
@@ -502,7 +512,7 @@ function verbAusfuehren()
     return;
   }
   if (JOY.state.raum == 14 && JOY.geg1 == 140 && JOY.state.handlung[3] == 6) {
-    showText(ereignis$ ( 86 ));
+    showText(JOY.ereignis[86]);
     //Call 'clickmouse$'
     // Call 'screco$'
     // Pop
@@ -617,13 +627,13 @@ function verbWaehlen()
        if (JOY.verb == 6) {
           handlung();
           SwitchScreen(1);
-          Text 2 , 6 , "UMSCHAUEN: " + JOY.state.raum[raum]
+          Text(2, 6, "UMSCHAUEN: " + JOY.state.raum[raum]);
           showText(umgebung$);
           //Call 'clickmouse$'
           //Call 'screco$'
           SwitchScreen(1);
-          Text 2 , 6 , JOY.state.geg[0]
-          Text 2 , 6 , JOY.state.verb[verb] + JOY.state.geg[0]
+          Text(2, 6, JOY.state.geg[0]);
+          Text(2, 6, JOY.state.verb[verb] + JOY.state.geg[0]);
           // Paste Icon 0 , JOY.verb * 9 , JOY.verb
           JOY.verb = JOY.verb2;
           verbRein();
@@ -634,27 +644,27 @@ function verbWaehlen()
     }
     if (mz == 2) {
       verbRaus();
-       verb2 = verb
-       verb = Y Screen ( Y Mouse ) / 9 + 9
-       Paste Icon 58 , ( verb - 9 ) * 9 , verb + 15
-       if (JOY.verb == 11) {
-          handlung();
-          JOY.geg = 0;
-          // Gosub "Raum" + ( Str$ ( raum ) - " " )
-          if (!JOY.raumFunc[JOY.state.raum]()) return false;;
-          r = JOY.state.zurueck[raum]
-          //Call 'maus_aus$'
-          initRaum();
-          //Call 'maus_an$'
-          SwitchScreen(1);
-          Call 'iconbank$' [ 0 ]
-          Paste Icon 58 , ( verb - 9 ) * 9 , verb
-          JOY.verb = JOY.verb2;
-          verbRein();
-       }
-       // Pop
-       // Goto parser
-       return false;
+      JOY.verb2 = JOY.verb;
+      JOY.verb = Math.floor(YScreen(YMouse()) / 9) + 9;
+      // Paste Icon 58 , ( verb - 9 ) * 9 , verb + 15
+      if (JOY.verb == 11) {
+        handlung();
+        JOY.geg = 0;
+        // Gosub "Raum" + ( Str$ ( raum ) - " " )
+        if (!JOY.raumFunc[JOY.state.raum]()) return false;
+        r = JOY.state.zurueck[JOY.state.raum];
+        //Call 'maus_aus$'
+        initRaum();
+        //Call 'maus_an$'
+        SwitchScreen(1);
+        //Call 'iconbank$' [ 0 ]
+        //Paste Icon 58 , ( verb - 9 ) * 9 , verb
+        JOY.verb = JOY.verb2;
+        verbRein();
+      }
+      // Pop
+      // Goto parser
+      return false;
     }
     if (mz == 3) {
       // save game
@@ -665,7 +675,7 @@ function verbWaehlen()
        verb = 14
        SwitchScreen(1);
        Ink 0 , 5
-       Text 2 , 6 , "SPIELSTAND SPEICHERN" + JOY.state.geg[0]
+       Text(2, 6, "SPIELSTAND SPEICHERN" + JOY.state.geg[0]);
        Paste Icon 58 , 46 , 29
        showText(Chr$ ( 10 ) + "HAUN SIE MAL KURZ IHRE SAVEDISK IN DF0:" + Chr$ ( 10 ) + "*" + Chr$ ( 10 ));
        //Call 'clickmouse$'
@@ -717,7 +727,7 @@ function verbWaehlen()
        Bar 10 , 10 To 310 , 47
        Ink 1 , 0
        Box 11 , 11 To 309 , 46
-       Text 32 , 20 , "BITTE GEBEN SIE DEN NAMEN FÜR DEN SPIELSTAND EIN:"
+       Text(32, 20, "BITTE GEBEN SIE DEN NAMEN FÜR DEN SPIELSTAND EIN:");
        altname$ = antwort$ ( ym )
        Call 'eingabe$' [ 135 , 28 , 10 , antwort$ ( ym ) , 1 , 1 ]
        name$ = Param$
@@ -777,7 +787,7 @@ function verbWaehlen()
       JOY.verb = 15;
        SwitchScreen(1);
        Ink 0 , 5
-       Text 2 , 6 , "SPIELSTAND LADEN" + geg$ ( 0 )
+       Text(2, 6, "SPIELSTAND LADEN" + geg$ ( 0 ));
        Paste Icon 58 , 68 , 30
        showText(Chr$ ( 10 ) + "HAUN SIE MAL KURZ IHRE SAVEDISK IN DF0:" + Chr$ ( 10 ) + "*" + Chr$ ( 10 ));
        //Call 'clickmouse$'
@@ -785,7 +795,7 @@ function verbWaehlen()
        Dir$ = "Df0:"
        Gosub hol_namen
        if (gespeichert$ ( ym ) = 0) {
-          showText(ereignis$ ( 68 ));
+          showText(JOY.ereignis[68]);
           //Call 'clickmouse$'
           Call 'screco$'
           verb = verb2
@@ -1035,7 +1045,7 @@ function testScreen()
       }
       break;
 
-    case 3;
+    case 3:
       SwitchScreen(3);
       mz = mouseZone();
       JOY.geg = 0;
@@ -1048,10 +1058,10 @@ function testScreen()
 JOY.initRaum[1] = function()
 {
   if (JOY.state.raum2 > 3) {
-     JOY.state.flag[1] = 1
+     JOY.state.flag[1] = 1;
   }
   if (JOY.state.transport[2] == 1) {
-     if (JOY.state.flag[1] = 0 || JOY.state.flag[1] = 2) {
+     if (JOY.state.flag[1] == 0 || JOY.state.flag[1] == 2) {
         SwitchScreen(2);
         Bob(2, 54, 41, 3);
         SwitchScreen(0);
@@ -1083,7 +1093,7 @@ JOY.initRaum[1] = function()
      SwitchScreen(0);
      SetZone(16, 281, 0, 319, 54);
   }
-  if (JOY.state.flag[3] == 1 && JOY.state.flag[4] = 1 && ( JOY.state.handlung[2] = 0 || JOY.state.handlung[2] = 3 )) {
+  if (JOY.state.flag[3] == 1 && JOY.state.flag[4] == 1 && ( JOY.state.handlung[2] == 0 || JOY.state.handlung[2] == 3 )) {
      SwitchScreen(2);
      Bob(6, 136, 81, 6);
   }
@@ -1091,26 +1101,26 @@ JOY.initRaum[1] = function()
      SwitchScreen(2);
      Bob(6, 136, 81, 9);
   }
-  if (JOY.state.flag[2] = 0) {
-     if (JOY.state.transport[8] = 1) {
+  if (JOY.state.flag[2] == 0) {
+     if (JOY.state.transport[8] == 1) {
         SwitchScreen(2);
         Bob(8, 57, 123, 2);
         SwitchScreen(0);
         SetZone(8, 57, 123, 85, 128);
      }
   } else {
-     if (JOY.state.transport[9] = 1) {
+     if (JOY.state.transport[9] == 1) {
         SwitchScreen(2);
         Bob(9, 57, 123, 2);
         SwitchScreen(0);
         SetZone(9, 57, 123, 85, 128);
      }
   }
-  if (JOY.state.person[8] = 1) {
+  if (JOY.state.person[8] == 1) {
      SwitchScreen(2);
      Bob(19, 0, 34, 10);
   }
-}
+};
 
 // implementierung aller Raum routinen
 JOY.raumFunc[1] = function()
@@ -1118,14 +1128,15 @@ JOY.raumFunc[1] = function()
   if (JOY.verb == 1) {
     if (JOY.geg1 == 6 && handlung[2] == 2) {
        JOY.gehe = 1;
-       r = 22
-       Gosub initraum
-       Pop
-       Goto parser
+       JOY.r = 22
+       initRaum();
+       //Pop
+       //Goto parser
+       return false;
     }
     if (JOY.geg1 == 7 && JOY.state.transport[11] == 1) {
        //showText(JOY.ereignis[3]);
-       showText(JOY.ereignis[3])
+       showText(JOY.ereignis[3]);
 
        //Call 'clickmouse$'
 
@@ -1139,7 +1150,7 @@ JOY.raumFunc[1] = function()
        //Bclr 0 , JOY.state.flag[58]
        flagClear(0, 58);
     }
-    if (JOY.geg1 == 8 && JOY.state.transport[8] = 1) {
+    if (JOY.geg1 == 8 && JOY.state.transport[8] == 1) {
        JOY.state.flag[2] = 1;
        JOY.state.transport[8] = 0;
        JOY.state.transport[9] = 1;
@@ -1152,19 +1163,19 @@ JOY.raumFunc[1] = function()
        SetZone(9, 57, 123, 85, 127);
     }
     if (JOY.geg1 == 12) {
-       Bset.<> 2 , JOY.state.flag[53]
+       //Bset.<> 2 , JOY.state.flag[53]
     }
     if (JOY.geg1 == 13) {
        JOY.state.flag[54] = 1;
        JOY.state.person[1] = 1;
        personenDisplay();
        if (JOY.state.personName[1] == "???" && JOY.state.flag[56] == 1) {
-          JOY.state.personName[1] = "JUPP"
+          JOY.state.personName[1] = "JUPP";
        }
     }
   }
-  if (JOY.verb == 2 && geg1 = 14 && JOY.state.flag[1] = 0 && JOY.state.transport[2] = 1) {
-    oeffne = 1;
+  if (JOY.verb == 2 && geg1 == 14 && JOY.state.flag[1] == 0 && JOY.state.transport[2] == 1) {
+    JOY.oeffne = 1;
     JOY.state.flag[1] = 1;
 
     SwitchScreen(2);
@@ -1176,26 +1187,26 @@ JOY.raumFunc[1] = function()
 
     ResetZone(2);
     SetZone(2, 61, 20, 67, 30);
-    if (JOY.state.flag[56] = 0) {
+    if (JOY.state.flag[56] == 0) {
        showText(JOY.ereignis[10]);
        //Call 'clickmouse$'
        // Call 'screco$'
-       JOY.state.flag[56] = 1
-       JOY.state.betreten[2] = 0
-       JOY.state.betreten[3] = 0
-       For i = 2 To 10
-          if (JOY.state.person[i] = 4
-             JOY.state.person[i] = 1
+       JOY.state.flag[56] = 1;
+       JOY.state.betreten[2] = 0;
+       JOY.state.betreten[3] = 0;
+       for (i = 2; i <= 10; ++i) {
+          if (JOY.state.person[i] == 4) {
+             JOY.state.person[i] = 1;
           }
-       Next
+       }
        personenDisplay();
-       if (JOY.state.personName[1] = "???") {
-          JOY.state.personName[1] = "JUPP"
+       if (JOY.state.personName[1] == "???") {
+          JOY.state.personName[1] = "JUPP";
        }
     }
  }
- if (JOY.verb == 3 && geg1 = 14 && JOY.state.flag[1] = 1 && JOY.state.transport[2] == 1) {
-    schliesse = 1;
+ if (JOY.verb == 3 && JOY.geg1 == 14 && JOY.state.flag[1] == 1 && JOY.state.transport[2] == 1) {
+    JOY.schliesse = 1;
     JOY.state.flag[1] = 0;
 
     SwitchScreen(2);
@@ -1208,7 +1219,7 @@ JOY.raumFunc[1] = function()
  }
  if (JOY.verb == 4) {
     if (JOY.geg1 == 2 && JOY.state.transport[2] == 1) {
-       ziehe = 1;
+       JOY.ziehe = 1;
        if (JOY.state.flag[1] == 0 || JOY.state.flag[1] == 2) {
           g = geg1;
           aufnehmen();
@@ -1216,8 +1227,8 @@ JOY.raumFunc[1] = function()
           SwitchScreen(2);
           Bob(14, 49, 0, 8);
 
-          g = 2;
-          mz = 2;
+          JOY.g = 2;
+          JOY.mz = 2;
           aufnehmen();
        }
     }
@@ -1226,14 +1237,14 @@ JOY.raumFunc[1] = function()
     showText(Chr$ ( 10 ) + "ABER ES IST DOCH NOCH HELL!" + Chr$ ( 10 ) + "*" + Chr$ ( 10 ));
     //Call 'clickmouse$'
     // Call 'screco$'
-    Pop
-    Goto parser
+    //Pop
+    //Goto parser
+    return false;
  }
  if (JOY.verb == 7) {
     if (JOY.geg1 == 2 && geg2 == 14 && JOY.state.transport[2] == 2) {
        JOY.benutze = 1;
-       g = 2;
-       ablegen();
+       ablegen(2);
        JOY.state.transport[2] = 1;
        if (JOY.state.flag[1] == 0 || JOY.state.flag[1] == 2) {
           SwitchScreen(2);
@@ -1251,29 +1262,26 @@ JOY.raumFunc[1] = function()
     }
     if (JOY.geg1 == 11 && geg2 == 7) {
        JOY.benutze = 1;
-       g = 11;
-       ablegen();
-       JOY.state.transport[11] = 1
-       Bset.<> 0 , JOY.state.flag[58]
-       Gosub test_recall
+       ablegen(11);
+       JOY.state.transport[11] = 1;
+       //Bset.<> 0 , JOY.state.flag[58]
+       testRecall();
     }
     if (JOY.geg1 == 33 && geg2 == 14) {
-       [JOY.benutze] = 1
+       [JOY.benutze] = 1;
        JOY.state.flag[1] = 0;
-       g = 33;
-       ablegen();
+       ablegen(33);
        showText(JOY.ereignis[7]);
        //Call 'clickmouse$'
        // Call 'screco$'
        punkte(100);
     }
     if (JOY.geg1 == 134 && geg2 == 7 && JOY.state.handlung[2] == 2) {
-       JOY.benutze = 1
+       JOY.benutze = 1;
        showText(JOY.ereignis[39]);
        //Call 'clickmouse$'
        // Call 'screco$'
-       g = 134;
-       ablegen();
+       ablegen(134);
        JOY.state.handlung[2] = 3;
        JOY.state.person[3] = 1;
        personenDisplay();
@@ -1284,27 +1292,28 @@ JOY.raumFunc[1] = function()
     }
     if (JOY.geg1 == 203 && geg2 == 12) {
        JOY.benutze = 1;
-       g = 203;
-       ablegen();
-       Bset.<> 1 , JOY.state.flag[58]
-       Gosub test_recall
+       ablegen(203);
+       //Bset.<> 1 , JOY.state.flag[58]
+       testRecall();
     }
     if (JOY.geg1 == 254 && geg2 == 7) {
        if (JOY.state.handlung[2] = 0 || JOY.state.handlung[2] == 3) {
-          Goto klackstris
+          //Goto klackstris
+          // TODO
        } else {
           showText(Chr$ ( 10 ) + "DENK AN HERBERT !!!" + Chr$ ( 10 ) + "*" + Chr$ ( 10 ));
           //Call 'clickmouse$'
           // Call 'screco$'
-          Pop
-          Goto parser
+          //Pop
+          //Goto parser
+          return false;
        }
     }
  }
  if (JOY.verb == 8) {
     if (JOY.geg1 == 6 && JOY.state.flag[3] == 0) {
-       schalte = 1
-       JOY.state.flag[3] = 1
+       JOY.schalte = 1;
+       JOY.state.flag[3] = 1;
        if (JOY.state.flag[4] == 1) {
           SwitchScreen(2);
           Bob(6, 136, 81, 6);
@@ -1312,24 +1321,24 @@ JOY.raumFunc[1] = function()
        }
     }
     if (JOY.geg1 == 7 && JOY.state.flag[4] == 0) {
-       schalte = 1
+       JOY.schalte = 1;
        JOY.state.flag[4] = 1
-       Gosub test_recall
-       if (JOY.state.flag[3] = 1) {
+       testRecall();
+       if (JOY.state.flag[3] == 1) {
           SwitchScreen(2);
           Bob(6, 136, 81, 6);
           // Call 'screco$'
        }
     }
     if (JOY.geg1 == 12 && JOY.state.flag[51] == 0) {
-       schalte = 1
+       JOY.schalte = 1;
        JOY.state.flag[51] = 1
     }
  }
  if (JOY.verb == 9) {
     if (JOY.geg1 == 6 && JOY.state.flag[3] == 1) {
        if (JOY.state.handlung[2] == 0 || JOY.state.handlung[2] == 3) {
-          schalte = 1
+          JOY.schalte = 1;
           JOY.state.flag[3] = 0
           SwitchScreen(2);
           BobOff(6);
@@ -1338,14 +1347,15 @@ JOY.raumFunc[1] = function()
           showText(Chr$ ( 10 ) + "DENK AN HERBERT !!!" + Chr$ ( 10 ) + "*" + Chr$ ( 10 ));
           //Call 'clickmouse$'
           // Call 'screco$'
-          Pop
-          Goto parser
+          //Pop
+          //Goto parser
+          return false;
        }
     }
     if (JOY.geg1 == 7 && JOY.state.flag[4] == 1) {
-       if (JOY.state.handlung[2] = 0 || JOY.state.handlung[2] = 3) {
-          schalte = 1
-          JOY.state.flag[4] = 0
+       if (JOY.state.handlung[2] == 0 || JOY.state.handlung[2] == 3) {
+          JOY.schalte = 1;
+          JOY.state.flag[4] = 0;
           SwitchScreen(2);
           BobOff(6);
           // Call 'screco$'
@@ -1353,54 +1363,56 @@ JOY.raumFunc[1] = function()
           showText(Chr$ ( 10 ) + "DENK AN HERBERT !!!" + Chr$ ( 10 ) + "*" + Chr$ ( 10 ));
           //Call 'clickmouse$'
           // Call 'screco$'
-          Pop
-          Goto parser
+          //Pop
+          //Goto parser
+          return false;
        }
     }
     if (JOY.geg1 == 12 && JOY.state.flag[51] == 1) {
-       schalte = 1
-       JOY.state.flag[51] = 0
+       JOY.schalte = 1;
+       JOY.state.flag[51] = 0;
     }
  }
- if (JOY.verb == 10 && geg1 = 14 && JOY.state.flag[1] == 1) {
-    if (JOY.state.handlung[3] = 5 && JOY.state.handlung[4] = 0) {
-       JOY.state.handlung[4] = 1
+ if (JOY.verb == 10 && JOY.geg1 == 14 && JOY.state.flag[1] == 1) {
+    if (JOY.state.handlung[3] == 5 && JOY.state.handlung[4] == 0) {
+       JOY.state.handlung[4] = 1;
        showText(JOY.ereignis[29]);
        //Call 'clickmouse$'
-       JOY.state.person[2] = 0
-       JOY.state.person[16] = 20
+       JOY.state.person[2] = 0;
+       JOY.state.person[16] = 20;
        personenDisplay();
     }
-    gehe = 1
-    r = 4
-    Gosub initraum
+    JOY.gehe = 1;
+    JOY.r = 4;
+    initRaum();
  }
  if (JOY.verb == 11 && JOY.state.flag[56] == 1) {
     showText(JOY.ereignis[11]);
     //Call 'clickmouse$'
     // Call 'screco$'
     verbRaus();
-    verb = verb2
+    JOY.verb = JOY.verb2;
     verbRein();
-    Pop
-    Goto parser
+    // Pop
+    // Goto parser
+    return false;
  }
  if (JOY.verb == 12 && geg1 == 2) {
     showText(JOY.ereignis[80]);
     //Call 'clickmouse$'
     // Call 'screco$'
-    Pop
-    Goto parser
+    // Pop
+    // Goto parser
+    return false;
  }
- if (JOY.verb == 13 && geg1 == 162 && pers == 5 && JOY.state.handlung[1] == 2) {
-    gib = 1
+ if (JOY.verb == 13 && JOY.geg1 == 162 && JOY.pers == 5 && JOY.state.handlung[1] == 2) {
+    JOY.gib = 1;
     showText(JOY.ereignis[34]);
     //Call 'clickmouse$'
     // Call 'screco$'
-    g = 162
-    ablegen();
-    JOY.state.transport[162] = 1
-    JOY.state.handlung[1] = 3
+    ablegen(162);
+    JOY.state.transport[162] = 1;
+    JOY.state.handlung[1] = 3;
     punkte(103);
  }
  if (JOY.verb == 16) {
@@ -1409,31 +1421,34 @@ JOY.raumFunc[1] = function()
           showText(Chr$ ( 10 ) + "GLGLGLGLGL BLABLA TRRRR GLUCKS TRALALA HIHAHOHU BL-BL-BL" + Chr$ ( 10 ) + "*" + Chr$ ( 10 ));
           //Call 'clickmouse$'
           // Call 'screco$'
-          verb = verb2
-          Pop
-          Goto parser
+          JOY.verb = JOY.verb2;
+          // Pop
+          // Goto parser
+          return false;
        } else {
           showText(Chr$ ( 10 ) + "LAß MICH IN RUHE, ICH HABE ZU TUN !" + Chr$ ( 10 ) + "*" + Chr$ ( 10 ));
           //Call 'clickmouse$'
           // Call 'screco$'
-          verb = verb2
-          Pop
-          Goto parser
+          JOY.verb = JOY.verb2;
+          // Pop
+          // Goto parser
+          return false;
        }
     }
-    if (pers == 2 || pers == 3 || pers == 5 || pers == 6 || pers == 7 && JOY.state.reden[pers] == 0) {
+    if (JOY.pers == 2 || JOY.pers == 3 || JOY.pers == 5 || JOY.pers == 6 || JOY.pers == 7 && JOY.state.reden[pers] == 0) {
        showText(Chr$ ( 10 ) + "LAß MICH IN RUHE, ICH HABE ZU TUN !" + Chr$ ( 10 ) + "*" + Chr$ ( 10 ));
        //Call 'clickmouse$'
        // Call 'screco$'
     }
-    if (pers == 10) {
+    if (JOY.pers == 10) {
        if (JOY.state.reden[10] == 0) {
-          Call 'unterhaltung_laden$' [ 2 ]
-          Call 'unterhaltung$'
-          JOY.state.reden[10] = 1
-          verb = verb2
-          Pop
-          Goto parser
+          unterhaltungLaden(2);
+          unterhaltung();
+          JOY.state.reden[10] = 1;
+          JOY.verb = JOY.verb2;
+          // Pop
+          // Goto parser
+          return false;
        }
        if JOY.state.reden[10] == 1) {
           showText(Chr$ ( 10 ) + "LAß MICH IN RUHE, ICH HABE ZU TUN !" + Chr$ ( 10 ) + "*" + Chr$ ( 10 ));
@@ -1441,10 +1456,10 @@ JOY.raumFunc[1] = function()
           // Call 'screco$'
        }
     }
-    if (pers == 18) {
-       Call 'unterhaltung_laden$' [ 14 ]
-       Call 'unterhaltung$'
-       if (Btst ( 2 , gefragt )) {
+    if (JOY.pers == 18) {
+      unterhaltungLaden(14);
+      unterhaltung();
+       if (Btst(2, gefragt)) {
           JOY.state.personName[7] = "HANS-WERNER"
           JOY.state.personName[9] = "RAINER"
           JOY.state.personName[10] = "ANJA"
@@ -1474,7 +1489,7 @@ function raumAlle()
        JOY.state.transport[9] = 2;
     }
     if (JOY.geg1 == 11) {
-       Bset.<> 1 , flag$ ( 53 )
+       Bset.<> 1 , JOY.state.flag[53]
     }
     if (geg1 = 15) {
        JOY.state.personName[1] = "JUPP JENNSEN";
@@ -1490,10 +1505,9 @@ function raumAlle()
        showText(Chr$ ( 10 ) + "TOLL ! JETZT HAST DU DIE AUFNAHMEN ZERSTÖRT !" + Chr$ ( 10 ) + "*" + Chr$ ( 10 ));
        //Call 'clickmouse$'
        // Call 'screco$'
-       JOY.g = 110;
-       ablegen();
+       ablegen(110);
     }
-    if (geg1 = 127 && flag$ ( 42 ) > 0) {
+    if (geg1 = 127 && JOY.state.flag[42] > 0) {
        JOY.oeffne = 1;
        JOY.state.flag[42] = 0;
 
@@ -1522,8 +1536,7 @@ function raumAlle()
     if (JOY.geg1 == 165 && JOY.geg2 == 127 && JOY.state.flag[42] == 0) {
        JOY.benutze = 1;
        JOY.state.flag[42] = 1;
-       JOY.g = 165;
-       ablegen();
+       ablegen(165);
        JOY.state.transport[165] = 1;
        JOY.state.geg[127] = "TASCHENLAMPE+BATTERIEN";
     }
@@ -1550,8 +1563,7 @@ function raumAlle()
  }
  if (JOY.verb = 13 && geg1 = 131 && pers = 9) {
     JOY.gib = 1;
-    JOY.g = 131;
-    ablegen();
+    ablegen(131);
     showText(JOY.ereignis[54]);
     //Call 'clickmouse$'
     // Call 'screco$'
@@ -1561,7 +1573,7 @@ function raumAlle()
  }
  if (JOY.verb == 16) {
     if (JOY.pers == 1) {
-       showText(Chr$ ( 10 ) + "F�HRST DU IMMER SELBSTGESPR�CHE ?" + Chr$ ( 10 ) + "*" + Chr$ ( 10 ));
+       showText(Chr$ ( 10 ) + "FÜHRST DU IMMER SELBSTGESPRÄCHE ?" + Chr$ ( 10 ) + "*" + Chr$ ( 10 ));
        // Call 'clickmouse$'
        // Call 'screco$'
     }
@@ -1591,15 +1603,15 @@ function raumAlle()
           //Call 'unterhaltung$'
           unterhaltung();
 
-          if (Btst ( 0 , gefragt )) {
+          if (Btst(0, gefragt)) {
              JOY.state.reden[9] = 1;
              if (JOY.state.transport[36] == 1) {
-                showText(ereignis$ ( 22 ));
+                showText(JOY.ereignis[22]);
                 //Call 'clickmouse$'
                 // Call 'screco$'
                 JOY.state.transport[36] = 0;
              } else {
-                showText(ereignis$ ( 21 ));
+                showText(JOY.ereignis[21]);
                 //Call 'clickmouse$'
                 // Call 'screco$'
              }
@@ -1609,7 +1621,7 @@ function raumAlle()
        //Goto parser
        return false;
        }
-       if (reden$ ( 9 ) = 1) {
+       if (JOY.reden.flag[9] == 1) {
           showText(Chr$ ( 10 ) + "ICH STREIKE !" + Chr$ ( 10 ) + "*" + Chr$ ( 10 ));
           //Call 'clickmouse$'
           // Call 'screco$'
@@ -1626,24 +1638,27 @@ function raumAlle()
  return true;
 }
 
- Label test_recall:
- if (handlung$ ( 6 ) = 5 && flag$ ( 58 ) = 11) {
-    showText(ereignis$ ( 59 ));
+// test_recall:
+function testRecall()
+{
+  if (JOY.state.handlung[6] == 5 && JOY.state.flag[58] == 11) {
+    showText(JOY.ereignis[59]);
     //Call 'clickmouse$'
     // Call 'screco$'
-    showText(ereignis$ ( 60 ));
+    showText(JOY.ereignis[60]);
     //Call 'clickmouse$'
     // Call 'screco$'
-    showText(ereignis$ ( 58 ));
+    showText(JOY.ereignis[58]);
     //Call 'clickmouse$'
     // Call 'screco$'
-    Screen 0
-    Fade 3
-    Wait 100
-    Call 'punkte$' [ 1001 ]
-    go = 4
-    Goto game_over
- }
+    switchScreen(0);
+    //Fade 3
+    //Wait 100
+    punkte(1001);
+    JOY.go = 4;
+    //Goto game_over
+    // TODO
+  }
 }
 
 function handlung()
@@ -1655,16 +1670,16 @@ function handlung()
  if (JOY.state.zeit == 23) {
     JOY.state.person[7] = 4;
     JOY.state.person[9] = 4;
-    reden$ ( 7 ) = 1;
+    JOY.reden.flag[7] = 1;
     if (JOY.state.raum == 4) {
        personenDisplay();
-       Screen 2
+       SwitchScreen(2);
        Bob(1, 111, 42, 8);
        // Call 'screco$'
     }
  }
  if (JOY.state.zeit == 25) {
-    flag$ ( 14 ) = 1
+    JOY.state.flag[14] = 1
     if (JOY.state.raum == 4) {
        Screen 2
        Bob(2, 103, 28, 2);
@@ -1672,42 +1687,43 @@ function handlung()
        // Call 'screco$'
     }
  }
- if (zeit = 25 && flag$ ( 56 ) = 1) {
+ if (JOY.state.zeit == 25 && JOY.state.flag[56] == 1) {
     JOY.state.person[8] = 2
     personenDisplay();
  }
  if (JOY.state.zeit == 26) {
-    JOY.state.person[7] = 5
-    JOY.state.person[9] = 5
+    JOY.state.person[7] = 5;
+    JOY.state.person[9] = 5;
     if (JOY.state.raum == 4) {
        personenDisplay();
-       Screen 2
+       SwitchScreen(2);
        BobOff(1);
        // Call 'screco$'
     }
     if (JOY.state.raum == 5) {
        personenDisplay();
-       Call 'test_joy2$'
-       Load pfad$ + "Grafiken/Raum5_1.Pic"
-       Unpack 8 To 2
+      //  Call 'test_joy2$'
+      //  Load pfad$ + "Grafiken/Raum5_1.Pic"
+      //  Unpack 8 To 2
+       Unpack('raum_5_1');
 
-       Call 'roller_blind$'
-       Call 'punkte$' [ 145 ]
+       // Call 'roller_blind$'
+       punkte(145);
     }
  }
  if (JOY.state.zeit == 27) {
-    flag$ ( 14 ) = 0
+    JOY.state.flag[14] = 0;
     if (JOY.state.raum == 4) {
-       Screen 2
+       SwitchScreen(2);
        BobOff(2);
        // Call 'screco$'
     }
  }
- if (zeit = 28 && flag$ ( 56 ) = 1) {
-    JOY.state.person[8] = 1
+ if (JOY.state.zeit == 28 && JOY.state.flag[56] == 1) {
+    JOY.state.person[8] = 1;
     if (JOY.state.raum == 1) {
        personenDisplay();
-       Screen 2
+       SwitchScreen(2);
        Bob(19, 0, 34, 10);
        // Call 'screco$'
     }
@@ -1716,21 +1732,21 @@ function handlung()
     JOY.state.person[8] = 4
     if (JOY.state.raum == 1) {
        personenDisplay();
-       Screen 2
+       SwitchScreen(2);
        BobOff(19);
        // Call 'screco$'
     }
     if (JOY.state.raum == 4) {
        personenDisplay();
-       Screen 2
+       SwitchScreen(2);
        Bob(1, 145, 55, 7);
        // Call 'screco$'
     }
  }
  if (JOY.state.zeit == 33) {
-    flag$ ( 17 ) = 1
+    JOY.state.flag[17] = 1
     if (JOY.state.raum == 4) {
-       Screen 2
+       SwitchScreen(2);
        Bob(5, 122, 40, 5);
        // Call 'screco$'
     }
@@ -1739,41 +1755,40 @@ function handlung()
     JOY.state.person[8] = 7
     if (JOY.state.raum == 4) {
        personenDisplay();
-       Screen 2
+       SwitchScreen(2);
        BobOff(1);
        // Call 'screco$'
     }
     if (JOY.state.raum == 7) {
        personenDisplay();
-       Screen 2
+       SwitchScreen(2);
        Bob(5, 203, 0, 3);
        // Call 'screco$'
     }
  }
  if (JOY.state.zeit == 35) {
-    flag$ ( 17 ) = 0
+    JOY.state.flag[17] = 0;
     if (JOY.state.raum == 4) {
-       Screen 2
+       SwitchScreen(2);
        BobOff(5);
        // Call 'screco$'
     }
  }
  if (JOY.state.zeit == 37) {
-    JOY.state.person[8] = 8
+    JOY.state.person[8] = 8;
     personenDisplay();
-    reden$ ( 8 ) = 1
+    JOY.reden.flag[8] = 1
     if (JOY.state.raum == 7) {
-       Screen 2
+       SwitchScreen(2);
        BobOff(5);
        // Call 'screco$'
     }
     if (JOY.state.raum == 8) {
-       if (transport$ ( 111 ) = 2) {
-          g = 111
-          Gosub ablegen
-          showText(ereignis$ ( 23 ));
+       if (JOY.state.transport[111] == 2) {
+          ablegen(111);
+          showText(JOY.ereignis[23]);
        } else {
-          showText(ereignis$ ( 24 ));
+          showText(JOY.ereignis[24]);
        }
        //Call 'clickmouse$'
        // Call 'screco$'
@@ -1781,15 +1796,15 @@ function handlung()
        JOY.state.personName[8] = "BARBARA BRINK"
        personenDisplay();
     }
-    if (transport$ ( 111 ) = 1) {
-       transport$ ( 111 ) = 0
+    if (JOY.state.transport[111] == 1) {
+       JOY.state.transport[111] = 0;
     }
  }
  if (JOY.state.zeit == 40) {
     JOY.state.person[8] = 7
     if (JOY.state.raum == 7) {
        personenDisplay();
-       Screen 2
+       SwitchScreen(2);
        Bob(5, 205, 96, 4);
        // Call 'screco$'
     }
@@ -1798,13 +1813,13 @@ function handlung()
     JOY.state.person[8] = 11
     if (JOY.state.raum == 7) {
        personenDisplay();
-       Screen 2
+       SwitchScreen(2);
        BobOff(5);
        // Call 'screco$'
     }
     if (JOY.state.raum == 11) {
        personenDisplay();
-       Screen 2
+       SwitchScreen(2);
        Bob(3, 138, 83, 2);
        // Call 'screco$'
     }
@@ -1813,31 +1828,36 @@ function handlung()
     JOY.state.person[8] = 14
     if (JOY.state.raum == 11) {
        personenDisplay();
-       Screen 2
+       SwitchScreen(2);
        BobOff(3);
        // Call 'screco$'
     }
     if (JOY.state.raum == 14) {
        personenDisplay();
-       Call 'test_joy2$'
-       Load pfad$ + "Grafiken/Raum14_1.Pic"
-       Unpack 8 To 2
+       // Call 'test_joy2$'
+       //Load pfad$ + "Grafiken/Raum14_1.Pic"
+       //Unpack 8 To 2
+       // TODO, where is this asset?!
+       Unpack('raum_14_1');
+       JOY.bank = 'raum_14_bob_';
 
-       if (flag$ ( 36 ) = 1) {
-          Screen 2
+       if (JOY.state.flag[36] == 1) {
+          SwitchScreen(2);
           Bob(2, 55, 35, 2);
        }
-       Call 'roller_blind$'
+       // Call 'roller_blind$'
        //Call 'clickmouse$'
+       // TODO: this is a slide show with 3 frames
+/*
        Call 'test_joy2$'
        Load pfad$ + "Grafiken/Raum14_2.Pic"
        Unpack 8 To 2
 
-       if (flag$ ( 36 ) = 1) {
-          Screen 2
+       if (JOY.state.flag[36] == 1) {
+          switchScreen(2);
           Bob(2, 55, 35, 2);
        }
-       Call 'roller_blind$'
+       // Call 'roller_blind$'
        //Call 'clickmouse$'
        JOY.state.person[8] = 0
        personenDisplay();
@@ -1845,116 +1865,120 @@ function handlung()
        Load pfad$ + "Grafiken/Raum14.Pic"
        Unpack 8 To 2
 
-       if (flag$ ( 36 ) = 1) {
+       if (JOY.state.flag[36] == 1) {
           Screen 2
           Bob(2, 55, 35, 2);
        }
-       Call 'roller_blind$'
-       Call 'punkte$' [ 514 ]
+       // Call 'roller_blind$'
+       punkte(514);
+*/
     }
  }
  if (JOY.state.zeit == 47) {
-    JOY.state.person[8] = 0
+    JOY.state.person[8] = 0;
  }
- if (JOY.state.zeit > 100 && handlung$ ( 1 ) = 0 && raum > 3 && raum < 16 && flag$ ( 56 ) = 1) {
-    showText(ereignis$ ( 26 ));
+ if (JOY.state.zeit > 100 && JOY.state.handlung[1] = 0 && raum > 3 && raum < 16 && JOY.state.flag[56] = 1) {
+    showText(ereignis[26]);
     //Call 'clickmouse$'
     // Call 'screco$'
-    handlung$ ( 1 ) = 1
+    JOY.state.handlung[1] = 1;
  }
- if (JOY.state.zeit > 130 && handlung$ ( 2 ) = 0 && raum > 3 && raum < 16 && flag$ ( 56 ) = 1) {
-    showText(ereignis$ ( 49 ));
+ if (JOY.state.zeit > 130 && JOY.state.handlung[2] = 0 && raum > 3 && raum < 16 && JOY.state.flag[56] = 1) {
+    showText(JOY.ereignis[49]);
     //Call 'clickmouse$'
     // Call 'screco$'
-    handlung$ ( 2 ) = 1
-    reden$ ( 7 ) = 1
+    JOY.state.handlung[2] = 1
+    JOY.reden.flag[7] = 1
     JOY.state.person[3] = 0
-    flag$ ( 3 ) = 1
-    flag$ ( 4 ) = 1
+    JOY.state.flag[3] = 1
+    JOY.state.flag[4] = 1
     personenDisplay();
  }
- if (handlung$ ( 3 ) = 2) {
-    handlung$ ( 3 ) = 3
-    showText(ereignis$ ( 51 ));
+ if (JOY.state.handlung[3] = 2) {
+    JOY.state.handlung[3] = 3
+    showText(JOY.ereignis[51]);
     //Call 'clickmouse$'
     // Call 'screco$'
  }
- if (JOY.state.zeit > 140 && flag$ ( 65 ) = 0) {
-    flag$ ( 65 ) = 1
-    showText(ereignis$ ( 95 ));
+ if (JOY.state.zeit > 140 && JOY.state.flag[65] == 0) {
+    JOY.state.flag[65] = 1;
+    showText(JOY.ereignis[95]);
     //Call 'clickmouse$'
     // Call 'screco$'
  }
- if (JOY.state.zeit > 180 && handlung$ ( 3 ) = 1 && raum > 3) {
-    handlung$ ( 3 ) = 2
+ if (JOY.state.zeit > 180 && JOY.state.handlung[3] == 1 && raum > 3) {
+    JOY.state.handlung[3] = 2;
     showText(Chr$ ( 10 ) + "INZWISCHEN..." + Chr$ ( 10 ) + "*" + Chr$ ( 10 ));
     //Call 'clickmouse$'
-    Call 'maus_aus$'
-    Screen 2
-    Cls 0
-    Call 'roller_blind$'
-    Screen 3
-    Cls 0
-    Call 'test_joy2$'
-    Screen 2
-    Load pfad$ + "Grafiken/Raum23.Pic" , 8
-    Unpack 8 To 2
+    //Call 'maus_aus$'
+    SwitchScreen(2);
+    //Cls 0
+    ClrBobs();
+    // Call 'roller_blind$'
+    SwitchScreen(3);
+    //Cls 0
+    ClrBobs();
+    //Call 'test_joy2$'
+    SwitchScreen(2);
+    //Load pfad$ + "Grafiken/Raum23.Pic" , 8
+    //Unpack 8 To 2
+    Unpack('raum_23');
 
     Erase 8
     Screen 0
     Get Palette 2
-    Call 'roller_blind$'
-    showText(ereignis$ ( 25 ));
+    // Call 'roller_blind$'
+    showText(JOY.ereignis[25]);
     //Call 'clickmouse$'
     // Call 'screco$'
     Wait 100
     Fade 3 , , , , , , , , , , , , , , , , , , , , 0xf00 , 0xf77 , 0xc , 0xfbb , 0xcc , 0xff0 , 0x23 , 0x17 , 0xb0 , 0x0 , 0xaaf , 0x44f
     Wait 100
-    flag$ ( 49 ) = 1
-    r = raum
-    Gosub initraum
-    Return
+    JOY.state.flag[49] = 1
+    JOY.r = JOY.raum;
+    initRaum
+    return();
  }
- if (JOY.state.zeit > 190 && handlung$ ( 6 ) = 0 && raum > 3 && raum < 16 && flag$ ( 56 ) = 1) {
-    showText(ereignis$ ( 52 ));
+ if (JOY.state.zeit > 190 && JOY.state.handlung[6] = 0 && raum > 3 && raum < 16 && JOY.state.flag[56] = 1) {
+    showText(JOY.ereignis[52]);
     //Call 'clickmouse$'
     // Call 'screco$'
-    handlung$ ( 6 ) = 1
+    JOY.state.handlung[6] = 1
     JOY.state.person[13] = 21
  }
- if (JOY.state.person[8] = raum && transport$ ( 111 ) = 2) {
-    showText(ereignis$ ( 23 ));
+ if (JOY.state.person[8] = raum && JOY.state.transport[111] = 2) {
+    showText(JOY.ereignis[23]);
     //Call 'clickmouse$'
     // Call 'screco$'
     JOY.state.personName[8] = "BARBARA BRINK"
     g = 111
     Gosub ablegen
-    reden$ ( 8 ) = 1
-    Call 'punkte$' [ 99 ]
+    JOY.reden.flag[8] = 1
+    punkte(99);
  }
  if (JOY.state.raum == 1) {
-    if (handlung$ ( 1 ) = 1) {
-       showText(ereignis$ ( 28 ));
+    if (JOY.state.handlung[1] = 1) {
+       showText(JOY.ereignis[28]);
        //Call 'clickmouse$'
        // Call 'screco$'
-       handlung$ ( 1 ) = 2
+       JOY.state.handlung[1] = 2
        JOY.state.personName[5] = "CHRISTIANE"
     }
-    if (handlung$ ( 2 ) = 1) {
-       showText(ereignis$ ( 37 ));
+    if (JOY.state.handlung[2] = 1) {
+       showText(JOY.ereignis[37]);
        //Call 'clickmouse$'
        // Call 'screco$'
-       handlung$ ( 2 ) = 2
+       JOY.state.handlung[2] = 2
        JOY.state.personName[3] = "HERBERT"
        geg$ ( 6 ) = "MONITOR(AN)"
-       flag$ ( 3 ) = 1
+       JOY.state.flag[3] = 1
        geg$ ( 7 ) = "AMIGA 2000(AN)"
-       flag$ ( 4 ) = 1
+       JOY.state.flag[4] = 1
     }
-    if (handlung$ ( 3 ) = 3) {
-       showText(ereignis$ ( 27 ));
+    if (JOY.state.handlung[3] = 3) {
+       showText(JOY.ereignis[27]);
        //Call 'clickmouse$'
-       handlung$ ( 3 ) = 4
+       JOY.state.handlung[3] = 4
        JOY.state.personName[6] = "GERD"
        gehe = 1
        r = 23
@@ -1963,9 +1987,9 @@ function handlung()
        ' '      Goto PARSER '
        Return
     }
-    if (transport$ ( 165 ) = 2) {
-       handlung$ ( 3 ) = 1
-       showText(ereignis$ ( 35 ));
+    if (JOY.state.transport[165] = 2) {
+       JOY.state.handlung[3] = 1
+       showText(JOY.ereignis[35]);
        //Call 'clickmouse$'
        // Call 'screco$'
        g = 165
@@ -1973,36 +1997,36 @@ function handlung()
        g = 164
        Gosub ablegen
     }
-    if (handlung$ ( 5 ) = 1) {
-       handlung$ ( 5 ) = 2
-       showText(ereignis$ ( 50 ));
+    if (JOY.state.handlung[5] = 1) {
+       JOY.state.handlung[5] = 2
+       showText(JOY.ereignis[50]);
        //Call 'clickmouse$'
        // Call 'screco$'
     }
-    if (handlung$ ( 6 ) = 1) {
-       handlung$ ( 6 ) = 2
-       showText(ereignis$ ( 56 ));
+    if (JOY.state.handlung[6] = 1) {
+       JOY.state.handlung[6] = 2
+       showText(JOY.ereignis[56]);
        //Call 'clickmouse$'
        // Call 'screco$'
     }
-    if (handlung$ ( 6 ) = 3 && transport$ ( 203 ) = 2) {
+    if (JOY.state.handlung[6] = 3 && JOY.state.transport[203] = 2) {
        JOY.state.person[13] = 0
        g = 203
        Gosub ablegen
-       transport$ ( 203 ) = 1
-       handlung$ ( 6 ) = 4
+       JOY.state.transport[203] = 1
+       JOY.state.handlung[6] = 4
     }
  }
- if (JOY.state.raum == 4 && flag$ ( 30 ) = 0) {
-    flag$ ( 30 ) = 1
-    showText(ereignis$ ( 13 ));
+ if (JOY.state.raum == 4 && JOY.state.flag[30] = 0) {
+    JOY.state.flag[30] = 1
+    showText(JOY.ereignis[13]);
     //Call 'clickmouse$'
     // Call 'screco$'
-    flag$ ( 53 ) = 111
+    JOY.state.flag[53] = 111
  }
- if (JOY.state.raum == 18 && flag$ ( 60 ) = 1) {
-    flag$ ( 60 ) = 2
-    showText(ereignis$ ( 90 ));
+ if (JOY.state.raum == 18 && JOY.state.flag[60] = 1) {
+    JOY.state.flag[60] = 2
+    showText(JOY.ereignis[90]);
     //Call 'clickmouse$'
     // Call 'screco$'
  }
@@ -2015,7 +2039,7 @@ function aufnehmen()
 {
 }
 
-function ablegen()
+function ablegen(g)
 {
   for (var i = 1; i <= 24; ++i) {
     if (JOY.state.inventar[i] == g) {
@@ -2072,45 +2096,54 @@ function personenDisplay()
   //Cls 0 , i * 31 , 0 To ( i * 31 ) + ( 320 - i ) , 39
 }
 
-function initRaum()
+function initRaum(r)
 {
   JOY.state.raum2 = JOY.state.raum;
   JOY.state.raum = r;
 
   //Call 'maus_aus$'
   SwitchScreen(2);
-  Bob Off
-  Wait Vbl
-  Cls 0
+  //Bob Off
+  //Wait Vbl
+  //Cls 0
+  ClrBobs();
 
-  Call 'roller_blind$'
-  Call 'test_joy2$'
+  // Call 'roller_blind$'
+  //Call 'test_joy2$'
 
   SwitchScreen(2);
-  Load pfad$ + "Grafiken/Raum" + ( Str$ ( raum ) - " " ) + ".Bobs.Abk"
+  //Load pfad$ + "Grafiken/Raum" + ( Str$ ( raum ) - " " ) + ".Bobs.Abk"
+  JOY.bank = 'raum_' + r + '_bob_';
+
   if (JOY.state.raum == 11 && JOY.state.flag[68] == 1 && JOY.state.zeit > 47) {
-     Load pfad$ + "Grafiken/Raum11_1.Pic" , 8
+     //Load pfad$ + "Grafiken/Raum11_1.Pic" , 8
+     Unpack('raum_11_1');
   } else {
      if (JOY.state.raum == 5 && JOY.state.person[7] == 5) {
-        Load pfad$ + "Grafiken/Raum5_1.Pic" , 8
+        //Load pfad$ + "Grafiken/Raum5_1.Pic" , 8
+        Unpack('raum_5_1');
      } else {
         if (JOY.state.raum == 14) {
            if (JOY.state.zeit == 46) {
-              Load pfad$ + "Grafiken/Raum14_1.Pic" , 8
+              //Load pfad$ + "Grafiken/Raum14_1.Pic" , 8
+             Unpack('raum_14_1');
            } else {
               if (JOY.state.zeit == 47) {
-                 Load pfad$ + "Grafiken/Raum14_2.Pic" , 8
+                 //Load pfad$ + "Grafiken/Raum14_2.Pic" , 8
+                  Unpack('raum_14_2');
               } else {
-                 Load pfad$ + "Grafiken/Raum14.Pic" , 8
+                 //Load pfad$ + "Grafiken/Raum14.Pic" , 8
+                  Unpack('raum_14');
               }
            }
         } else {
-           Load pfad$ + "Grafiken/Raum" + ( Str$ ( raum ) - " " ) + ".Pic" , 8
+           //Load pfad$ + "Grafiken/Raum" + ( Str$ ( raum ) - " " ) + ".Pic" , 8
+            Unpack('raum_' + r);
         }
      }
   }
-  Unpack 8 To 2
-  Erase 8
+  //Unpack 8 To 2
+  //Erase 8
 
   Load pfad$ + "Daten/Raum" + ( Str$ ( raum ) - " " ) + ".Zones" , 8
   Set Input 42 , - 1
@@ -2158,7 +2191,7 @@ function initRaum()
      Bank Swap 1 , 11
   }
 
-  Call 'roller_blind$'
+  // Call 'roller_blind$'
   //Call 'maus_an$'
 
   //Gosub handlung
@@ -2257,7 +2290,7 @@ Procedure p$
    Shared p
    SwitchScreen(0);
    Ink 1 , 0
-   Text 232 , 30 , Str$ ( p ) - " "
+   Text(232, 30, Str$ ( p ) - " ");
 End Proc
 
  Label init_befehle:
@@ -2352,7 +2385,7 @@ function initialisieren()
   }
   JOY.state.inventar[1] = 15;
 
-  JOY.geg[0] = "                                                ";
+  JOY.state.geg[0] = "                                                ";
   //iconbank = 0;
   JOY.state.zeit = 0;
   JOY.state.punkte = 0;
@@ -2420,15 +2453,15 @@ function initialisieren()
  SwitchScreen(4);
  //Call 'maus_an$'
  if (JOY.geladen === 0) {
-    if (Not Exist ( pfad$ )) {
+    /*if (Not Exist ( pfad$ )) {
        SwitchScreen(0);
        Gr Writing 0
        Ink 1 , 0
-       Text 70 , 60 , "BITTE LEGEN SIE DIE ZWEITE DISK EIN"
+       Text(70, 60, "BITTE LEGEN SIE DIE ZWEITE DISK EIN");
        While Not Exist ( pfad$ )
        Wend
        Cls 0
-    }
+    }*/
     Load pfad$ + "Grafiken/Icons3.Abk"
     Make Icon Mask
     Call 'iconbank$' [ 2 ]
@@ -2445,34 +2478,30 @@ function initialisieren()
     ladeTexte();
     JOY.geladen = 1;
  }
- SwitchScreen(3);
- Call 'iconbank$' [ 2 ]
- Get Icon Palette
- Priority Reverse On
- Load pfad$ + "Grafiken/Raum1.Pic" , 8
- Unpack 8 To 2
 
- Erase 8
- SwitchScreen(2);
- For i = 0 To 31
-    Colour i , 0x0
- Next
- Load pfad$ + "Daten/Raum1.Zones" , 8
- Bob(2, 54, 41, 3);
- Bob(5, 305, 34, 5);
- Bob(8, 57, 123, 2);
- Set Input 42 , - 1
- Open In 1 , pfad$ + "Texte/Raum1.Umgebung.Txt"
- Line Input # 1 , umgebung$
- umgebung$ = umgebung$ + "*" + Chr$ ( 10 )
- Close 1
- Open In 1 , pfad$ + "Texte/Raum1.Objekte.Txt"
- For i = 1 To 18
-    Line Input # 1 , objekt$ ( i )
-    objekt$ ( i ) = objekt$ ( i ) + "*" + Chr$ ( 10 )
- Next
-  Close 1
-  invent$ ( 1 ) = objekt$ ( 15 )
+  SwitchScreen(3);
+  Call 'iconbank$' [ 2 ]
+  Get Icon Palette
+  Priority Reverse On
+  Load pfad$ + "Grafiken/Raum1.Pic" , 8
+  Unpack 8 To 2
+
+  // Erase 8
+  SwitchScreen(2);
+  // For i = 0 To 31
+  // Colour i , 0x0
+  // Next
+  // Load pfad$ + "Daten/Raum1.Zones" , 8
+
+  JOY.bank = 'raum_1_bob_';
+  Bob(2, 54, 41, 3);
+  Bob(5, 305, 34, 5);
+  Bob(8, 57, 123, 2);
+  //Set Input 42 , - 1
+
+  JOY.umgebung = game.cache.getJSON('texte')['Raum1.Umgebung.Txt'][1];
+  JOY.objekt = game.cache.getJSON('texte')['Raum1.Objekte.Txt'];
+  JOY.state.inventp[1] = JOY.objekt[15];
   SwitchScreen(0);
   Get Palette 2
   // Call 'screco$'
@@ -2502,19 +2531,19 @@ function initialisieren()
 
   // "Copy protection"
   /*
-  showText(ereignis$ ( 64 ));
+  showText(JOY.ereignis[64]);
   //Call 'clickmouse$'
   // Call 'screco$'
   code = Rnd ( 2 ) + 1
-  Mid$ ( ereignis$ ( 65 ) , 48 , 1 ) = ( Str$ ( code ) - " " )
+  Mid$ ( JOY.ereignis[65] , 48 , 1 ) = ( Str$ ( code ) - " " )
   a$ = ""
   Clear Key
-  showText(ereignis$ ( 65 ));
+  showText(JOY.ereignis[65]);
   While a$ = ""
     a$ = Inkey$
   Wend
   if Upper$ ( a$ ) = Mid$ ( "JOY" , code , 1 )
-    showText(ereignis$ ( 66 ));
+    showText(JOY.ereignis[66]);
     //Call 'clickmouse$'
     // Call 'screco$'
     verbRein();

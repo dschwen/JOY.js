@@ -9,7 +9,7 @@
  Bob Update On
  Amos Lock
  ' 'On Error Goto FEHLER'
- Dim inventar$ ( 24 ) , flag$ ( 70 ) , verb$ ( 16 ) , geg$ ( 255 ) , transport$ ( 255 ) , raum$ ( 26 ) , zur�ck$ ( 26 ) , betreten$ ( 26 ) , person$ ( 20 ) , person$ ( 20 ) , personen$ ( 10 ) , reden$ ( 20 ) , ereignis$ ( 102 ) , objekt$ ( 20 ) , invent$ ( 24 ) , raumaddierer$ ( 26 ) , c$ ( 9 ) , name$ ( 11 ) , score$ ( 11 ) , handlung$ ( 6 )
+ Dim inventar$ ( 24 ) , JOY.state.flag[70] , verb$ ( 16 ) , geg$ ( 255 ) , transport$ ( 255 ) , raum$ ( 26 ) , zur�ck$ ( 26 ) , betreten$ ( 26 ) , person$ ( 20 ) , person$ ( 20 ) , personen$ ( 10 ) , reden$ ( 20 ) , JOY.ereignis[102] , objekt$ ( 20 ) , invent$ ( 24 ) , raumaddierer$ ( 26 ) , c$ ( 9 ) , name$ ( 11 ) , score$ ( 11 ) , JOY.state.handlung[6]
  Dim frage$ ( 11 ) , antwort$ ( 10 ) , ja$ ( 10 ) , nein$ ( 10 ) , erscheinen$ ( 11 ) , alterscheinen$ ( 11 ) , rtext$ ( 11 ) , fahrx$ ( 9 ) , fahry$ ( 9 ) , gespeichert$ ( 10 ) , scr$ ( 25 )
  Dim feld$ ( 4 , 16 ) , stat$ ( 7 ) , graus$ ( 160 ) , y$ ( 10 ) , scr$ ( 10 ) , scr2$ ( 10 ) , str$ ( 10 ) , rl$ ( 54 , 133 ) , kurve$ ( 33 , 69 ) , lrand$ ( 54 ) , breite$ ( 54 ) , objekt$ ( 54 ) , obj$ ( 10 ) , mitte$ ( 10 )
  Dim hausx$ ( 10 ) , hausy$ ( 10 ) , sperrex$ ( 10 ) , sperrey$ ( 10 ) , mikrox$ ( 10 ) , mikroy$ ( 10 ) , keksx$ ( 10 ) , keksy$ ( 10 ) , baumx$ ( 10 ) , baumy$ ( 10 ) , omax$ ( 10 ) , omay$ ( 10 )
@@ -62,20 +62,20 @@
     Ink 0 , 5
     If geg$ ( geg1 ) = "RÜCK"
        If verb = 10
-          Text 2 , 6 , verb$ ( verb ) + geg$ ( geg1 ) + geg$ ( 0 )
+          Text(2, 6, verb$ ( verb ) + geg$ ( geg1 ) + geg$ ( 0 ));
           Return
        Else
           geg1 = 0
        EndIf
     EndIf
     If geg1 = 227 And verb = 10
-       Text 2 , 6 , verb$ ( verb ) + geg$ ( geg1 ) + geg$ ( 0 )
+       Text(2, 6, verb$ ( verb ) + geg$ ( geg1 ) + geg$ ( 0 ));
        Return
     EndIf
-    Text 2 , 6 , verb$ ( verb ) + " " + geg$ ( geg1 ) + geg$ ( 0 )
+    Text(2, 6, verb$ ( verb ) + " " + geg$ ( geg1 ) + geg$ ( 0 ));
  Else
     SwitchScreen(1);
-    Text 2 , 6 , verb$ ( verb ) + " " + person$ ( pers ) + geg$ ( 0 )
+    Text(2, 6, verb$ ( verb ) + " " + person$ ( pers ) + geg$ ( 0 ));
  EndIf
  Return
 
@@ -86,10 +86,10 @@
     If ( geg$ ( geg2 ) = "RÜCK" ) Or ( geg1 = geg2 )
        geg2 = 0
     EndIf
-    Text 2 , 6 , verb$ ( verb ) + " " + geg$ ( geg1 ) + " AN " + geg$ ( geg2 ) + geg$ ( 0 )
+    Text(2, 6, verb$ ( verb ) + " " + geg$ ( geg1 ) + " AN " + geg$ ( geg2 ) + geg$ ( 0 ));
  Else
     SwitchScreen(1);
-    Text 2 , 6 , verb$ ( verb ) + " " + geg$ ( geg1 ) + " AN " + person$ ( pers ) + geg$ ( 0 )
+    Text(2, 6, verb$ ( verb ) + " " + geg$ ( geg1 ) + " AN " + person$ ( pers ) + geg$ ( 0 ));
  EndIf
  Return
 
@@ -103,7 +103,7 @@
        Bar 10 , 10 To 310 , 47
        Ink 1 , 0
        Box 11 , 11 To 309 , 46
-       Text 65 , 20 , "WIEVIELE KLICKS LANG WILLST DU WARTEN ?"
+       Text(65, 20, "WIEVIELE KLICKS LANG WILLST DU WARTEN ?");
        Call 'eingabe$' [ 150 , 28 , 10 , "" , 1 , 2 ]
        If Val ( Param$ ) > 0
           Call 'befehle_runter$'
@@ -182,7 +182,7 @@
     verb2 = verb
     verb = 16
     SwitchScreen(1);
-    Text 2 , 6 , "REDE MIT " + person$ ( pers ) + geg$ ( 0 )
+    Text(2, 6, "REDE MIT " + person$ ( pers ) + geg$ ( 0 ));
     Gosub "Raum" + Str$ ( raum ) - " "
     Gosub raum_alle
     verb = verb2
@@ -193,31 +193,31 @@
  r = rtext$ ( ym )
  If raum = 1
     If r > 3
-       flag$ ( 1 ) = 1
+       JOY.state.flag[1] = 1
     EndIf
-    If handlung$ ( 3 ) = 5 And handlung$ ( 4 ) = 0
-       handlung$ ( 4 ) = 1
-       Call 'txt$' [ ereignis$ ( 29 ) ]
+    If JOY.state.handlung[3] = 5 And JOY.state.handlung[4] = 0
+       JOY.state.handlung[4] = 1
+       Call 'txt$' [ JOY.ereignis[29] ]
        //Call 'clickmouse$'
        person$ ( 2 ) = 0
        person$ ( 16 ) = 20
     EndIf
  EndIf
- If raum = 3 And ( flag$ ( 9 ) = 1 Or flag$ ( 10 ) = 1 Or flag$ ( 11 ) = 1 Or flag$ ( 12 ) = 1 Or flag$ ( 13 ) = 1 Or flag$ ( 52 ) = 1 )
-    Call 'txt$' [ ereignis$ ( 8 ) ]
+ If raum = 3 And ( JOY.state.flag[9] = 1 Or JOY.state.flag[10] = 1 Or JOY.state.flag[11] = 1 Or JOY.state.flag[12] = 1 Or JOY.state.flag[13] = 1 Or JOY.state.flag[52] = 1 )
+    Call 'txt$' [ JOY.ereignis[8] ]
     //Call 'clickmouse$'
     Call 'screco$'
     Pop
     Goto parser
  EndIf
- If raum = 6 And r = 10 Or r > 11 And flag$ ( 26 ) = 1
+ If raum = 6 And r = 10 Or r > 11 And JOY.state.flag[26] = 1
     Call 'txt$' [ Chr$ ( 10 ) + "MACH DAS LIEBER NICHT !" + Chr$ ( 10 ) + "*" + Chr$ ( 10 ) ]
     //Call 'clickmouse$'
     Call 'screco$'
     Pop
     Goto parser
  EndIf
- If raum = 14 And flag$ ( 36 ) = 0
+ If raum = 14 And JOY.state.flag[36] = 0
     Call 'txt$' [ Chr$ ( 10 ) + "DIE T�R IST ZU !" + Chr$ ( 10 ) + "*" + Chr$ ( 10 ) ]
     //Call 'clickmouse$'
     Call 'screco$'
@@ -225,12 +225,12 @@
     Goto parser
  EndIf
  If raum = 16
-    If flag$ ( 39 ) = 0 And ( transport$ ( 150 ) = 2 Or transport$ ( 151 ) = 2 Or transport$ ( 152 ) = 2 Or transport$ ( 153 ) = 2 Or transport$ ( 154 ) = 2 Or transport$ ( 155 ) = 2 Or transport$ ( 162 ) = 2 Or transport$ ( 163 ) = 2 Or transport$ ( 164 ) = 2 Or transport$ ( 165 ) = 2 )
+    If JOY.state.flag[39] = 0 And ( transport$ ( 150 ) = 2 Or transport$ ( 151 ) = 2 Or transport$ ( 152 ) = 2 Or transport$ ( 153 ) = 2 Or transport$ ( 154 ) = 2 Or transport$ ( 155 ) = 2 Or transport$ ( 162 ) = 2 Or transport$ ( 163 ) = 2 Or transport$ ( 164 ) = 2 Or transport$ ( 165 ) = 2 )
        go = 1
        Goto game_over
     EndIf
  EndIf
- If raum = 19 And flag$ ( 47 ) = 0
+ If raum = 19 And JOY.state.flag[47] = 0
     Call 'txt$' [ Chr$ ( 10 ) + "DIE T�R IST ZU !" + Chr$ ( 10 ) + "*" + Chr$ ( 10 ) ]
     //Call 'clickmouse$'
     Call 'screco$'
@@ -283,8 +283,8 @@
  If geg1 = 0
     Return
  EndIf
- If raum = 14 And geg1 = 140 And handlung$ ( 3 ) = 6
-    Call 'txt$' [ ereignis$ ( 86 ) ]
+ If raum = 14 And geg1 = 140 And JOY.state.handlung[3] = 6
+    Call 'txt$' [ JOY.ereignis[86] ]
     //Call 'clickmouse$'
     Call 'screco$'
     Pop
@@ -373,13 +373,13 @@
        If verb = 6
           Gosub handlung
           SwitchScreen(1);
-          Text 2 , 6 , "UMSCHAUEN: " + raum$ ( raum )
+          Text(2, 6, "UMSCHAUEN: " + raum$ ( raum ));
           Call 'txt$' [ umgebung$ ]
           //Call 'clickmouse$'
           Call 'screco$'
           SwitchScreen(1);
-          Text 2 , 6 , geg$ ( 0 )
-          Text 2 , 6 , verb$ ( verb ) + geg$ ( 0 )
+          Text(2, 6, geg$ ( 0 ));
+          Text(2, 6, verb$ ( verb ) + geg$ ( 0 ));
           Paste Icon 0 , verb * 9 , verb
           verb = verb2
           Call 'verb_rein$'
@@ -415,7 +415,7 @@
        verb = 14
        SwitchScreen(1);
        Ink 0 , 5
-       Text 2 , 6 , "SPIELSTAND SPEICHERN" + geg$ ( 0 )
+       Text(2, 6, "SPIELSTAND SPEICHERN" + geg$ ( 0 ));
        Paste Icon 58 , 46 , 29
        Call 'txt$' [ Chr$ ( 10 ) + "HAUN SIE MAL KURZ IHRE SAVEDISK IN DF0:" + Chr$ ( 10 ) + "*" + Chr$ ( 10 ) ]
        //Call 'clickmouse$'
@@ -466,7 +466,7 @@
        Bar 10 , 10 To 310 , 47
        Ink 1 , 0
        Box 11 , 11 To 309 , 46
-       Text 32 , 20 , "BITTE GEBEN SIE DEN NAMEN F�R DEN SPIELSTAND EIN:"
+       Text(32, 20, "BITTE GEBEN SIE DEN NAMEN F�R DEN SPIELSTAND EIN:");
        altname$ = antwort$ ( ym )
        Call 'eingabe$' [ 135 , 28 , 10 , antwort$ ( ym ) , 1 , 1 ]
        name$ = Param$
@@ -520,7 +520,7 @@
        verb = 15
        SwitchScreen(1);
        Ink 0 , 5
-       Text 2 , 6 , "SPIELSTAND LADEN" + geg$ ( 0 )
+       Text(2, 6, "SPIELSTAND LADEN" + geg$ ( 0 ));
        Paste Icon 58 , 68 , 30
        Call 'txt$' [ Chr$ ( 10 ) + "HAUN SIE MAL KURZ IHRE SAVEDISK IN DF0:" + Chr$ ( 10 ) + "*" + Chr$ ( 10 ) ]
        //Call 'clickmouse$'
@@ -528,7 +528,7 @@
        Dir$ = "Df0:"
        Gosub hol_namen
        If gespeichert$ ( ym ) = 0
-          Call 'txt$' [ ereignis$ ( 68 ) ]
+          Call 'txt$' [ JOY.ereignis[68] ]
           //Call 'clickmouse$'
           Call 'screco$'
           verb = verb2
@@ -765,7 +765,7 @@
 
  Label raum1:
  If verb = 1
-    If geg1 = 6 And handlung$ ( 2 ) = 2
+    If geg1 = 6 And JOY.state.handlung[2] = 2
        gehe = 1
        r = 22
        Gosub initraum
@@ -773,16 +773,16 @@
        Goto parser
     EndIf
     If geg1 = 7 And transport$ ( 11 ) = 1
-       Call 'txt$' [ ereignis$ ( 3 ) ]
+       Call 'txt$' [ JOY.ereignis[3] ]
        //Call 'clickmouse$'
        g = 11
        mz = 11
        Gosub aufnehmen
-       Bset.<> 0 , flag$ ( 53 )
-       Bclr 0 , flag$ ( 58 )
+       Bset.<> 0 , JOY.state.flag[53]
+       Bclr 0 , JOY.state.flag[58]
     EndIf
     If geg1 = 8 And transport$ ( 8 ) = 1
-       flag$ ( 2 ) = 1
+       JOY.state.flag[2] = 1
        transport$ ( 8 ) = 0
        transport$ ( 9 ) = 1
        SwitchScreen(2);
@@ -794,20 +794,20 @@
        setZone(9, 57, 123, 85, 127);
     EndIf
     If geg1 = 12
-       Bset.<> 2 , flag$ ( 53 )
+       Bset.<> 2 , JOY.state.flag[53]
     EndIf
     If geg1 = 13
-       flag$ ( 54 ) = 1
+       JOY.state.flag[54] = 1
        person$ ( 1 ) = 1
        Gosub personendisplay
-       If person$ ( 1 ) = "???" And flag$ ( 56 ) = 1
+       If person$ ( 1 ) = "???" And JOY.state.flag[56] = 1
           person$ ( 1 ) = "JUPP"
        EndIf
     EndIf
  EndIf
- If verb = 2 And geg1 = 14 And flag$ ( 1 ) = 0 And transport$ ( 2 ) = 1
+ If verb = 2 And geg1 = 14 And JOY.state.flag[1] = 0 And transport$ ( 2 ) = 1
     oeffne = 1
-    flag$ ( 1 ) = 1
+    JOY.state.flag[1] = 1
     SwitchScreen(2);
     BobOff(2);
     Bob(14, 49, 0, 4);
@@ -815,11 +815,11 @@
     SwitchScreen(0);
     Reset Zone 2
     setZone(2, 61, 20, 67, 30);
-    If flag$ ( 56 ) = 0
-       Call 'txt$' [ ereignis$ ( 10 ) ]
+    If JOY.state.flag[56] = 0
+       Call 'txt$' [ JOY.ereignis[10] ]
        //Call 'clickmouse$'
        Call 'screco$'
-       flag$ ( 56 ) = 1
+       JOY.state.flag[56] = 1
        betreten$ ( 2 ) = 0
        betreten$ ( 3 ) = 0
        For i = 2 To 10
@@ -833,9 +833,9 @@
        EndIf
     EndIf
  EndIf
- If verb = 3 And geg1 = 14 And flag$ ( 1 ) = 1 And transport$ ( 2 ) = 1
+ If verb = 3 And geg1 = 14 And JOY.state.flag[1] = 1 And transport$ ( 2 ) = 1
     schliesse = 1
-    flag$ ( 1 ) = 0
+    JOY.state.flag[1] = 0
     SwitchScreen(2);
     BobOff(14);
     Bob(2, 54, 41, 3);
@@ -846,7 +846,7 @@
  If verb = 4
     If geg1 = 2 And transport$ ( 2 ) = 1
        ziehe = 1
-       If ( flag$ ( 1 ) = 0 Or flag$ ( 1 ) = 2 )
+       If ( JOY.state.flag[1] = 0 Or JOY.state.flag[1] = 2 )
           g = geg1
           Gosub aufnehmen
        Else
@@ -871,7 +871,7 @@
        g = 2
        Gosub ablegen
        transport$ ( 2 ) = 1
-       If ( flag$ ( 1 ) = 0 Or flag$ ( 1 ) = 2 )
+       If ( JOY.state.flag[1] = 0 Or JOY.state.flag[1] = 2 )
           SwitchScreen(2);
           Bob(2, 54, 41, 3);
           Call 'screco$'
@@ -890,27 +890,27 @@
        g = 11
        Gosub ablegen
        transport$ ( 11 ) = 1
-       Bset.<> 0 , flag$ ( 58 )
+       Bset.<> 0 , JOY.state.flag[58]
        Gosub test_recall
     EndIf
     If geg1 = 33 And geg2 = 14
        benutze = 1
-       flag$ ( 1 ) = 0
+       JOY.state.flag[1] = 0
        g = 33
        Gosub ablegen
-       Call 'txt$' [ ereignis$ ( 7 ) ]
+       Call 'txt$' [ JOY.ereignis[7] ]
        //Call 'clickmouse$'
        Call 'screco$'
        Call 'punkte$' [ 100 ]
     EndIf
-    If geg1 = 134 And geg2 = 7 And handlung$ ( 2 ) = 2
+    If geg1 = 134 And geg2 = 7 And JOY.state.handlung[2] = 2
        benutze = 1
-       Call 'txt$' [ ereignis$ ( 39 ) ]
+       Call 'txt$' [ JOY.ereignis[39] ]
        //Call 'clickmouse$'
        Call 'screco$'
        g = 134
        Gosub ablegen
-       handlung$ ( 2 ) = 3
+       JOY.state.handlung[2] = 3
        person$ ( 3 ) = 1
        Gosub personendisplay
        SwitchScreen(2);
@@ -922,11 +922,11 @@
        benutze = 1
        g = 203
        Gosub ablegen
-       Bset.<> 1 , flag$ ( 58 )
+       Bset.<> 1 , JOY.state.flag[58]
        Gosub test_recall
     EndIf
     If geg1 = 254 And geg2 = 7
-       If handlung$ ( 2 ) = 0 Or handlung$ ( 2 ) = 3
+       If JOY.state.handlung[2] = 0 Or JOY.state.handlung[2] = 3
           Goto klackstris
        Else
           Call 'txt$' [ Chr$ ( 10 ) + "DENK AN HERBERT !!!" + Chr$ ( 10 ) + "*" + Chr$ ( 10 ) ]
@@ -938,35 +938,35 @@
     EndIf
  EndIf
  If verb = 8
-    If geg1 = 6 And flag$ ( 3 ) = 0
+    If geg1 = 6 And JOY.state.flag[3] = 0
        schalte = 1
-       flag$ ( 3 ) = 1
-       If flag$ ( 4 ) = 1
+       JOY.state.flag[3] = 1
+       If JOY.state.flag[4] = 1
           SwitchScreen(2);
           Bob(6, 136, 81, 6);
           Call 'screco$'
        EndIf
     EndIf
-    If geg1 = 7 And flag$ ( 4 ) = 0
+    If geg1 = 7 And JOY.state.flag[4] = 0
        schalte = 1
-       flag$ ( 4 ) = 1
+       JOY.state.flag[4] = 1
        Gosub test_recall
-       If flag$ ( 3 ) = 1
+       If JOY.state.flag[3] = 1
           SwitchScreen(2);
           Bob(6, 136, 81, 6);
           Call 'screco$'
        EndIf
     EndIf
-    If geg1 = 12 And flag$ ( 51 ) = 0
+    If geg1 = 12 And JOY.state.flag[51] = 0
        schalte = 1
-       flag$ ( 51 ) = 1
+       JOY.state.flag[51] = 1
     EndIf
  EndIf
  If verb = 9
-    If geg1 = 6 And flag$ ( 3 ) = 1
-       If ( handlung$ ( 2 ) = 0 Or handlung$ ( 2 ) = 3 )
+    If geg1 = 6 And JOY.state.flag[3] = 1
+       If ( JOY.state.handlung[2] = 0 Or JOY.state.handlung[2] = 3 )
           schalte = 1
-          flag$ ( 3 ) = 0
+          JOY.state.flag[3] = 0
           SwitchScreen(2);
           BobOff(6);
           Call 'screco$'
@@ -978,10 +978,10 @@
           Goto parser
        EndIf
     EndIf
-    If geg1 = 7 And flag$ ( 4 ) = 1
-       If ( handlung$ ( 2 ) = 0 Or handlung$ ( 2 ) = 3 )
+    If geg1 = 7 And JOY.state.flag[4] = 1
+       If ( JOY.state.handlung[2] = 0 Or JOY.state.handlung[2] = 3 )
           schalte = 1
-          flag$ ( 4 ) = 0
+          JOY.state.flag[4] = 0
           SwitchScreen(2);
           BobOff(6);
           Call 'screco$'
@@ -993,15 +993,15 @@
           Goto parser
        EndIf
     EndIf
-    If geg1 = 12 And flag$ ( 51 ) = 1
+    If geg1 = 12 And JOY.state.flag[51] = 1
        schalte = 1
-       flag$ ( 51 ) = 0
+       JOY.state.flag[51] = 0
     EndIf
  EndIf
- If verb = 10 And geg1 = 14 And flag$ ( 1 ) = 1
-    If handlung$ ( 3 ) = 5 And handlung$ ( 4 ) = 0
-       handlung$ ( 4 ) = 1
-       Call 'txt$' [ ereignis$ ( 29 ) ]
+ If verb = 10 And geg1 = 14 And JOY.state.flag[1] = 1
+    If JOY.state.handlung[3] = 5 And JOY.state.handlung[4] = 0
+       JOY.state.handlung[4] = 1
+       Call 'txt$' [ JOY.ereignis[29] ]
        //Call 'clickmouse$'
        person$ ( 2 ) = 0
        person$ ( 16 ) = 20
@@ -1011,8 +1011,8 @@
     r = 4
     Gosub initraum
  EndIf
- If verb = 11 And flag$ ( 56 ) = 1
-    Call 'txt$' [ ereignis$ ( 11 ) ]
+ If verb = 11 And JOY.state.flag[56] = 1
+    Call 'txt$' [ JOY.ereignis[11] ]
     //Call 'clickmouse$'
     Call 'screco$'
     Call 'verb_raus$'
@@ -1022,26 +1022,26 @@
     Goto parser
  EndIf
  If verb = 12 And geg1 = 2
-    Call 'txt$' [ ereignis$ ( 80 ) ]
+    Call 'txt$' [ JOY.ereignis[80] ]
     //Call 'clickmouse$'
     Call 'screco$'
     Pop
     Goto parser
  EndIf
- If verb = 13 And geg1 = 162 And pers = 5 And handlung$ ( 1 ) = 2
+ If verb = 13 And geg1 = 162 And pers = 5 And JOY.state.handlung[1] = 2
     gib = 1
-    Call 'txt$' [ ereignis$ ( 34 ) ]
+    Call 'txt$' [ JOY.ereignis[34] ]
     //Call 'clickmouse$'
     Call 'screco$'
     g = 162
     Gosub ablegen
     transport$ ( 162 ) = 1
-    handlung$ ( 1 ) = 3
+    JOY.state.handlung[1] = 3
     Call 'punkte$' [ 103 ]
  EndIf
  If verb = 16
     If pers = 5
-       If handlung$ ( 1 ) = 2
+       If JOY.state.handlung[1] = 2
           Call 'txt$' [ Chr$ ( 10 ) + "GLGLGLGLGL BLABLA TRRRR GLUCKS TRALALA HIHAHOHU BL-BL-BL" + Chr$ ( 10 ) + "*" + Chr$ ( 10 ) ]
           //Call 'clickmouse$'
           Call 'screco$'
@@ -1095,16 +1095,16 @@
 
  Label raum2:
  If verb = 1 And geg1 = 30 And transport$ ( 33 ) = 1
-    Call 'txt$' [ ereignis$ ( 4 ) ]
+    Call 'txt$' [ JOY.ereignis[4] ]
     //Call 'clickmouse$'
     Call 'screco$'
     g = 33
     mz = 1
     Gosub aufnehmen
  EndIf
- If verb = 2 And geg1 = 32 And flag$ ( 6 ) = 0
+ If verb = 2 And geg1 = 32 And JOY.state.flag[6] = 0
     oeffne = 1
-    flag$ ( 6 ) = 1
+    JOY.state.flag[6] = 1
     SwitchScreen(2);
     BobOff(13);
     Bob(14, 196, 8, 3);
@@ -1115,9 +1115,9 @@
     EndIf
     Call 'screco$'
  EndIf
- If verb = 3 And geg1 = 32 And flag$ ( 6 ) = 1
+ If verb = 3 And geg1 = 32 And JOY.state.flag[6] = 1
     schliesse = 1
-    flag$ ( 6 ) = 0
+    JOY.state.flag[6] = 0
     SwitchScreen(2);
     BobOff(14);
     If transport$ ( 31 ) = 1
@@ -1130,11 +1130,11 @@
  EndIf
  If verb = 7
     If geg1 = 24
-       If flag$ ( 8 ) = 1
-          If flag$ ( 61 ) = 0
-             Bset.<> 0 , flag$ ( 61 )
+       If JOY.state.flag[8] = 1
+          If JOY.state.flag[61] = 0
+             Bset.<> 0 , JOY.state.flag[61]
              Call 'punkte$' [ 103 ]
-             Call 'txt$' [ ereignis$ ( 91 ) ]
+             Call 'txt$' [ JOY.ereignis[91] ]
              //Call 'clickmouse$'
              Call 'screco$'
           EndIf
@@ -1159,38 +1159,38 @@
        Pop
        Goto parser
     EndIf
-    If geg1 = 22 And flag$ ( 7 ) = 0
+    If geg1 = 22 And JOY.state.flag[7] = 0
        schalte = 1
-       flag$ ( 7 ) = 1
+       JOY.state.flag[7] = 1
        SwitchScreen(2);
        Bob(4, 101, 55, 5);
        Call 'screco$'
     EndIf
-    If geg1 = 24 And flag$ ( 8 ) = 0
+    If geg1 = 24 And JOY.state.flag[8] = 0
        schalte = 1
-       flag$ ( 8 ) = 1
+       JOY.state.flag[8] = 1
        SwitchScreen(2);
        Bob(6, 126, 54, 6);
        Call 'screco$'
     EndIf
  EndIf
  If verb = 9
-    If geg1 = 22 And flag$ ( 7 ) = 1
+    If geg1 = 22 And JOY.state.flag[7] = 1
        schalte = 1
-       flag$ ( 7 ) = 0
+       JOY.state.flag[7] = 0
        SwitchScreen(2);
        BobOff(4);
        Call 'screco$'
     EndIf
-    If geg1 = 24 And flag$ ( 8 ) = 1
+    If geg1 = 24 And JOY.state.flag[8] = 1
        schalte = 1
-       flag$ ( 8 ) = 0
+       JOY.state.flag[8] = 0
        SwitchScreen(2);
        BobOff(6);
        Call 'screco$'
     EndIf
  EndIf
- If verb = 10 And geg1 = 32 And flag$ ( 6 ) = 1
+ If verb = 10 And geg1 = 32 And JOY.state.flag[6] = 1
     gehe = 1
     r = 3
     Gosub initraum
@@ -1199,8 +1199,8 @@
 
  Label raum3:
  If verb = 1
-    If geg1 = 41 And transport$ ( 49 ) = 1 And flag$ ( 9 ) = 1
-       Call 'txt$' [ ereignis$ ( 12 ) ]
+    If geg1 = 41 And transport$ ( 49 ) = 1 And JOY.state.flag[9] = 1
+       Call 'txt$' [ JOY.ereignis[12] ]
        //Call 'clickmouse$'
        Call 'screco$'
        g = 49
@@ -1208,7 +1208,7 @@
        Gosub aufnehmen
     EndIf
     If geg1 = 43 And transport$ ( 48 ) = 1
-       Call 'txt$' [ ereignis$ ( 6 ) ]
+       Call 'txt$' [ JOY.ereignis[6] ]
        //Call 'clickmouse$'
        Call 'screco$'
        g = 48
@@ -1217,42 +1217,42 @@
     EndIf
  EndIf
  If verb = 2
-    If geg1 = 38 And flag$ ( 11 ) = 0
+    If geg1 = 38 And JOY.state.flag[11] = 0
        oeffne = 1
-       flag$ ( 11 ) = 1
-       flag$ ( 12 ) = 0
-       flag$ ( 13 ) = 0
+       JOY.state.flag[11] = 1
+       JOY.state.flag[12] = 0
+       JOY.state.flag[13] = 0
        SwitchScreen(2);
        BobOff(4);
        BobOff(5);
        Bob(3, 131, 73, 4);
        Call 'screco$'
     EndIf
-    If geg1 = 39 And flag$ ( 12 ) = 0
+    If geg1 = 39 And JOY.state.flag[12] = 0
        oeffne = 1
-       flag$ ( 11 ) = 0
-       flag$ ( 12 ) = 1
-       flag$ ( 13 ) = 0
+       JOY.state.flag[11] = 0
+       JOY.state.flag[12] = 1
+       JOY.state.flag[13] = 0
        SwitchScreen(2);
        BobOff(3);
        BobOff(5);
        Bob(4, 129, 84, 5);
        Call 'screco$'
     EndIf
-    If geg1 = 40 And flag$ ( 13 ) = 0
+    If geg1 = 40 And JOY.state.flag[13] = 0
        oeffne = 1
-       flag$ ( 11 ) = 0
-       flag$ ( 12 ) = 0
-       flag$ ( 13 ) = 1
+       JOY.state.flag[11] = 0
+       JOY.state.flag[12] = 0
+       JOY.state.flag[13] = 1
        SwitchScreen(2);
        BobOff(3);
        BobOff(4);
        Bob(5, 129, 95, 6);
        Call 'screco$'
     EndIf
-    If geg1 = 41 And flag$ ( 9 ) = 0
+    If geg1 = 41 And JOY.state.flag[9] = 0
        oeffne = 1
-       flag$ ( 9 ) = 1
+       JOY.state.flag[9] = 1
        SwitchScreen(2);
        Bob(6, 100, 56, 3);
        If transport$ ( 36 ) = 1
@@ -1262,9 +1262,9 @@
        EndIf
        Call 'screco$'
     EndIf
-    If geg1 = 42 And flag$ ( 10 ) = 0
+    If geg1 = 42 And JOY.state.flag[10] = 0
        oeffne = 1
-       flag$ ( 10 ) = 1
+       JOY.state.flag[10] = 1
        SwitchScreen(2);
        Bob(7, 127, 29, 2);
        If transport$ ( 37 ) = 1
@@ -1276,44 +1276,44 @@
     EndIf
     If geg1 = 46
        oeffne = 1
-       Call 'txt$' [ ereignis$ ( 5 ) ]
+       Call 'txt$' [ JOY.ereignis[5] ]
        //Call 'clickmouse$'
        Call 'screco$'
     EndIf
  EndIf
  If verb = 3
-    If geg1 = 38 And flag$ ( 11 ) = 1
+    If geg1 = 38 And JOY.state.flag[11] = 1
        schliesse = 1
-       flag$ ( 11 ) = 0
+       JOY.state.flag[11] = 0
        SwitchScreen(2);
        BobOff(3);
        Call 'screco$'
     EndIf
-    If geg1 = 39 And flag$ ( 12 ) = 1
+    If geg1 = 39 And JOY.state.flag[12] = 1
        schliesse = 1
-       flag$ ( 12 ) = 0
+       JOY.state.flag[12] = 0
        SwitchScreen(2);
        BobOff(4);
        Call 'screco$'
     EndIf
-    If geg1 = 40 And flag$ ( 13 ) = 1
+    If geg1 = 40 And JOY.state.flag[13] = 1
        schliesse = 1
-       flag$ ( 13 ) = 0
+       JOY.state.flag[13] = 0
        SwitchScreen(2);
        BobOff(5);
        Call 'screco$'
     EndIf
-    If geg1 = 41 And flag$ ( 9 ) = 1
+    If geg1 = 41 And JOY.state.flag[9] = 1
        schliesse = 1
-       flag$ ( 9 ) = 0
+       JOY.state.flag[9] = 0
        SwitchScreen(2);
        BobOff(6);
        BobOff(1);
        Call 'screco$'
     EndIf
-    If geg1 = 42 And flag$ ( 10 ) = 1
+    If geg1 = 42 And JOY.state.flag[10] = 1
        schliesse = 1
-       flag$ ( 10 ) = 0
+       JOY.state.flag[10] = 0
        SwitchScreen(2);
        BobOff(7);
        BobOff(2);
@@ -1321,9 +1321,9 @@
     EndIf
  EndIf
  If verb = 8
-    If geg1 = 44 And flag$ ( 18 ) = 0
-       flag$ ( 18 ) = 1
-       Call 'txt$' [ ereignis$ ( 9 ) ]
+    If geg1 = 44 And JOY.state.flag[18] = 0
+       JOY.state.flag[18] = 1
+       Call 'txt$' [ JOY.ereignis[9] ]
        //Call 'clickmouse$'
        Call 'screco$'
        g = 47
@@ -1332,23 +1332,23 @@
        Pop
        Goto parser
     EndIf
-    If geg1 = 45 And flag$ ( 52 ) = 0
+    If geg1 = 45 And JOY.state.flag[52] = 0
        schalte = 1
-       flag$ ( 52 ) = 1
+       JOY.state.flag[52] = 1
        SwitchScreen(2);
        Bob(10, 154, 63, 9);
        Call 'screco$'
     EndIf
  EndIf
- If verb = 9 And geg1 = 45 And flag$ ( 52 ) = 1
+ If verb = 9 And geg1 = 45 And JOY.state.flag[52] = 1
     schalte = 1
-    flag$ ( 52 ) = 0
+    JOY.state.flag[52] = 0
     SwitchScreen(2);
     BobOff(10);
     Call 'screco$'
  EndIf
- If verb = 11 And ( flag$ ( 9 ) = 1 Or flag$ ( 10 ) = 1 Or flag$ ( 11 ) = 1 Or flag$ ( 12 ) = 1 Or flag$ ( 13 ) = 1 Or flag$ ( 52 ) = 1 )
-    Call 'txt$' [ ereignis$ ( 8 ) ]
+ If verb = 11 And ( JOY.state.flag[9] = 1 Or JOY.state.flag[10] = 1 Or JOY.state.flag[11] = 1 Or JOY.state.flag[12] = 1 Or JOY.state.flag[13] = 1 Or JOY.state.flag[52] = 1 )
+    Call 'txt$' [ JOY.ereignis[8] ]
     //Call 'clickmouse$'
     Call 'screco$'
     Call 'verb_raus$'
@@ -1361,11 +1361,11 @@
 
  Label raum4:
  If verb = 2
-    If geg1 = 51 And flag$ ( 14 ) = 0
+    If geg1 = 51 And JOY.state.flag[14] = 0
        oeffne = 1
-       flag$ ( 14 ) = 1
+       JOY.state.flag[14] = 1
        If person$ ( 7 ) = 5
-          flag$ ( 59 ) = 2
+          JOY.state.flag[59] = 2
        EndIf
        SwitchScreen(2);
        Bob(2, 103, 28, 2);
@@ -1373,63 +1373,63 @@
        Pop
        Goto parser
     EndIf
-    If geg1 = 52 And flag$ ( 15 ) = 0
+    If geg1 = 52 And JOY.state.flag[15] = 0
        oeffne = 1
-       flag$ ( 15 ) = 1
+       JOY.state.flag[15] = 1
        SwitchScreen(2);
        Bob(3, 119, 39, 3);
        Call 'screco$'
     EndIf
-    If geg1 = 53 And flag$ ( 16 ) = 0
+    If geg1 = 53 And JOY.state.flag[16] = 0
        oeffne = 1
-       flag$ ( 16 ) = 1
+       JOY.state.flag[16] = 1
        SwitchScreen(2);
        Bob(4, 132, 47, 4);
        Call 'screco$'
     EndIf
-    If geg1 = 54 And flag$ ( 17 ) = 0
+    If geg1 = 54 And JOY.state.flag[17] = 0
        oeffne = 1
-       flag$ ( 17 ) = 1
+       JOY.state.flag[17] = 1
        SwitchScreen(2);
        Bob(5, 122, 40, 5);
        Call 'screco$'
     EndIf
  EndIf
  If verb = 3
-    If geg1 = 51 And flag$ ( 14 ) = 1
+    If geg1 = 51 And JOY.state.flag[14] = 1
        schliesse = 1
-       flag$ ( 14 ) = 0
-       flag$ ( 59 ) = 0
+       JOY.state.flag[14] = 0
+       JOY.state.flag[59] = 0
        SwitchScreen(2);
        BobOff(2);
        Call 'screco$'
     EndIf
-    If geg1 = 52 And flag$ ( 15 ) = 1
+    If geg1 = 52 And JOY.state.flag[15] = 1
        schliesse = 1
-       flag$ ( 15 ) = 0
+       JOY.state.flag[15] = 0
        SwitchScreen(2);
        BobOff(3);
        Call 'screco$'
     EndIf
-    If geg1 = 53 And flag$ ( 16 ) = 1
+    If geg1 = 53 And JOY.state.flag[16] = 1
        schliesse = 1
-       flag$ ( 16 ) = 0
+       JOY.state.flag[16] = 0
        SwitchScreen(2);
        BobOff(4);
        Call 'screco$'
     EndIf
-    If geg1 = 54 And flag$ ( 17 ) = 1
+    If geg1 = 54 And JOY.state.flag[17] = 1
        schliesse = 1
-       flag$ ( 17 ) = 0
+       JOY.state.flag[17] = 0
        SwitchScreen(2);
        BobOff(5);
        Call 'screco$'
     EndIf
  EndIf
- If flag$ ( 59 ) > 0
-    Dec flag$ ( 59 )
-    If flag$ ( 59 ) = 0
-       flag$ ( 14 ) = 0
+ If JOY.state.flag[59] > 0
+    Dec JOY.state.flag[59]
+    If JOY.state.flag[59] = 0
+       JOY.state.flag[14] = 0
        Call 'txt$' [ Chr$ ( 10 ) + Chr$ ( 34 ) + "T����H ZUUUU !!!" + Chr$ ( 34 ) + Chr$ ( 10 ) + "*" + Chr$ ( 10 ) ]
        //Call 'clickmouse$'
        SwitchScreen(2);
@@ -1438,17 +1438,17 @@
     EndIf
  EndIf
  If verb = 10
-    If geg1 = 51 And flag$ ( 14 ) = 1
+    If geg1 = 51 And JOY.state.flag[14] = 1
        gehe = 1
        r = 5
        Gosub initraum
     EndIf
-    If geg1 = 52 And flag$ ( 15 ) = 1
+    If geg1 = 52 And JOY.state.flag[15] = 1
        gehe = 1
        r = 6
        Gosub initraum
     EndIf
-    If geg1 = 54 And flag$ ( 17 ) = 1
+    If geg1 = 54 And JOY.state.flag[17] = 1
        gehe = 1
        r = 7
        Gosub initraum
@@ -1472,12 +1472,12 @@
     Goto parser
  EndIf
  If verb = 8
-    If geg1 = 57 And flag$ ( 22 ) = 0
-       Call 'txt$' [ ereignis$ ( 15 ) ]
+    If geg1 = 57 And JOY.state.flag[22] = 0
+       Call 'txt$' [ JOY.ereignis[15] ]
        //Call 'clickmouse$'
-       flag$ ( 22 ) = 1
+       JOY.state.flag[22] = 1
        geg$ ( 57 ) = geg$ ( 57 ) + "(AN)"
-       If flag$ ( 19 ) = 1
+       If JOY.state.flag[19] = 1
           SwitchScreen(2);
           Bob(1, 34, 44, 2);
        EndIf
@@ -1485,20 +1485,20 @@
        Pop
        Goto parser
     EndIf
-    If geg1 = 58 And flag$ ( 19 ) = 0
+    If geg1 = 58 And JOY.state.flag[19] = 0
        schalte = 1
-       flag$ ( 19 ) = 1
-       If flag$ ( 22 ) = 1
+       JOY.state.flag[19] = 1
+       If JOY.state.flag[22] = 1
           SwitchScreen(2);
           Bob(1, 34, 44, 2);
           Call 'screco$'
        EndIf
     EndIf
-    If geg1 = 63 And flag$ ( 29 ) = 0
-       Call 'txt$' [ ereignis$ ( 14 ) ]
+    If geg1 = 63 And JOY.state.flag[29] = 0
+       Call 'txt$' [ JOY.ereignis[14] ]
        //Call 'clickmouse$'
-       flag$ ( 20 ) = 1
-       flag$ ( 29 ) = 1
+       JOY.state.flag[20] = 1
+       JOY.state.flag[29] = 1
        geg$ ( 63 ) = geg$ ( 63 ) + "(AN)"
        If Not geg$ ( 70 ) = "MONITOR(AN)"
           geg$ ( 70 ) = geg$ ( 70 ) + "(AN)"
@@ -1513,21 +1513,21 @@
        Pop
        Goto parser
     EndIf
-    If geg1 = 64 And flag$ ( 21 ) = 0
+    If geg1 = 64 And JOY.state.flag[21] = 0
        schalte = 1
-       flag$ ( 21 ) = 1
-       If flag$ ( 23 ) = 1
+       JOY.state.flag[21] = 1
+       If JOY.state.flag[23] = 1
           SwitchScreen(2);
           Bob(3, 221, 34, 4);
           Call 'screco$'
        EndIf
     EndIf
-    If geg1 = 66 And flag$ ( 23 ) = 0
-       Call 'txt$' [ ereignis$ ( 16 ) ]
+    If geg1 = 66 And JOY.state.flag[23] = 0
+       Call 'txt$' [ JOY.ereignis[16] ]
        //Call 'clickmouse$'
-       flag$ ( 23 ) = 1
+       JOY.state.flag[23] = 1
        geg$ ( 66 ) = geg$ ( 66 ) + "(AN)"
-       If flag$ ( 21 ) = 1
+       If JOY.state.flag[21] = 1
           SwitchScreen(2);
           Bob(3, 221, 34, 4);
        EndIf
@@ -1535,12 +1535,12 @@
        Pop
        Goto parser
     EndIf
-    If geg1 = 70 And flag$ ( 20 ) = 0
+    If geg1 = 70 And JOY.state.flag[20] = 0
        Call 'txt$' [ Chr$ ( 10 ) + "O.K." + Chr$ ( 10 ) + "*" + Chr$ ( 10 ) ]
        //Call 'clickmouse$'
        geg$ ( 70 ) = geg$ ( 70 ) + "(AN)"
-       flag$ ( 20 ) = 1
-       If flag$ ( 29 ) = 1
+       JOY.state.flag[20] = 1
+       If JOY.state.flag[29] = 1
           SwitchScreen(2);
           Bob(2, 168, 42, 3);
           SwitchScreen(0);
@@ -1554,26 +1554,26 @@
     EndIf
  EndIf
  If verb = 9
-    If geg1 = 57 And flag$ ( 22 ) = 1
+    If geg1 = 57 And JOY.state.flag[22] = 1
        schalte = 1
-       flag$ ( 22 ) = 0
+       JOY.state.flag[22] = 0
        geg$ ( 57 ) = geg$ ( 57 ) - "(AN)"
-       If flag$ ( 19 ) = 1
+       If JOY.state.flag[19] = 1
           SwitchScreen(2);
           BobOff(1);
           Call 'screco$'
        EndIf
     EndIf
-    If geg1 = 58 And flag$ ( 19 ) = 1
+    If geg1 = 58 And JOY.state.flag[19] = 1
        schalte = 1
-       flag$ ( 19 ) = 0
+       JOY.state.flag[19] = 0
        SwitchScreen(2);
        BobOff(1);
        Call 'screco$'
     EndIf
-    If geg1 = 62 And flag$ ( 20 ) = 1
+    If geg1 = 62 And JOY.state.flag[20] = 1
        schalte = 1
-       flag$ ( 20 ) = 0
+       JOY.state.flag[20] = 0
        geg$ ( 70 ) = geg$ ( 70 ) - "(AN)"
        SwitchScreen(2);
        BobOff(2);
@@ -1582,9 +1582,9 @@
        Reset Zone 7
        setZone(15, 166, 39, 194, 65);
     EndIf
-    If geg1 = 63 And flag$ ( 29 ) = 1
+    If geg1 = 63 And JOY.state.flag[29] = 1
        schalte = 1
-       flag$ ( 29 ) = 0
+       JOY.state.flag[29] = 0
        geg$ ( 63 ) = geg$ ( 63 ) - "(AN)"
        SwitchScreen(2);
        BobOff(2);
@@ -1593,16 +1593,16 @@
        Reset Zone 7
        setZone(15, 166, 39, 194, 65);
     EndIf
-    If geg1 = 64 And flag$ ( 21 ) = 1
+    If geg1 = 64 And JOY.state.flag[21] = 1
        schalte = 1
-       flag$ ( 21 ) = 0
+       JOY.state.flag[21] = 0
        SwitchScreen(2);
        BobOff(3);
        Call 'screco$'
     EndIf
-    If geg1 = 66 And flag$ ( 23 ) = 1
+    If geg1 = 66 And JOY.state.flag[23] = 1
        schalte = 1
-       flag$ ( 23 ) = 0
+       JOY.state.flag[23] = 0
        geg$ ( 66 ) = geg$ ( 66 ) - "(AN)"
        SwitchScreen(2);
        BobOff(3);
@@ -1611,9 +1611,9 @@
  EndIf
  If verb = 16
     If pers = 7
-       If reden$ ( 7 ) = 1 And handlung$ ( 2 ) = 2
+       If reden$ ( 7 ) = 1 And JOY.state.handlung[2] = 2
           reden$ ( 7 ) = 2
-          Call 'txt$' [ ereignis$ ( 38 ) ]
+          Call 'txt$' [ JOY.ereignis[38] ]
           //Call 'clickmouse$'
           Call 'screco$'
           verb = verb2
@@ -1630,8 +1630,8 @@
  Return
 
  Label raum6:
- If verb = 2 And geg1 = 86 And transport$ ( 90 ) = 2 And flag$ ( 24 ) = 1
-    If flag$ ( 26 ) = 1
+ If verb = 2 And geg1 = 86 And transport$ ( 90 ) = 2 And JOY.state.flag[24] = 1
+    If JOY.state.flag[26] = 1
        Call 'txt$' [ Chr$ ( 10 ) + "MACH DAS LIEBER NICHT !" + Chr$ ( 10 ) + "*" + Chr$ ( 10 ) ]
        //Call 'clickmouse$'
        Call 'screco$'
@@ -1639,31 +1639,31 @@
        Goto parser
     EndIf
     oeffne = 1
-    flag$ ( 24 ) = 2
+    JOY.state.flag[24] = 2
     Gosub initraum6_2
  EndIf
- If verb = 3 And geg1 = 86 And flag$ ( 24 ) = 2
+ If verb = 3 And geg1 = 86 And JOY.state.flag[24] = 2
     schliesse = 1
-    flag$ ( 24 ) = 1
+    JOY.state.flag[24] = 1
     Gosub initraum6_2
  EndIf
  If verb = 4
-    If geg1 = 84 And flag$ ( 25 ) = 0
+    If geg1 = 84 And JOY.state.flag[25] = 0
        ziehe = 1
-       flag$ ( 25 ) = 1
+       JOY.state.flag[25] = 1
        Gosub initraum6_2
-       If transport$ ( 77 ) = 1 And flag$ ( 26 ) = 0 And flag$ ( 28 ) = 0
+       If transport$ ( 77 ) = 1 And JOY.state.flag[26] = 0 And JOY.state.flag[28] = 0
           SwitchScreen(2);
           Bob(6, 186, 64, 7);
           Call 'screco$'
           SwitchScreen(0);
           setZone(6, 188, 64, 200, 67);
-          flag$ ( 28 ) = 1
+          JOY.state.flag[28] = 1
        EndIf
     EndIf
     If geg1 = 86 And transport$ ( 90 ) = 1
        ziehe = 1
-       flag$ ( 24 ) = 1
+       JOY.state.flag[24] = 1
        Gosub initraum6_2
        geg$ ( 86 ) = "T�R"
        g = 90
@@ -1672,15 +1672,15 @@
        Call 'punkte$' [ 317 ]
     EndIf
  EndIf
- If verb = 5 And geg1 = 84 And flag$ ( 25 ) = 1
+ If verb = 5 And geg1 = 84 And JOY.state.flag[25] = 1
     druecke = 1
-    flag$ ( 25 ) = 0
+    JOY.state.flag[25] = 0
     Gosub initraum6_2
  EndIf
  If verb = 7
     If geg1 = 37 And geg2 = 79
        benutze = 1
-       flag$ ( 27 ) = 1
+       JOY.state.flag[27] = 1
        SwitchScreen(0);
        Reset Zone 8
        setZone(20, 230, 61, 249, 67);
@@ -1692,25 +1692,25 @@
        Call 'screco$'
     EndIf
     If geg1 = 77 And geg2 = 74
-       If flag$ ( 24 ) = 2
+       If JOY.state.flag[24] = 2
           Call 'txt$' [ Chr$ ( 10 ) + "MACH DAS LIEBER NICHT !" + Chr$ ( 10 ) + "*" + Chr$ ( 10 ) ]
           //Call 'clickmouse$'
           Call 'screco$'
           Pop
           Goto parser
        EndIf
-       If transport$ ( 77 ) = 1 And flag$ ( 26 ) = 0
+       If transport$ ( 77 ) = 1 And JOY.state.flag[26] = 0
           SwitchScreen(2);
           BobOff(6);
           Call 'screco$'
        EndIf
-       If transport$ ( 77 ) = 2 And flag$ ( 26 ) = 0
+       If transport$ ( 77 ) = 2 And JOY.state.flag[26] = 0
           g = 77
           Gosub ablegen
           transport$ ( 77 ) = 1
        EndIf
        benutze = 1
-       flag$ ( 26 ) = 1
+       JOY.state.flag[26] = 1
        SwitchScreen(0);
        Reset Zone 6
        setZone(6, 195, 14, 209, 18);
@@ -1720,8 +1720,8 @@
        Call 'rot$'
     EndIf
     If geg1 = 110 And geg2 = 91
-       If flag$ ( 26 ) = 0
-          Call 'txt$' [ ereignis$ ( 19 ) ]
+       If JOY.state.flag[26] = 0
+          Call 'txt$' [ JOY.ereignis[19] ]
           //Call 'clickmouse$'
           Call 'screco$'
           g = 110
@@ -1729,7 +1729,7 @@
           Pop
           Goto parser
        EndIf
-       Call 'txt$' [ ereignis$ ( 20 ) ]
+       Call 'txt$' [ JOY.ereignis[20] ]
        //Call 'clickmouse$'
        Call 'screco$'
        g = 110
@@ -1746,14 +1746,14 @@
     EndIf
  EndIf
  If verb = 10
-    If geg1 = 86 And flag$ ( 24 ) = 2 And flag$ ( 25 ) = 1
+    If geg1 = 86 And JOY.state.flag[24] = 2 And JOY.state.flag[25] = 1
        gehe = 1
        r = 10
        Gosub initraum
     EndIf
  EndIf
- If verb = 12 And geg1 = 77 And flag$ ( 26 ) = 1
-    flag$ ( 26 ) = 0
+ If verb = 12 And geg1 = 77 And JOY.state.flag[26] = 1
+    JOY.state.flag[26] = 0
     SwitchScreen(0);
     Get Palette 2
  EndIf
@@ -1776,16 +1776,16 @@
 
  Label raum8:
  If verb = 1
-    If geg1 = 104 And flag$ ( 31 ) = 1 And transport$ ( 110 ) = 1
-       Call 'txt$' [ ereignis$ ( 17 ) ]
+    If geg1 = 104 And JOY.state.flag[31] = 1 And transport$ ( 110 ) = 1
+       Call 'txt$' [ JOY.ereignis[17] ]
        //Call 'clickmouse$'
        Call 'screco$'
        g = 110
        mz = 15
        Gosub aufnehmen
     EndIf
-    If geg1 = 105 And flag$ ( 32 ) = 1 And transport$ ( 111 ) = 1
-       Call 'txt$' [ ereignis$ ( 18 ) ]
+    If geg1 = 105 And JOY.state.flag[32] = 1 And transport$ ( 111 ) = 1
+       Call 'txt$' [ JOY.ereignis[18] ]
        //Call 'clickmouse$'
        Call 'screco$'
        g = 111
@@ -1793,55 +1793,55 @@
        Gosub aufnehmen
     EndIf
  EndIf
- If verb = 2 And geg1 = 108 And flag$ ( 33 ) = 0
+ If verb = 2 And geg1 = 108 And JOY.state.flag[33] = 0
     oeffne = 1
-    flag$ ( 33 ) = 1
+    JOY.state.flag[33] = 1
     SwitchScreen(2);
     Bob(13, 121, 23, 4);
     Call 'screco$'
  EndIf
  If ( verb = 2 Or verb = 4 )
-    If geg1 = 104 And flag$ ( 31 ) = 0
+    If geg1 = 104 And JOY.state.flag[31] = 0
        oeffne = 1
        ziehe = 1
-       flag$ ( 31 ) = 1
-       flag$ ( 32 ) = 0
+       JOY.state.flag[31] = 1
+       JOY.state.flag[32] = 0
        SwitchScreen(2);
        BobOff(10);
        Bob(9, 21, 86, 2);
        Call 'screco$'
     EndIf
-    If geg1 = 105 And flag$ ( 32 ) = 0
+    If geg1 = 105 And JOY.state.flag[32] = 0
        oeffne = 1
        ziehe = 1
-       flag$ ( 31 ) = 0
-       flag$ ( 32 ) = 1
+       JOY.state.flag[31] = 0
+       JOY.state.flag[32] = 1
        SwitchScreen(2);
        BobOff(9);
        Bob(10, 21, 97, 3);
        Call 'screco$'
     EndIf
  EndIf
- If verb = 3 And geg1 = 108 And flag$ ( 33 ) = 1
+ If verb = 3 And geg1 = 108 And JOY.state.flag[33] = 1
     schliesse = 1
-    flag$ ( 33 ) = 0
+    JOY.state.flag[33] = 0
     SwitchScreen(2);
     BobOff(13);
     Call 'screco$'
  EndIf
  If ( verb = 3 Or verb = 5 )
-    If geg1 = 104 And flag$ ( 31 ) = 1
+    If geg1 = 104 And JOY.state.flag[31] = 1
        schliesse = 1
        druecke = 1
-       flag$ ( 31 ) = 0
+       JOY.state.flag[31] = 0
        SwitchScreen(2);
        BobOff(9);
        Call 'screco$'
     EndIf
-    If geg1 = 105 And flag$ ( 32 ) = 1
+    If geg1 = 105 And JOY.state.flag[32] = 1
        schliesse = 1
        druecke = 1
-       flag$ ( 32 ) = 0
+       JOY.state.flag[32] = 0
        SwitchScreen(2);
        BobOff(10);
        Call 'screco$'
@@ -1851,11 +1851,11 @@
     Goto telefon
  EndIf
  If verb = 8 And ( geg1 = 97 Or geg1 = 98 )
-    Call 'txt$' [ ereignis$ ( 75 ) ]
+    Call 'txt$' [ JOY.ereignis[75] ]
     //Call 'clickmouse$'
     Call 'screco$'
  EndIf
- If verb = 10 And geg1 = 108 And flag$ ( 33 ) = 1
+ If verb = 10 And geg1 = 108 And JOY.state.flag[33] = 1
     gehe = 1
     r = 9
     Gosub initraum
@@ -1863,11 +1863,11 @@
  Return
 
  Label raum9:
- If verb = 2 And geg1 = 112 And flag$ ( 34 ) = 0
+ If verb = 2 And geg1 = 112 And JOY.state.flag[34] = 0
     oeffne = 1
-    flag$ ( 34 ) = 1
+    JOY.state.flag[34] = 1
     SwitchScreen(2);
-    If handlung$ ( 6 ) = 4
+    If JOY.state.handlung[6] = 4
        Bob(2, 52, 55, 3);
        person$ ( 13 ) = 9
        Gosub personendisplay
@@ -1880,9 +1880,9 @@
     Reset Zone 1
     setZone(2, 52, 56, 97, 117);
  EndIf
- If verb = 3 And geg1 = 113 And flag$ ( 34 ) = 1
+ If verb = 3 And geg1 = 113 And JOY.state.flag[34] = 1
     schliesse = 1
-    flag$ ( 34 ) = 0
+    JOY.state.flag[34] = 0
     SwitchScreen(2);
     Bob Off
     Call 'screco$'
@@ -1899,7 +1899,7 @@
     Pop
     Goto parser
  EndIf
- If verb = 13 And Btst ( 5 , flag$ ( 57 ) ) And pers = 13
+ If verb = 13 And Btst ( 5 , JOY.state.flag[57] ) And pers = 13
     If geg1 = 88
        gib = 1
        g = 88
@@ -1917,7 +1917,7 @@
        Next
        Gosub inventory
        transport$ ( 203 ) = 2
-       handlung$ ( 6 ) = 5
+       JOY.state.handlung[6] = 5
        Call 'punkte$' [ 823 ]
     Else
        Call 'txt$' [ Chr$ ( 10 ) + "DAS WILL ICH NICHT HABEN." + Chr$ ( 10 ) + "*" + Chr$ ( 10 ) ]
@@ -1931,7 +1931,7 @@
     reden$ ( 13 ) = 2
     Call 'unterhaltung_laden$' [ 13 ]
     Call 'unterhaltung$'
-    flag$ ( 57 ) = gefragt
+    JOY.state.flag[57] = gefragt
  EndIf
  Return
 
@@ -1946,9 +1946,9 @@
  Return
 
  Label raum11:
- If verb = 2 And geg1 = 120 And flag$ ( 62 ) = 0
-    flag$ ( 62 ) = 1
-    Call 'txt$' [ ereignis$ ( 92 ) ]
+ If verb = 2 And geg1 = 120 And JOY.state.flag[62] = 0
+    JOY.state.flag[62] = 1
+    Call 'txt$' [ JOY.ereignis[92] ]
     //Call 'clickmouse$'
     Call 'screco$'
     Gosub testinventar
@@ -1971,16 +1971,16 @@
  EndIf
  If verb = 10 And geg1 = 119
     gehe = 1
-    Call 'txt$' [ ereignis$ ( 63 ) ]
+    Call 'txt$' [ JOY.ereignis[63] ]
     //Call 'clickmouse$'
     Call 'screco$'
  EndIf
  Return
 
  Label raum12:
- If verb = 7 And geg1 = 222 And geg2 = 223 And flag$ ( 64 ) = 0
-    flag$ ( 64 ) = 1
-    Call 'txt$' [ ereignis$ ( 94 ) ]
+ If verb = 7 And geg1 = 222 And geg2 = 223 And JOY.state.flag[64] = 0
+    JOY.state.flag[64] = 1
+    Call 'txt$' [ JOY.ereignis[94] ]
     //Call 'clickmouse$'
     Call 'screco$'
     g = 127
@@ -2039,22 +2039,22 @@
  Return
 
  Label raum13:
- If verb = 2 And geg1 = 136 And flag$ ( 35 ) = 0
+ If verb = 2 And geg1 = 136 And JOY.state.flag[35] = 0
     oeffne = 1
-    flag$ ( 35 ) = 1
+    JOY.state.flag[35] = 1
     SwitchScreen(2);
     Bob(2, 184, 22, 2);
     Call 'screco$'
  EndIf
- If verb = 3 And geg1 = 137 And flag$ ( 35 ) = 1
+ If verb = 3 And geg1 = 137 And JOY.state.flag[35] = 1
     schliesse = 1
-    flag$ ( 35 ) = 0
+    JOY.state.flag[35] = 0
     SwitchScreen(2);
     BobOff(2);
     Call 'screco$'
  EndIf
  If verb = 10
-    If geg1 = 136 And flag$ ( 35 ) = 1
+    If geg1 = 136 And JOY.state.flag[35] = 1
        gehe = 1
        r = 12
        Gosub initraum
@@ -2069,42 +2069,42 @@
 
  Label raum14:
  If verb = 1 And geg1 = 141
-    Call 'txt$' [ ereignis$ ( 86 ) ]
+    Call 'txt$' [ JOY.ereignis[86] ]
     //Call 'clickmouse$'
     Call 'screco$'
     Pop
     Goto parser
  EndIf
- If verb = 2 And geg1 = 139 And flag$ ( 36 ) = 0
+ If verb = 2 And geg1 = 139 And JOY.state.flag[36] = 0
     oeffne = 1
-    flag$ ( 36 ) = 1
+    JOY.state.flag[36] = 1
     SwitchScreen(2);
     Bob(2, 55, 35, 2);
     Call 'screco$'
  EndIf
- If verb = 3 And geg1 = 139 And flag$ ( 36 ) = 1
+ If verb = 3 And geg1 = 139 And JOY.state.flag[36] = 1
     schliesse = 1
-    flag$ ( 36 ) = 0
+    JOY.state.flag[36] = 0
     SwitchScreen(2);
     BobOff(2);
     Call 'screco$'
  EndIf
  If verb = 10
     If geg1 = 138
-       Call 'txt$' [ ereignis$ ( 63 ) ]
+       Call 'txt$' [ JOY.ereignis[63] ]
        //Call 'clickmouse$'
        Call 'screco$'
        Pop
        Goto parser
     EndIf
-    If geg1 = 139 And flag$ ( 36 ) = 1
+    If geg1 = 139 And JOY.state.flag[36] = 1
        gehe = 1
        r = 15
        Gosub initraum
     EndIf
  EndIf
  If verb = 11
-    Call 'txt$' [ ereignis$ ( 63 ) ]
+    Call 'txt$' [ JOY.ereignis[63] ]
     //Call 'clickmouse$'
     Call 'screco$'
     Call 'verb_raus$'
@@ -2113,10 +2113,10 @@
     Pop
     Goto parser
  EndIf
- If verb = 12 And geg1 = 141 And handlung$ ( 3 ) = 5
-    Call 'txt$' [ ereignis$ ( 87 ) ]
+ If verb = 12 And geg1 = 141 And JOY.state.handlung[3] = 5
+    Call 'txt$' [ JOY.ereignis[87] ]
     //Call 'clickmouse$'
-    handlung$ ( 3 ) = 6
+    JOY.state.handlung[3] = 6
     geg$ ( 141 ) = "LOCH IM FU�WEG"
     g = 142
     mz = 5
@@ -2132,32 +2132,32 @@
 
  Label raum15:
  If verb = 2
-    If geg1 = 147 And flag$ ( 37 ) = 0
+    If geg1 = 147 And JOY.state.flag[37] = 0
        oeffne = 1
-       flag$ ( 37 ) = 1
+       JOY.state.flag[37] = 1
        SwitchScreen(2);
        Bob(5, 100, 36, 7);
        Call 'screco$'
     EndIf
-    If geg1 = 148 And flag$ ( 38 ) = 0
+    If geg1 = 148 And JOY.state.flag[38] = 0
        oeffne = 1
-       flag$ ( 38 ) = 1
+       JOY.state.flag[38] = 1
        SwitchScreen(2);
        Bob(6, 280, 30, 8);
        Call 'screco$'
     EndIf
  EndIf
  If verb = 3
-    If geg1 = 147 And flag$ ( 37 ) = 1
+    If geg1 = 147 And JOY.state.flag[37] = 1
        schliesse = 1
-       flag$ ( 37 ) = 0
+       JOY.state.flag[37] = 0
        SwitchScreen(2);
        BobOff(5);
        Call 'screco$'
     EndIf
-    If geg1 = 148 And flag$ ( 38 ) = 1
+    If geg1 = 148 And JOY.state.flag[38] = 1
        schliesse = 1
-       flag$ ( 38 ) = 0
+       JOY.state.flag[38] = 0
        SwitchScreen(2);
        BobOff(6);
        Call 'screco$'
@@ -2169,12 +2169,12 @@
        r = 19
        Gosub initraum
     EndIf
-    If geg1 = 147 And flag$ ( 37 ) = 1
+    If geg1 = 147 And JOY.state.flag[37] = 1
        gehe = 1
        r = 17
        Gosub initraum
     EndIf
-    If geg1 = 148 And flag$ ( 38 ) = 1
+    If geg1 = 148 And JOY.state.flag[38] = 1
        gehe = 1
        SwitchScreen(0);
        Paste Bob 117 , 45 , 2
@@ -2220,20 +2220,20 @@
           Goto parser
        EndIf
        If mz = 2
-          If handlung$ ( 3 ) = 5
-             Call 'txt$' [ ereignis$ ( 84 ) ]
+          If JOY.state.handlung[3] = 5
+             Call 'txt$' [ JOY.ereignis[84] ]
              //Call 'clickmouse$'
              Call 'screco$'
              Call 'init_zones$'
              Pop
              Goto parser
           EndIf
-          If handlung$ ( 4 ) = 1
-             If flag$ ( 60 ) = 0
-                Call 'txt$' [ ereignis$ ( 62 ) ]
+          If JOY.state.handlung[4] = 1
+             If JOY.state.flag[60] = 0
+                Call 'txt$' [ JOY.ereignis[62] ]
                 //Call 'clickmouse$'
                 Call 'screco$'
-                Call 'txt$' [ ereignis$ ( 88 ) ]
+                Call 'txt$' [ JOY.ereignis[88] ]
                 //Call 'clickmouse$'
                 person$ ( 18 ) = 1
                 SwitchScreen(2);
@@ -2258,7 +2258,7 @@
                 Goto parser
              EndIf
           Else
-             Call 'txt$' [ ereignis$ ( 48 ) ]
+             Call 'txt$' [ JOY.ereignis[48] ]
              //Call 'clickmouse$'
              Call 'screco$'
              Call 'init_zones$'
@@ -2289,7 +2289,7 @@
  Return
 
  Label raum16:
- If verb = 11 And flag$ ( 39 ) = 0 And ( transport$ ( 150 ) = 2 Or transport$ ( 151 ) = 2 Or transport$ ( 152 ) = 2 Or transport$ ( 153 ) = 2 Or transport$ ( 154 ) = 2 Or transport$ ( 155 ) = 2 Or transport$ ( 162 ) = 2 Or transport$ ( 163 ) = 2 Or transport$ ( 164 ) = 2 Or transport$ ( 165 ) = 2 )
+ If verb = 11 And JOY.state.flag[39] = 0 And ( transport$ ( 150 ) = 2 Or transport$ ( 151 ) = 2 Or transport$ ( 152 ) = 2 Or transport$ ( 153 ) = 2 Or transport$ ( 154 ) = 2 Or transport$ ( 155 ) = 2 Or transport$ ( 162 ) = 2 Or transport$ ( 163 ) = 2 Or transport$ ( 164 ) = 2 Or transport$ ( 165 ) = 2 )
     go = 1
     Goto game_over
  EndIf
@@ -2407,7 +2407,7 @@
     If geg1 = 31 And ( geg2 = 157 Or pers = 4 )
        gib = 1
        reden$ ( 4 ) = 1
-       Call 'txt$' [ ereignis$ ( 33 ) ]
+       Call 'txt$' [ JOY.ereignis[33] ]
        //Call 'clickmouse$'
        Call 'screco$'
        g = 31
@@ -2425,12 +2425,12 @@
        Pop
        Goto parser
     EndIf
-    If ( geg1 = 89 Or geg1 = 255 ) And flag$ ( 39 ) = 0 And ( geg2 = 157 Or pers = 4 )
+    If ( geg1 = 89 Or geg1 = 255 ) And JOY.state.flag[39] = 0 And ( geg2 = 157 Or pers = 4 )
        gib = 1
-       flag$ ( 39 ) = 1
+       JOY.state.flag[39] = 1
        g = 89
        Gosub ablegen
-       Call 'txt$' [ ereignis$ ( 43 ) ]
+       Call 'txt$' [ JOY.ereignis[43] ]
        //Call 'clickmouse$'
        Call 'screco$'
        Call 'punkte$' [ 12 ]
@@ -2454,9 +2454,9 @@
 
  Label raum17:
  If verb = 2
-    If geg1 = 169 And flag$ ( 40 ) = 0
+    If geg1 = 169 And JOY.state.flag[40] = 0
        oeffne = 1
-       flag$ ( 40 ) = 1
+       JOY.state.flag[40] = 1
        SwitchScreen(0);
        Reset Zone 3
        setZone(4, 160, 44, 187, 71);
@@ -2464,14 +2464,14 @@
        Bob(4, 160, 40, 4);
        Call 'screco$'
     EndIf
-    If geg1 = 170 And flag$ ( 40 ) = 1
+    If geg1 = 170 And JOY.state.flag[40] = 1
        Goto tresor
     EndIf
  EndIf
  If verb = 3
-    If geg1 = 170 And flag$ ( 40 ) = 1
+    If geg1 = 170 And JOY.state.flag[40] = 1
        schliesse = 1
-       flag$ ( 40 ) = 0
+       JOY.state.flag[40] = 0
        SwitchScreen(0);
        Reset Zone 4
        setZone(3, 160, 44, 187, 71);
@@ -2480,9 +2480,9 @@
        Call 'screco$'
     EndIf
  EndIf
- If verb = 4 And geg1 = 167 And flag$ ( 41 ) = 0
+ If verb = 4 And geg1 = 167 And JOY.state.flag[41] = 0
     ziehe = 1
-    flag$ ( 41 ) = 1
+    JOY.state.flag[41] = 1
     SwitchScreen(0);
     Reset Zone 1
     setZone(1, 114, 74, 188, 116);
@@ -2490,9 +2490,9 @@
     Bob(1, 112, 72, 5);
     Call 'screco$'
  EndIf
- If verb = 5 And geg1 = 167 And flag$ ( 41 ) = 1
+ If verb = 5 And geg1 = 167 And JOY.state.flag[41] = 1
     druecke = 1
-    flag$ ( 41 ) = 0
+    JOY.state.flag[41] = 0
     SwitchScreen(0);
     Reset Zone 1
     setZone(1, 52, 78, 118, 117);
@@ -2501,7 +2501,7 @@
     Call 'screco$'
  EndIf
  If verb = 7 And ( geg1 = 163 Or geg1 = 239 ) And geg2 = 170
-    flag$ ( 40 ) = 2
+    JOY.state.flag[40] = 2
     benutze = 1
     SwitchScreen(2);
     Bob(4, 150, 40, 6);
@@ -2514,9 +2514,9 @@
     mz = 9
     Gosub aufnehmen
  EndIf
- If verb = 10 And geg1 = 168 And flag$ ( 41 ) = 1
-    If flag$ ( 55 ) = 0
-       Call 'txt$' [ ereignis$ ( 61 ) ]
+ If verb = 10 And geg1 = 168 And JOY.state.flag[41] = 1
+    If JOY.state.flag[55] = 0
+       Call 'txt$' [ JOY.ereignis[61] ]
        //Call 'clickmouse$'
        Pop
        Goto labyrinth
@@ -2530,32 +2530,32 @@
 
  Label raum18:
  If verb = 2
-    If geg1 = 176 And flag$ ( 43 ) = 0
+    If geg1 = 176 And JOY.state.flag[43] = 0
        oeffne = 1
-       Call 'txt$' [ ereignis$ ( 44 ) ]
+       Call 'txt$' [ JOY.ereignis[44] ]
        //Call 'clickmouse$'
        Call 'screco$'
-       flag$ ( 43 ) = 1
+       JOY.state.flag[43] = 1
        SwitchScreen(2);
        Bob(2, 125, 11, 2);
        Call 'screco$'
     EndIf
-    If geg1 = 177 And flag$ ( 44 ) = 0
+    If geg1 = 177 And JOY.state.flag[44] = 0
        oeffne = 1
-       Call 'txt$' [ ereignis$ ( 44 ) ]
+       Call 'txt$' [ JOY.ereignis[44] ]
        //Call 'clickmouse$'
        Call 'screco$'
-       flag$ ( 44 ) = 1
+       JOY.state.flag[44] = 1
        SwitchScreen(2);
        Bob(3, 175, 11, 2);
        Call 'screco$'
     EndIf
-    If geg1 = 178 And flag$ ( 45 ) = 0
+    If geg1 = 178 And JOY.state.flag[45] = 0
        oeffne = 1
-       Call 'txt$' [ ereignis$ ( 44 ) ]
+       Call 'txt$' [ JOY.ereignis[44] ]
        //Call 'clickmouse$'
        Call 'screco$'
-       flag$ ( 45 ) = 1
+       JOY.state.flag[45] = 1
        SwitchScreen(2);
        Bob(4, 225, 11, 2);
        Call 'screco$'
@@ -2568,10 +2568,10 @@
     EndIf
  EndIf
  If verb = 11
-    flag$ ( 43 ) = 0
-    flag$ ( 44 ) = 0
-    flag$ ( 45 ) = 0
-    Call 'txt$' [ ereignis$ ( 46 ) ]
+    JOY.state.flag[43] = 0
+    JOY.state.flag[44] = 0
+    JOY.state.flag[45] = 0
+    Call 'txt$' [ JOY.ereignis[46] ]
     //Call 'clickmouse$'
  EndIf
  If verb = 16 And pers = 17
@@ -2585,7 +2585,7 @@
        Goto parser
     EndIf
     If reden$ ( 17 ) = 1
-       Call 'txt$' [ ereignis$ ( 47 ) ]
+       Call 'txt$' [ JOY.ereignis[47] ]
        //Call 'clickmouse$'
        Call 'screco$'
        verb = verb2
@@ -2597,16 +2597,16 @@
 
  Label raum19:
  If verb = 2
-    If geg1 = 182 And flag$ ( 46 ) = 0
+    If geg1 = 182 And JOY.state.flag[46] = 0
        oeffne = 1
-       flag$ ( 46 ) = 1
+       JOY.state.flag[46] = 1
        SwitchScreen(2);
        Bob(1, 15, 67, 2);
        Call 'screco$'
     EndIf
-    If geg1 = 186 And flag$ ( 47 ) = 0
+    If geg1 = 186 And JOY.state.flag[47] = 0
        oeffne = 1
-       flag$ ( 47 ) = 1
+       JOY.state.flag[47] = 1
        SwitchScreen(2);
        BobOff(5);
        Call 'screco$'
@@ -2617,16 +2617,16 @@
     EndIf
  EndIf
  If verb = 3
-    If geg1 = 182 And flag$ ( 46 ) = 1
+    If geg1 = 182 And JOY.state.flag[46] = 1
        schliesse = 1
-       flag$ ( 46 ) = 0
+       JOY.state.flag[46] = 0
        SwitchScreen(2);
        BobOff(1);
        Call 'screco$'
     EndIf
-    If geg1 = 186 And flag$ ( 47 ) = 1
+    If geg1 = 186 And JOY.state.flag[47] = 1
        schliesse = 1
-       flag$ ( 47 ) = 0
+       JOY.state.flag[47] = 0
        SwitchScreen(2);
        Bob(5, 206, 6, 3);
        Call 'screco$'
@@ -2636,9 +2636,9 @@
        setZone(5, 270, 11, 302, 98);
     EndIf
  EndIf
- If verb = 7 And geg1 = 78 And geg2 = 184 And flag$ ( 63 ) = 0
-    flag$ ( 63 ) = 1
-    Call 'txt$' [ ereignis$ ( 93 ) ]
+ If verb = 7 And geg1 = 78 And geg2 = 184 And JOY.state.flag[63] = 0
+    JOY.state.flag[63] = 1
+    Call 'txt$' [ JOY.ereignis[93] ]
     //Call 'clickmouse$'
     Call 'screco$'
     Gosub testinventar
@@ -2665,9 +2665,9 @@
  Label raum20:
  If verb = 2
     If geg1 = 196 And etage = 5
-       If flag$ ( 48 ) = 0
+       If JOY.state.flag[48] = 0
           oeffne = 1
-          flag$ ( 48 ) = 1
+          JOY.state.flag[48] = 1
           SwitchScreen(2);
           BobOff(8);
           Bob(9, 157, 22, 12);
@@ -2677,7 +2677,7 @@
           Pop
           Goto parser
        EndIf
-       If flag$ ( 48 ) = 2
+       If JOY.state.flag[48] = 2
           Call 'txt$' [ Chr$ ( 10 ) + "DIE T�R KANNST DU NICHT �FFNEN." + Chr$ ( 10 ) + "*" + Chr$ ( 10 ) ]
           //Call 'clickmouse$'
           Call 'screco$'
@@ -2692,9 +2692,9 @@
        Call 'screco$'
     EndIf
  EndIf
- If verb = 3 And geg1 = 196 And etage = 5 And flag$ ( 48 ) = 1
+ If verb = 3 And geg1 = 196 And etage = 5 And JOY.state.flag[48] = 1
     schliesse = 1
-    flag$ ( 48 ) = 0
+    JOY.state.flag[48] = 0
     SwitchScreen(2);
     Bob(8, 168, 67, 14);
     BobOff(9);
@@ -2704,7 +2704,7 @@
  EndIf
  If verb = 7 And geg1 = 2 And geg2 = 196 And etage = 5
     benutze = 1
-    flag$ ( 48 ) = 0
+    JOY.state.flag[48] = 0
     SwitchScreen(2);
     Bob(8, 168, 67, 14);
     Call 'screco$'
@@ -2721,7 +2721,7 @@
  EndIf
  If verb = 13 And geg1 = 174 And pers = 16
     gib = 1
-    Call 'txt$' [ ereignis$ ( 55 ) ]
+    Call 'txt$' [ JOY.ereignis[55] ]
     //Call 'clickmouse$'
     Call 'screco$'
     g = 174
@@ -2729,7 +2729,7 @@
     person$ ( 16 ) = 0
     person$ ( 2 ) = 20
     Gosub personendisplay
-    handlung$ ( 4 ) = 2
+    JOY.state.handlung[4] = 2
     SwitchScreen(2);
     Bob(9, 157, 22, 13);
     Call 'screco$'
@@ -2737,7 +2737,7 @@
  EndIf
  If verb = 16
     If pers = 2
-       Call 'txt$' [ ereignis$ ( 55 ) ]
+       Call 'txt$' [ JOY.ereignis[55] ]
        //Call 'clickmouse$'
        Call 'screco$'
        verb = verb2
@@ -2803,7 +2803,7 @@
     Call 'unterhaltung$'
     verb = verb2
     If Btst ( 4 , gefragt )
-       handlung$ ( 6 ) = 3
+       JOY.state.handlung[6] = 3
        Call 'punkte$' [ 784 ]
        g = 203
        mz = 7
@@ -2823,15 +2823,15 @@
  Label raum23:
  If verb = 7
     If geg1 = 218
-       Add flag$ ( 50 ) , 1 , 1 To 4
+       Add JOY.state.flag[50] , 1 , 1 To 4
        SwitchScreen(0);
-       If flag$ ( 50 ) = 1
+       If JOY.state.flag[50] = 1
           Fade 3 , , , , , , , , , , , 0xad5 , , , , 0xad5 , , , , , 0xad5 , 0xad5 , 0xad5 , 0xad5 , 0xad5 , 0xad5 , 0xad5 , 0xad5 , 0xad5 , 0xad5 , 0xad5 , 0xad5
        EndIf
-       If flag$ ( 50 ) = 2 Or flag$ ( 50 ) = 4
+       If JOY.state.flag[50] = 2 Or JOY.state.flag[50] = 4
           Fade 3 , , , , , , , , , , , 0x780 , , , , 0x452 , , , , , 0xf00 , 0xf77 , 0xc , 0xfbb , 0xccc , 0xff0 , 0x23 , 0x17 , 0xb0 , 0x0 , 0xaaf , 0x44f
        EndIf
-       If flag$ ( 50 ) = 3
+       If JOY.state.flag[50] = 3
           Fade 3 , , , , , , , , , , , 0x0 , , , , 0x0 , , , , , 0x0 , 0x0 , 0x0 , 0x0 , 0x0 , 0x0 , 0x0 , 0x0 , 0x0 , 0x0 , 0x0 , 0x0
        EndIf
        Pop
@@ -2852,49 +2852,49 @@
        Call 'screco$'
        Fade 1 , , , , , , , , , , , 0x760 , , , , 0x760 , , , , , 0x760 , 0x760 , 0x760 , 0x760 , 0x760 , 0x760 , 0x760 , 0x760 , 0x760 , 0x760 , 0x760 , 0x760
        Wait 100
-       Call 'txt$' [ ereignis$ ( 85 ) ]
+       Call 'txt$' [ JOY.ereignis[85] ]
        //Call 'clickmouse$'
        Call 'screco$'
        SwitchScreen(1);
        Ink 0 , 5
-       Text 2 , 6 , "�FFNE BATTERIEFACH" + geg$ ( 0 )
+       Text(2, 6, "�FFNE BATTERIEFACH" + geg$ ( 0 ));
        Call 'txt$' [ Chr$ ( 10 ) + "O.K." + Chr$ ( 10 ) + "*" + Chr$ ( 10 ) ]
        //Call 'clickmouse$'
        Call 'screco$'
        SwitchScreen(1);
        Ink 0 , 5
-       Text 2 , 6 , "NIMM BATTERIEN" + geg$ ( 0 )
+       Text(2, 6, "NIMM BATTERIEN" + geg$ ( 0 ));
        Call 'txt$' [ Chr$ ( 10 ) + "DIE KANNST DU NICHT NEHMEN !" + Chr$ ( 10 ) + "*" + Chr$ ( 10 ) ]
        //Call 'clickmouse$'
        Call 'screco$'
        SwitchScreen(1);
        Ink 0 , 5
-       Text 2 , 6 , "PUL RAU� BATTERIEN" + geg$ ( 0 )
+       Text(2, 6, "PUL RAU� BATTERIEN" + geg$ ( 0 ));
        Call 'txt$' [ Chr$ ( 10 ) + "O.K." + Chr$ ( 10 ) + "*" + Chr$ ( 10 ) ]
        //Call 'clickmouse$'
        Call 'screco$'
        SwitchScreen(1);
        Ink 0 , 5
-       Text 2 , 6 , "REI� AB FINGERNAGEL" + geg$ ( 0 )
+       Text(2, 6, "REI� AB FINGERNAGEL" + geg$ ( 0 ));
        Call 'txt$' [ Chr$ ( 10 ) + "O.K." + Chr$ ( 10 ) + "*" + Chr$ ( 10 ) ]
        //Call 'clickmouse$'
        Call 'screco$'
        SwitchScreen(1);
        Ink 0 , 5
-       Text 2 , 6 , "SCHMEI� AUS FENSTER BATTERIEN+LAMEBOY" + geg$ ( 0 )
+       Text(2, 6, "SCHMEI� AUS FENSTER BATTERIEN+LAMEBOY" + geg$ ( 0 ));
        Call 'txt$' [ Chr$ ( 10 ) + "O.K." + Chr$ ( 10 ) + "*" + Chr$ ( 10 ) ]
        //Call 'clickmouse$'
        Call 'screco$'
        SwitchScreen(1);
        Ink 0 , 5
-       Text 2 , 6 , "SCHREI AN GERD" + geg$ ( 0 )
+       Text(2, 6, "SCHREI AN GERD" + geg$ ( 0 ));
        Call 'txt$' [ Chr$ ( 10 ) + "O.K." + Chr$ ( 10 ) + "*" + Chr$ ( 10 ) ]
        //Call 'clickmouse$'
        Call 'screco$'
-       Call 'txt$' [ ereignis$ ( 42 ) ]
+       Call 'txt$' [ JOY.ereignis[42] ]
        //Call 'clickmouse$'
        Call 'screco$'
-       handlung$ ( 3 ) = 5
+       JOY.state.handlung[3] = 5
        Call 'punkte$' [ 81 ]
        r = 1
        Gosub initraum
@@ -2902,7 +2902,7 @@
        Goto parser
     EndIf
     If geg1 = 221
-       Call 'txt$' [ ereignis$ ( 40 ) ]
+       Call 'txt$' [ JOY.ereignis[40] ]
        //Call 'clickmouse$'
        Call 'screco$'
        Pop
@@ -2910,7 +2910,7 @@
     EndIf
  EndIf
  If verb = 11
-    Call 'txt$' [ ereignis$ ( 41 ) ]
+    Call 'txt$' [ JOY.ereignis[41] ]
     //Call 'clickmouse$'
     Call 'screco$'
     Call 'verb_raus$'
@@ -2923,9 +2923,9 @@
 
  Label raum24:
  If verb = 2
-    If geg1 = 226 And flag$ ( 66 ) = 0
-       flag$ ( 66 ) = 1
-       Call 'txt$' [ ereignis$ ( 96 ) ]
+    If geg1 = 226 And JOY.state.flag[66] = 0
+       JOY.state.flag[66] = 1
+       Call 'txt$' [ JOY.ereignis[96] ]
        //Call 'clickmouse$'
        Call 'screco$'
        SwitchScreen(2);
@@ -2934,8 +2934,8 @@
        Pop
        Goto parser
     EndIf
-    If geg1 = 229 And flag$ ( 67 ) = 0
-       flag$ ( 67 ) = 1
+    If geg1 = 229 And JOY.state.flag[67] = 0
+       JOY.state.flag[67] = 1
        oeffne = 1
        SwitchScreen(2);
        Bob(2, 171, 19, 2);
@@ -2943,9 +2943,9 @@
     EndIf
  EndIf
  If verb = 3
-    If geg1 = 226 And flag$ ( 66 ) = 1
-       flag$ ( 66 ) = 0
-       Call 'txt$' [ ereignis$ ( 97 ) ]
+    If geg1 = 226 And JOY.state.flag[66] = 1
+       JOY.state.flag[66] = 0
+       Call 'txt$' [ JOY.ereignis[97] ]
        //Call 'clickmouse$'
        Call 'screco$'
        SwitchScreen(2);
@@ -2954,8 +2954,8 @@
        Pop
        Goto parser
     EndIf
-    If geg1 = 229 And flag$ ( 67 ) = 1
-       flag$ ( 67 ) = 0
+    If geg1 = 229 And JOY.state.flag[67] = 1
+       JOY.state.flag[67] = 0
        schliesse = 1
        SwitchScreen(2);
        BobOff(2);
@@ -2997,7 +2997,7 @@
     Goto parser
  EndIf
  If verb = 10
-    If geg1 = 226 And flag$ ( 66 ) = 1
+    If geg1 = 226 And JOY.state.flag[66] = 1
        r = 16
        Gosub initraum
        Pop
@@ -3009,7 +3009,7 @@
        Pop
        Goto parser
     EndIf
-    If geg1 = 229 And flag$ ( 67 ) = 1
+    If geg1 = 229 And JOY.state.flag[67] = 1
        r = 26
        Gosub initraum
        Pop
@@ -3020,7 +3020,7 @@
 
  Label raum25:
  If verb = 7 And geg1 = 172 And geg2 = 239
-    Call 'txt$' [ ereignis$ ( 98 ) ]
+    Call 'txt$' [ JOY.ereignis[98] ]
     //Call 'clickmouse$'
     SwitchScreen(2);
     BobOff(2);
@@ -3044,7 +3044,7 @@
  EndIf
  If verb = 10
     If geg1 = 238
-       Call 'txt$' [ ereignis$ ( 100 ) ]
+       Call 'txt$' [ JOY.ereignis[100] ]
        //Call 'clickmouse$'
        Call 'screco$'
        r = 24
@@ -3120,7 +3120,7 @@
        Pop
        Goto parser
     Else
-       Call 'txt$' [ ereignis$ ( 102 ) ]
+       Call 'txt$' [ JOY.ereignis[102] ]
        //Call 'clickmouse$'
        Call 'screco$'
        g = 132
@@ -3159,7 +3159,7 @@
           Pop
           Goto parser
        Else If transport$ ( 89 ) = 2 Or transport$ ( 255 ) = 2
-          Call 'txt$' [ ereignis$ ( 101 ) ]
+          Call 'txt$' [ JOY.ereignis[101] ]
           //Call 'clickmouse$'
           Call 'screco$'
           g = 89
@@ -3199,7 +3199,7 @@
  Label raum_alle:
  If verb = 1
     If geg1 = 8 And transport$ ( 8 ) = 2
-       flag$ ( 2 ) = 1
+       JOY.state.flag[2] = 1
        inventar$ ( mz - 4 ) = 9
        invent$ ( mz - 4 ) = Chr$ ( 10 ) + "DIE HAST DU SCHON GELESEN !" + Chr$ ( 10 ) + "*" + Chr$ ( 10 )
        Gosub inventory
@@ -3207,11 +3207,11 @@
        transport$ ( 9 ) = 2
     EndIf
     If geg1 = 11
-       Bset.<> 1 , flag$ ( 53 )
+       Bset.<> 1 , JOY.state.flag[53]
     EndIf
     If geg1 = 15
        person$ ( 1 ) = "JUPP JENNSEN"
-       flag$ ( 54 ) = 1
+       JOY.state.flag[54] = 1
        person$ ( 1 ) = raum
        Gosub personendisplay
        Call 'punkte$' [ 100 ]
@@ -3226,9 +3226,9 @@
        g = 110
        Gosub ablegen
     EndIf
-    If geg1 = 127 And flag$ ( 42 ) > 0
+    If geg1 = 127 And JOY.state.flag[42] > 0
        oeffne = 1
-       flag$ ( 42 ) = 0
+       JOY.state.flag[42] = 0
        Gosub testinventar
        Call 'iconbank$' [ 1 ]
        SwitchScreen(0);
@@ -3247,9 +3247,9 @@
     EndIf
  EndIf
  If verb = 7
-    If geg1 = 165 And geg2 = 127 And flag$ ( 42 ) = 0
+    If geg1 = 165 And geg2 = 127 And JOY.state.flag[42] = 0
        benutze = 1
-       flag$ ( 42 ) = 1
+       JOY.state.flag[42] = 1
        g = 165
        Gosub ablegen
        transport$ ( 165 ) = 1
@@ -3264,22 +3264,22 @@
     EndIf
  EndIf
  If verb = 8
-    If geg1 = 127 And flag$ ( 42 ) = 1
+    If geg1 = 127 And JOY.state.flag[42] = 1
        schalte = 1
-       flag$ ( 42 ) = 2
+       JOY.state.flag[42] = 2
     EndIf
  EndIf
  If verb = 9
-    If geg1 = 127 And flag$ ( 42 ) = 2
+    If geg1 = 127 And JOY.state.flag[42] = 2
        schalte = 1
-       flag$ ( 42 ) = 1
+       JOY.state.flag[42] = 1
     EndIf
  EndIf
  If verb = 13 And geg1 = 131 And pers = 9
     gib = 1
     g = 131
     Gosub ablegen
-    Call 'txt$' [ ereignis$ ( 54 ) ]
+    Call 'txt$' [ JOY.ereignis[54] ]
     //Call 'clickmouse$'
     Call 'screco$'
     Pop
@@ -3314,12 +3314,12 @@
           If Btst ( 0 , gefragt )
              reden$ ( 9 ) = 1
              If transport$ ( 36 ) = 1
-                Call 'txt$' [ ereignis$ ( 22 ) ]
+                Call 'txt$' [ JOY.ereignis[22] ]
                 //Call 'clickmouse$'
                 Call 'screco$'
                 transport$ ( 36 ) = 0
              Else
-                Call 'txt$' [ ereignis$ ( 21 ) ]
+                Call 'txt$' [ JOY.ereignis[21] ]
                 //Call 'clickmouse$'
                 Call 'screco$'
              EndIf
@@ -3335,9 +3335,9 @@
        EndIf
     EndIf
  EndIf
- If flag$ ( 53 ) = 111 And flag$ ( 30 ) = 0
-    flag$ ( 30 ) = 1
-    Call 'txt$' [ ereignis$ ( 2 ) ]
+ If JOY.state.flag[53] = 111 And JOY.state.flag[30] = 0
+    JOY.state.flag[30] = 1
+    Call 'txt$' [ JOY.ereignis[2] ]
     //Call 'clickmouse$'
     Call 'screco$'
     Call 'punkte$' [ 500 ]
@@ -3345,14 +3345,14 @@
  Return
 
  Label test_recall:
- If handlung$ ( 6 ) = 5 And flag$ ( 58 ) = 11
-    Call 'txt$' [ ereignis$ ( 59 ) ]
+ If JOY.state.handlung[6] = 5 And JOY.state.flag[58] = 11
+    Call 'txt$' [ JOY.ereignis[59] ]
     //Call 'clickmouse$'
     Call 'screco$'
-    Call 'txt$' [ ereignis$ ( 60 ) ]
+    Call 'txt$' [ JOY.ereignis[60] ]
     //Call 'clickmouse$'
     Call 'screco$'
-    Call 'txt$' [ ereignis$ ( 58 ) ]
+    Call 'txt$' [ JOY.ereignis[58] ]
     //Call 'clickmouse$'
     Call 'screco$'
     SwitchScreen(0);
@@ -3365,7 +3365,7 @@
  Return
 
  Label handlung:
- If zeit = 20 And flag$ ( 56 ) = 1
+ If zeit = 20 And JOY.state.flag[56] = 1
     person$ ( 8 ) = 3
     Gosub personendisplay
  EndIf
@@ -3381,7 +3381,7 @@
     EndIf
  EndIf
  If zeit = 25
-    flag$ ( 14 ) = 1
+    JOY.state.flag[14] = 1
     If raum = 4
        SwitchScreen(2);
        Bob(2, 103, 28, 2);
@@ -3389,7 +3389,7 @@
        Call 'screco$'
     EndIf
  EndIf
- If zeit = 25 And flag$ ( 56 ) = 1
+ If zeit = 25 And JOY.state.flag[56] = 1
     person$ ( 8 ) = 2
     Gosub personendisplay
  EndIf
@@ -3413,14 +3413,14 @@
     EndIf
  EndIf
  If zeit = 27
-    flag$ ( 14 ) = 0
+    JOY.state.flag[14] = 0
     If raum = 4
        SwitchScreen(2);
        BobOff(2);
        Call 'screco$'
     EndIf
  EndIf
- If zeit = 28 And flag$ ( 56 ) = 1
+ If zeit = 28 And JOY.state.flag[56] = 1
     person$ ( 8 ) = 1
     If raum = 1
        Gosub personendisplay
@@ -3445,7 +3445,7 @@
     EndIf
  EndIf
  If zeit = 33
-    flag$ ( 17 ) = 1
+    JOY.state.flag[17] = 1
     If raum = 4
        SwitchScreen(2);
        Bob(5, 122, 40, 5);
@@ -3468,7 +3468,7 @@
     EndIf
  EndIf
  If zeit = 35
-    flag$ ( 17 ) = 0
+    JOY.state.flag[17] = 0
     If raum = 4
        SwitchScreen(2);
        BobOff(5);
@@ -3488,9 +3488,9 @@
        If transport$ ( 111 ) = 2
           g = 111
           Gosub ablegen
-          Call 'txt$' [ ereignis$ ( 23 ) ]
+          Call 'txt$' [ JOY.ereignis[23] ]
        Else
-          Call 'txt$' [ ereignis$ ( 24 ) ]
+          Call 'txt$' [ JOY.ereignis[24] ]
        EndIf
        //Call 'clickmouse$'
        Call 'screco$'
@@ -3540,7 +3540,7 @@
        Load pfad$ + "Grafiken/Raum14_1.Pic"
        Unpack 8 To 2
 
-       If flag$ ( 36 ) = 1
+       If JOY.state.flag[36] = 1
           SwitchScreen(2);
           Bob(2, 55, 35, 2);
        EndIf
@@ -3550,7 +3550,7 @@
        Load pfad$ + "Grafiken/Raum14_2.Pic"
        Unpack 8 To 2
 
-       If flag$ ( 36 ) = 1
+       If JOY.state.flag[36] = 1
           SwitchScreen(2);
           Bob(2, 55, 35, 2);
        EndIf
@@ -3562,7 +3562,7 @@
        Load pfad$ + "Grafiken/Raum14.Pic"
        Unpack 8 To 2
 
-       If flag$ ( 36 ) = 1
+       If JOY.state.flag[36] = 1
           SwitchScreen(2);
           Bob(2, 55, 35, 2);
        EndIf
@@ -3573,37 +3573,37 @@
  If zeit = 47
     person$ ( 8 ) = 0
  EndIf
- If zeit > 100 And handlung$ ( 1 ) = 0 And raum > 3 And raum < 16 And flag$ ( 56 ) = 1
-    Call 'txt$' [ ereignis$ ( 26 ) ]
+ If zeit > 100 And JOY.state.handlung[1] = 0 And raum > 3 And raum < 16 And JOY.state.flag[56] = 1
+    Call 'txt$' [ JOY.ereignis[26] ]
     //Call 'clickmouse$'
     Call 'screco$'
-    handlung$ ( 1 ) = 1
+    JOY.state.handlung[1] = 1
  EndIf
- If zeit > 130 And handlung$ ( 2 ) = 0 And raum > 3 And raum < 16 And flag$ ( 56 ) = 1
-    Call 'txt$' [ ereignis$ ( 49 ) ]
+ If zeit > 130 And JOY.state.handlung[2] = 0 And raum > 3 And raum < 16 And JOY.state.flag[56] = 1
+    Call 'txt$' [ JOY.ereignis[49] ]
     //Call 'clickmouse$'
     Call 'screco$'
-    handlung$ ( 2 ) = 1
+    JOY.state.handlung[2] = 1
     reden$ ( 7 ) = 1
     person$ ( 3 ) = 0
-    flag$ ( 3 ) = 1
-    flag$ ( 4 ) = 1
+    JOY.state.flag[3] = 1
+    JOY.state.flag[4] = 1
     Gosub personendisplay
  EndIf
- If handlung$ ( 3 ) = 2
-    handlung$ ( 3 ) = 3
-    Call 'txt$' [ ereignis$ ( 51 ) ]
+ If JOY.state.handlung[3] = 2
+    JOY.state.handlung[3] = 3
+    Call 'txt$' [ JOY.ereignis[51] ]
     //Call 'clickmouse$'
     Call 'screco$'
  EndIf
- If zeit > 140 And flag$ ( 65 ) = 0
-    flag$ ( 65 ) = 1
-    Call 'txt$' [ ereignis$ ( 95 ) ]
+ If zeit > 140 And JOY.state.flag[65] = 0
+    JOY.state.flag[65] = 1
+    Call 'txt$' [ JOY.ereignis[95] ]
     //Call 'clickmouse$'
     Call 'screco$'
  EndIf
- If zeit > 180 And handlung$ ( 3 ) = 1 And raum > 3
-    handlung$ ( 3 ) = 2
+ If zeit > 180 And JOY.state.handlung[3] = 1 And raum > 3
+    JOY.state.handlung[3] = 2
     Call 'txt$' [ Chr$ ( 10 ) + "INZWISCHEN..." + Chr$ ( 10 ) + "*" + Chr$ ( 10 ) ]
     //Call 'clickmouse$'
     Call 'maus_aus$'
@@ -3621,26 +3621,26 @@
     SwitchScreen(0);
     Get Palette 2
     Call 'roller_blind$'
-    Call 'txt$' [ ereignis$ ( 25 ) ]
+    Call 'txt$' [ JOY.ereignis[25] ]
     //Call 'clickmouse$'
     Call 'screco$'
     Wait 100
     Fade 3 , , , , , , , , , , , , , , , , , , , , 0xf00 , 0xf77 , 0xc , 0xfbb , 0xcc , 0xff0 , 0x23 , 0x17 , 0xb0 , 0x0 , 0xaaf , 0x44f
     Wait 100
-    flag$ ( 49 ) = 1
+    JOY.state.flag[49] = 1
     r = raum
     Gosub initraum
     Return
  EndIf
- If zeit > 190 And handlung$ ( 6 ) = 0 And raum > 3 And raum < 16 And flag$ ( 56 ) = 1
-    Call 'txt$' [ ereignis$ ( 52 ) ]
+ If zeit > 190 And JOY.state.handlung[6] = 0 And raum > 3 And raum < 16 And JOY.state.flag[56] = 1
+    Call 'txt$' [ JOY.ereignis[52] ]
     //Call 'clickmouse$'
     Call 'screco$'
-    handlung$ ( 6 ) = 1
+    JOY.state.handlung[6] = 1
     person$ ( 13 ) = 21
  EndIf
  If person$ ( 8 ) = raum And transport$ ( 111 ) = 2
-    Call 'txt$' [ ereignis$ ( 23 ) ]
+    Call 'txt$' [ JOY.ereignis[23] ]
     //Call 'clickmouse$'
     Call 'screco$'
     person$ ( 8 ) = "BARBARA BRINK"
@@ -3650,28 +3650,28 @@
     Call 'punkte$' [ 99 ]
  EndIf
  If raum = 1
-    If handlung$ ( 1 ) = 1
-       Call 'txt$' [ ereignis$ ( 28 ) ]
+    If JOY.state.handlung[1] = 1
+       Call 'txt$' [ JOY.ereignis[28] ]
        //Call 'clickmouse$'
        Call 'screco$'
-       handlung$ ( 1 ) = 2
+       JOY.state.handlung[1] = 2
        person$ ( 5 ) = "CHRISTIANE"
     EndIf
-    If handlung$ ( 2 ) = 1
-       Call 'txt$' [ ereignis$ ( 37 ) ]
+    If JOY.state.handlung[2] = 1
+       Call 'txt$' [ JOY.ereignis[37] ]
        //Call 'clickmouse$'
        Call 'screco$'
-       handlung$ ( 2 ) = 2
+       JOY.state.handlung[2] = 2
        person$ ( 3 ) = "HERBERT"
        geg$ ( 6 ) = "MONITOR(AN)"
-       flag$ ( 3 ) = 1
+       JOY.state.flag[3] = 1
        geg$ ( 7 ) = "AMIGA 2000(AN)"
-       flag$ ( 4 ) = 1
+       JOY.state.flag[4] = 1
     EndIf
-    If handlung$ ( 3 ) = 3
-       Call 'txt$' [ ereignis$ ( 27 ) ]
+    If JOY.state.handlung[3] = 3
+       Call 'txt$' [ JOY.ereignis[27] ]
        //Call 'clickmouse$'
-       handlung$ ( 3 ) = 4
+       JOY.state.handlung[3] = 4
        person$ ( 6 ) = "GERD"
        gehe = 1
        r = 23
@@ -3681,8 +3681,8 @@
        Return
     EndIf
     If transport$ ( 165 ) = 2
-       handlung$ ( 3 ) = 1
-       Call 'txt$' [ ereignis$ ( 35 ) ]
+       JOY.state.handlung[3] = 1
+       Call 'txt$' [ JOY.ereignis[35] ]
        //Call 'clickmouse$'
        Call 'screco$'
        g = 165
@@ -3690,36 +3690,36 @@
        g = 164
        Gosub ablegen
     EndIf
-    If handlung$ ( 5 ) = 1
-       handlung$ ( 5 ) = 2
-       Call 'txt$' [ ereignis$ ( 50 ) ]
+    If JOY.state.handlung[5] = 1
+       JOY.state.handlung[5] = 2
+       Call 'txt$' [ JOY.ereignis[50] ]
        //Call 'clickmouse$'
        Call 'screco$'
     EndIf
-    If handlung$ ( 6 ) = 1
-       handlung$ ( 6 ) = 2
-       Call 'txt$' [ ereignis$ ( 56 ) ]
+    If JOY.state.handlung[6] = 1
+       JOY.state.handlung[6] = 2
+       Call 'txt$' [ JOY.ereignis[56] ]
        //Call 'clickmouse$'
        Call 'screco$'
     EndIf
-    If handlung$ ( 6 ) = 3 And transport$ ( 203 ) = 2
+    If JOY.state.handlung[6] = 3 And transport$ ( 203 ) = 2
        person$ ( 13 ) = 0
        g = 203
        Gosub ablegen
        transport$ ( 203 ) = 1
-       handlung$ ( 6 ) = 4
+       JOY.state.handlung[6] = 4
     EndIf
  EndIf
- If raum = 4 And flag$ ( 30 ) = 0
-    flag$ ( 30 ) = 1
-    Call 'txt$' [ ereignis$ ( 13 ) ]
+ If raum = 4 And JOY.state.flag[30] = 0
+    JOY.state.flag[30] = 1
+    Call 'txt$' [ JOY.ereignis[13] ]
     //Call 'clickmouse$'
     Call 'screco$'
-    flag$ ( 53 ) = 111
+    JOY.state.flag[53] = 111
  EndIf
- If raum = 18 And flag$ ( 60 ) = 1
-    flag$ ( 60 ) = 2
-    Call 'txt$' [ ereignis$ ( 90 ) ]
+ If raum = 18 And JOY.state.flag[60] = 1
+    JOY.state.flag[60] = 2
+    Call 'txt$' [ JOY.ereignis[90] ]
     //Call 'clickmouse$'
     Call 'screco$'
  EndIf
@@ -3819,7 +3819,7 @@
  Call 'test_joy2$'
  SwitchScreen(2);
  Load pfad$ + "Grafiken/Raum" + ( Str$ ( raum ) - " " ) + ".Bobs.Abk"
- If raum = 11 And flag$ ( 68 ) = 1 And zeit > 47
+ If raum = 11 And JOY.state.flag[68] = 1 And zeit > 47
     Load pfad$ + "Grafiken/Raum11_1.Pic" , 8
  Else
     If raum = 5 And person$ ( 7 ) = 5
@@ -3855,7 +3855,7 @@
     objekt$ ( i ) = objekt$ ( i ) + "*" + Chr$ ( 10 )
  Next
  Close 1
- If flag$ ( 54 ) = 1
+ If JOY.state.flag[54] = 1
     person$ ( 1 ) = raum
  EndIf
  SwitchScreen(0);
@@ -3888,10 +3888,10 @@
 
  Label initraum1:
  If raum2 > 3
-    flag$ ( 1 ) = 1
+    JOY.state.flag[1] = 1
  EndIf
  If transport$ ( 2 ) = 1
-    If flag$ ( 1 ) = 0 Or flag$ ( 1 ) = 2
+    If JOY.state.flag[1] = 0 Or JOY.state.flag[1] = 2
        SwitchScreen(2);
        Bob(2, 54, 41, 3);
        SwitchScreen(0);
@@ -3903,7 +3903,7 @@
        setZone(2, 61, 20, 67, 30);
     EndIf
  Else
-    If flag$ ( 1 ) = 1
+    If JOY.state.flag[1] = 1
        SwitchScreen(2);
        Bob(14, 49, 0, 8);
     EndIf
@@ -3914,7 +3914,7 @@
     SwitchScreen(0);
     setZone(5, 306, 33, 316, 47);
  EndIf
- If flag$ ( 5 ) = 0
+ If JOY.state.flag[5] = 0
     SwitchScreen(2);
     Bob(16, 282, 0, 7);
     SwitchScreen(0);
@@ -3923,15 +3923,15 @@
     SwitchScreen(0);
     setZone(16, 281, 0, 319, 54);
  EndIf
- If flag$ ( 3 ) = 1 And flag$ ( 4 ) = 1 And ( handlung$ ( 2 ) = 0 Or handlung$ ( 2 ) = 3 )
+ If JOY.state.flag[3] = 1 And JOY.state.flag[4] = 1 And ( JOY.state.handlung[2] = 0 Or JOY.state.handlung[2] = 3 )
     SwitchScreen(2);
     Bob(6, 136, 81, 6);
  EndIf
- If handlung$ ( 2 ) > 0 And handlung$ ( 2 ) < 3
+ If JOY.state.handlung[2] > 0 And JOY.state.handlung[2] < 3
     SwitchScreen(2);
     Bob(6, 136, 81, 9);
  EndIf
- If flag$ ( 2 ) = 0
+ If JOY.state.flag[2] = 0
     If transport$ ( 8 ) = 1
        SwitchScreen(2);
        Bob(8, 57, 123, 2);
@@ -3954,16 +3954,16 @@
 
  Label initraum2:
  If raum2 = 3
-    flag$ ( 6 ) = 1
+    JOY.state.flag[6] = 1
  EndIf
  Flash 22 , "(88f,20)(009,20)"
- If transport$ ( 31 ) = 1 And flag$ ( 6 ) = 0
+ If transport$ ( 31 ) = 1 And JOY.state.flag[6] = 0
     SwitchScreen(2);
     Bob(13, 205, 19, 2);
     SwitchScreen(0);
     setZone(13, 205, 19, 220, 37);
  EndIf
- If flag$ ( 6 ) = 1
+ If JOY.state.flag[6] = 1
     SwitchScreen(2);
     Bob(14, 196, 8, 3);
     If transport$ ( 31 ) = 1
@@ -3973,18 +3973,18 @@
        setZone(13, 201, 14, 211, 30);
     EndIf
  EndIf
- If flag$ ( 7 ) = 1
+ If JOY.state.flag[7] = 1
     SwitchScreen(2);
     Bob(4, 101, 55, 5);
  EndIf
- If flag$ ( 8 ) = 1
+ If JOY.state.flag[8] = 1
     SwitchScreen(2);
     Bob(6, 126, 54, 6);
  EndIf
  Return
 
  Label initraum3:
- If flag$ ( 9 ) = 1
+ If JOY.state.flag[9] = 1
     SwitchScreen(2);
     Bob(6, 100, 56, 3);
     If transport$ ( 36 ) = 1
@@ -3993,7 +3993,7 @@
        setZone(1, 127, 66, 131, 72);
     EndIf
  EndIf
- If flag$ ( 10 ) = 1
+ If JOY.state.flag[10] = 1
     SwitchScreen(2);
     Bob(7, 127, 29, 2);
     If transport$ ( 37 ) = 1
@@ -4002,19 +4002,19 @@
        setZone(2, 155, 36, 158, 40);
     EndIf
  EndIf
- If flag$ ( 11 ) = 1
+ If JOY.state.flag[11] = 1
     SwitchScreen(2);
     Bob(3, 131, 73, 4);
  EndIf
- If flag$ ( 12 ) = 1
+ If JOY.state.flag[12] = 1
     SwitchScreen(2);
     Bob(4, 129, 84, 5);
  EndIf
- If flag$ ( 13 ) = 1
+ If JOY.state.flag[13] = 1
     SwitchScreen(2);
     Bob(5, 129, 95, 6);
  EndIf
- If flag$ ( 52 ) = 1
+ If JOY.state.flag[52] = 1
     SwitchScreen(2);
     Bob(10, 154, 63, 9);
  EndIf
@@ -4022,36 +4022,36 @@
 
  Label initraum4:
  If person$ ( 7 ) = 5
-    flag$ ( 14 ) = 0
-    flag$ ( 59 ) = 0
+    JOY.state.flag[14] = 0
+    JOY.state.flag[59] = 0
  EndIf
  If raum2 = 5
-    flag$ ( 14 ) = 1
-    flag$ ( 59 ) = 2
+    JOY.state.flag[14] = 1
+    JOY.state.flag[59] = 2
  EndIf
  If raum2 = 6 Or raum2 = 10 Or raum2 > 11
-    flag$ ( 15 ) = 1
+    JOY.state.flag[15] = 1
  EndIf
  If ( raum2 > 6 And raum2 < 9 ) Or raum = 11
-    flag$ ( 17 ) = 1
+    JOY.state.flag[17] = 1
  EndIf
- If flag$ ( 14 ) = 1
+ If JOY.state.flag[14] = 1
     SwitchScreen(2);
     Bob(2, 103, 28, 2);
  EndIf
- If flag$ ( 15 ) = 1
+ If JOY.state.flag[15] = 1
     SwitchScreen(2);
-    If flag$ ( 26 ) = 1
+    If JOY.state.flag[26] = 1
        Bob(3, 119, 39, 6);
     Else
        Bob(3, 119, 39, 3);
     EndIf
  EndIf
- If flag$ ( 16 ) = 1
+ If JOY.state.flag[16] = 1
     SwitchScreen(2);
     Bob(4, 132, 47, 4);
  EndIf
- If flag$ ( 17 ) = 1
+ If JOY.state.flag[17] = 1
     SwitchScreen(2);
     Bob(5, 122, 40, 5);
  EndIf
@@ -4066,11 +4066,11 @@
  Return
 
  Label initraum5:
- If flag$ ( 19 ) = 1 And flag$ ( 22 ) = 1
+ If JOY.state.flag[19] = 1 And JOY.state.flag[22] = 1
     SwitchScreen(2);
     Bob(1, 34, 44, 2);
  EndIf
- If flag$ ( 20 ) = 1 And flag$ ( 29 ) = 1
+ If JOY.state.flag[20] = 1 And JOY.state.flag[29] = 1
     SwitchScreen(2);
     Bob(2, 168, 42, 3);
     SwitchScreen(0);
@@ -4080,7 +4080,7 @@
     SwitchScreen(0);
     setZone(15, 166, 39, 194, 65);
  EndIf
- If flag$ ( 21 ) = 1 And flag$ ( 23 ) = 1
+ If JOY.state.flag[21] = 1 And JOY.state.flag[23] = 1
     SwitchScreen(2);
     Bob(3, 221, 34, 4);
  EndIf
@@ -4088,13 +4088,13 @@
 
  Label initraum6:
  If raum2 = 10 Or raum2 > 11
-    flag$ ( 24 ) = 2
-    flag$ ( 25 ) = 1
+    JOY.state.flag[24] = 2
+    JOY.state.flag[25] = 1
     If transport$ ( 77 ) = 1
-       flag$ ( 28 ) = 1
+       JOY.state.flag[28] = 1
     EndIf
  EndIf
- If flag$ ( 27 ) = 0
+ If JOY.state.flag[27] = 0
     SwitchScreen(0);
     setZone(8, 230, 61, 249, 67);
  Else
@@ -4108,7 +4108,7 @@
     Bob(5, 110, 57, 6);
  EndIf
  If transport$ ( 77 ) = 1
-    If flag$ ( 28 ) = 0
+    If JOY.state.flag[28] = 0
        SwitchScreen(0);
        setZone(6, 147, 64, 157, 67);
        SwitchScreen(2);
@@ -4138,7 +4138,7 @@
     SwitchScreen(2);
     Bob(18, 37, 13, 8);
  EndIf
- If flag$ ( 26 ) = 1
+ If JOY.state.flag[26] = 1
     SwitchScreen(0);
     setZone(6, 195, 14, 209, 18);
     Call 'rot$'
@@ -4147,22 +4147,22 @@
  EndIf
 
  Label initraum6_2:
- If flag$ ( 25 ) = 0
-    If flag$ ( 24 ) = 0
+ If JOY.state.flag[25] = 0
+    If JOY.state.flag[24] = 0
        SwitchScreen(0);
        setZone(13, 119, 63, 181, 70);
        SwitchScreen(2);
        Bob(15, 122, 6, 2);
        Bob(13, 89, 0, 11);
     EndIf
-    If flag$ ( 24 ) = 1
+    If JOY.state.flag[24] = 1
        SwitchScreen(0);
        setZone(13, 119, 63, 181, 70);
        SwitchScreen(2);
        Bob(15, 122, 6, 3);
        Bob(13, 89, 0, 11);
     EndIf
-    If flag$ ( 24 ) = 2
+    If JOY.state.flag[24] = 2
        SwitchScreen(0);
        setZone(13, 119, 63, 181, 70);
        SwitchScreen(2);
@@ -4170,21 +4170,21 @@
        Bob(13, 89, 0, 11);
     EndIf
  Else
-    If flag$ ( 24 ) = 0
+    If JOY.state.flag[24] = 0
        SwitchScreen(0);
        setZone(13, 117, 4, 121, 70);
        SwitchScreen(2);
        Bob(15, 122, 6, 2);
        Bob(13, 89, 0, 10);
     EndIf
-    If flag$ ( 24 ) = 1
+    If JOY.state.flag[24] = 1
        SwitchScreen(0);
        setZone(13, 117, 4, 121, 70);
        SwitchScreen(2);
        Bob(15, 122, 6, 3);
        Bob(13, 89, 0, 10);
     EndIf
-    If flag$ ( 24 ) = 2
+    If JOY.state.flag[24] = 2
        SwitchScreen(0);
        setZone(13, 117, 4, 121, 70);
        SwitchScreen(2);
@@ -4195,7 +4195,7 @@
  Return
 
  Label initraum7:
- If flag$ ( 5 ) = 1
+ If JOY.state.flag[5] = 1
     SwitchScreen(2);
     Bob(1, 249, 38, 2);
  EndIf
@@ -4211,31 +4211,31 @@
 
  Label initraum8:
  If raum2 = 9
-    flag$ ( 33 ) = 1
+    JOY.state.flag[33] = 1
  EndIf
- If flag$ ( 31 ) = 1
+ If JOY.state.flag[31] = 1
     SwitchScreen(2);
     Bob(9, 21, 86, 2);
  EndIf
- If flag$ ( 32 ) = 1
+ If JOY.state.flag[32] = 1
     SwitchScreen(2);
     Bob(10, 21, 97, 3);
  EndIf
- If flag$ ( 33 ) = 1
+ If JOY.state.flag[33] = 1
     SwitchScreen(2);
     Bob(13, 121, 23, 4);
  EndIf
  Return
 
  Label initraum9:
- If flag$ ( 34 ) = 0
+ If JOY.state.flag[34] = 0
     SwitchScreen(0);
     setZone(1, 52, 56, 97, 117);
  Else
     SwitchScreen(0);
     setZone(2, 52, 56, 97, 117);
     SwitchScreen(2);
-    If handlung$ ( 6 ) = 4
+    If JOY.state.handlung[6] = 4
        Bob(2, 52, 55, 3);
        person$ ( 13 ) = 9
     Else
@@ -4252,14 +4252,14 @@
     SwitchScreen(2);
     Bob(3, 138, 83, 2);
  EndIf
- If flag$ ( 62 ) = 1
+ If JOY.state.flag[62] = 1
     SwitchScreen(2);
     Bob(4, 190, 21, 3);
  EndIf
  Return
 
  Label initraum12:
- If flag$ ( 64 ) = 1
+ If JOY.state.flag[64] = 1
     SwitchScreen(2);
     Bob(5, 10, 52, 5);
  EndIf
@@ -4279,25 +4279,25 @@
 
  Label initraum13:
  If raum2 = 12
-    flag$ ( 35 ) = 1
+    JOY.state.flag[35] = 1
  EndIf
- If flag$ ( 35 ) = 1
+ If JOY.state.flag[35] = 1
     SwitchScreen(2);
     Bob(2, 184, 22, 2);
  EndIf
  Return
 
  Label initraum14:
- flag$ ( 36 ) = 1
+ JOY.state.flag[36] = 1
  SwitchScreen(2);
  Bob(2, 55, 35, 2);
- If handlung$ ( 3 ) = 5
+ If JOY.state.handlung[3] = 5
     SwitchScreen(0);
     setZone(4, 201, 111, 236, 124);
     SwitchScreen(2);
     Bob(4, 200, 111, 3);
  EndIf
- If handlung$ ( 3 ) = 6
+ If JOY.state.handlung[3] = 6
     SwitchScreen(0);
     setZone(4, 201, 111, 236, 124);
     SwitchScreen(2);
@@ -4307,13 +4307,13 @@
 
  Label initraum15:
  If raum2 = 16
-    flag$ ( 38 ) = 1
+    JOY.state.flag[38] = 1
  EndIf
  If raum2 = 17 Or raum2 = 21
-    flag$ ( 37 ) = 1
+    JOY.state.flag[37] = 1
  EndIf
  If raum2 = 18 Or raum2 = 20
-    flag$ ( 38 ) = 1
+    JOY.state.flag[38] = 1
  EndIf
  If transport$ ( 145 ) = 1
     SwitchScreen(0);
@@ -4321,11 +4321,11 @@
     SwitchScreen(2);
     Bob(3, 17, 105, 9);
  EndIf
- If flag$ ( 37 ) = 1
+ If JOY.state.flag[37] = 1
     SwitchScreen(2);
     Bob(5, 100, 36, 7);
  EndIf
- If flag$ ( 38 ) = 1
+ If JOY.state.flag[38] = 1
     SwitchScreen(2);
     Bob(4, 280, 30, 8);
  EndIf
@@ -4339,23 +4339,23 @@
  Return
 
  Label initraum17:
- If flag$ ( 40 ) = 0
+ If JOY.state.flag[40] = 0
     SwitchScreen(0);
     setZone(3, 160, 44, 187, 71);
  EndIf
- If flag$ ( 40 ) = 1
+ If JOY.state.flag[40] = 1
     SwitchScreen(0);
     setZone(4, 160, 44, 187, 71);
     SwitchScreen(2);
     Bob(4, 160, 40, 4);
  EndIf
- If flag$ ( 40 ) = 2
+ If JOY.state.flag[40] = 2
     SwitchScreen(0);
     setZone(4, 160, 44, 187, 71);
     SwitchScreen(2);
     Bob(4, 150, 40, 6);
  EndIf
- If flag$ ( 41 ) = 0
+ If JOY.state.flag[41] = 0
     SwitchScreen(0);
     setZone(1, 52, 78, 188, 117);
     SwitchScreen(2);
@@ -4376,26 +4376,26 @@
 
  Label initraum18:
  etage = 1
- flag$ ( 43 ) = 0
- flag$ ( 44 ) = 0
- flag$ ( 45 ) = 0
+ JOY.state.flag[43] = 0
+ JOY.state.flag[44] = 0
+ JOY.state.flag[45] = 0
  flag$ ( Rnd ( 2 ) + 43 ) = 1
- If flag$ ( 43 ) = 1
+ If JOY.state.flag[43] = 1
     SwitchScreen(2);
     Bob(2, 125, 11, 2);
  EndIf
- If flag$ ( 44 ) = 1
+ If JOY.state.flag[44] = 1
     SwitchScreen(2);
     Bob(3, 175, 11, 2);
  EndIf
- If flag$ ( 45 ) = 1
+ If JOY.state.flag[45] = 1
     SwitchScreen(2);
     Bob(4, 225, 11, 2);
  EndIf
  Return
 
  Label initraum19:
- If flag$ ( 46 ) = 1
+ If JOY.state.flag[46] = 1
     SwitchScreen(2);
     Bob(1, 15, 67, 2);
  EndIf
@@ -4431,8 +4431,8 @@
     Bob(8, 168, 67, 14);
  EndIf
  If etage = 5
-    If flag$ ( 48 ) = 1
-       If handlung$ ( 4 ) = 2
+    If JOY.state.flag[48] = 1
+       If JOY.state.handlung[4] = 2
           person$ ( 2 ) = 20
           SwitchScreen(2);
           Bob(9, 157, 22, 13);
@@ -4442,7 +4442,7 @@
           Bob(9, 157, 22, 12);
        EndIf
     EndIf
-    If flag$ ( 48 ) = 0
+    If JOY.state.flag[48] = 0
        SwitchScreen(2);
        Bob(8, 168, 67, 14);
     EndIf
@@ -4452,7 +4452,7 @@
  Return
 
  Label initraum21:
- If handlung$ ( 6 ) = 2
+ If JOY.state.handlung[6] = 2
     SwitchScreen(2);
     Bob(1, 157, 69, 2);
  EndIf
@@ -4486,12 +4486,12 @@
 
  Label initraum24:
  If raum2 = 26
-    flag$ ( 67 ) = 1
+    JOY.state.flag[67] = 1
  EndIf
- flag$ ( 66 ) = 0
+ JOY.state.flag[66] = 0
  wx = 220
  wy = 19
- If flag$ ( 67 ) = 1
+ If JOY.state.flag[67] = 1
     SwitchScreen(2);
     Bob(2, 171, 19, 2);
  EndIf
@@ -4620,12 +4620,12 @@
  For i = 1 To 69
     flag$ ( i ) = 0
  Next
- flag$ ( 1 ) = 2
- flag$ ( 5 ) = 1
- flag$ ( 47 ) = 1
- flag$ ( 48 ) = 2
- flag$ ( 50 ) = 1
- flag$ ( 58 ) = 1
+ JOY.state.flag[1] = 2
+ JOY.state.flag[5] = 1
+ JOY.state.flag[47] = 1
+ JOY.state.flag[48] = 2
+ JOY.state.flag[50] = 1
+ JOY.state.flag[58] = 1
  betreten$ ( 1 ) = 1
  Screen Open 0 , 320 , 128 , 64 , Lowres
  Screen Display 0 , 128 , 80 , ,
@@ -4644,7 +4644,7 @@
        SwitchScreen(0);
        Gr Writing 0
        Ink 1 , 0
-       Text 70 , 60 , "BITTE LEGEN SIE DIE ZWEITE DISK EIN"
+       Text(70, 60, "BITTE LEGEN SIE DIE ZWEITE DISK EIN");
        While Not Exist ( pfad$ )
        Wend
        Cls 0
@@ -4714,21 +4714,21 @@
  Show On
  Fade 10 To 2
  Wait 200
- Call 'txt$' [ ereignis$ ( 1 ) ]
+ Call 'txt$' [ JOY.ereignis[1] ]
  //Call 'clickmouse$'
- Call 'txt$' [ ereignis$ ( 64 ) ]
+ Call 'txt$' [ JOY.ereignis[64] ]
  //Call 'clickmouse$'
  Call 'screco$'
  code = Rnd ( 2 ) + 1
- Mid$ ( ereignis$ ( 65 ) , 48 , 1 ) = ( Str$ ( code ) - " " )
+ Mid$ ( JOY.ereignis[65] , 48 , 1 ) = ( Str$ ( code ) - " " )
  a$ = ""
  Clear Key
- Call 'txt$' [ ereignis$ ( 65 ) ]
+ Call 'txt$' [ JOY.ereignis[65] ]
  While a$ = ""
     a$ = Inkey$
  Wend
  If Upper$ ( a$ ) = Mid$ ( "JOY" , code , 1 )
-    Call 'txt$' [ ereignis$ ( 66 ) ]
+    Call 'txt$' [ JOY.ereignis[66] ]
     //Call 'clickmouse$'
     Call 'screco$'
     Call 'verb_rein$'
@@ -4777,7 +4777,7 @@
     SwitchScreen(0);
     Gr Writing 0
     Ink 1 , 0
-    Text 70 , 60 , "BITTE LEGEN SIE DIE ZWEITE DISK EIN"
+    Text(70, 60, "BITTE LEGEN SIE DIE ZWEITE DISK EIN");
     While Not Exist ( pfad$ )
     Wend
     Cls 0
@@ -4910,9 +4910,9 @@
  If punkte = 0
     Goto go2
  EndIf
- Mid$ ( ereignis$ ( 69 ) , 36 , 5 ) = "     "
- Mid$ ( ereignis$ ( 69 ) , 36 , 5 ) = Str$ ( punkte )
- Call 'txt$' [ ereignis$ ( 69 ) ]
+ Mid$ ( JOY.ereignis[69] , 36 , 5 ) = "     "
+ Mid$ ( JOY.ereignis[69] , 36 , 5 ) = Str$ ( punkte )
+ Call 'txt$' [ JOY.ereignis[69] ]
  //Call 'clickmouse$'
  Call 'screco$'
  Call 'test_joy$'
@@ -4927,7 +4927,7 @@
  Next
  Close 1
  If punkte < score$ ( 10 )
-    Call 'txt$' [ ereignis$ ( 70 ) ]
+    Call 'txt$' [ JOY.ereignis[70] ]
     Goto go2
  EndIf
  Ink 0
@@ -4938,7 +4938,7 @@
     Ink 1 , 0
  EndIf
  Box 74 , 14 To 250 , 31
- Text 76 , 20 , "BITTE GEBEN SIE IHREN NAMEN EIN:"
+ Text(76, 20, "BITTE GEBEN SIE IHREN NAMEN EIN:");
  Call 'eingabe$' [ 100 , 28 , 20 , "" , 0 , 1 ]
  name$ ( 11 ) = Param$
  score$ ( 11 ) = punkte
@@ -4950,7 +4950,7 @@
     Ink 1 , 0
  EndIf
  Box 74 , 41 To 250 , 58
- Text 110 , 48 , "UND NUN IHREN WOHNORT:"
+ Text(110, 48, "UND NUN IHREN WOHNORT:");
  Call 'eingabe$' [ 110 , 55 , 17 , "" , 0 , 1 ]
  name$ ( 11 ) = name$ ( 11 ) + Chr$ ( 10 ) + "AUS " + Param$
  Gosub score_sortieren
@@ -4996,7 +4996,7 @@
        SwitchScreen(0);
        Gr Writing 0
        Ink 1 , 0
-       Text 70 , 60 , "BITTE LEGEN SIE DIE ZWEITE DISK EIN"
+       Text(70, 60, "BITTE LEGEN SIE DIE ZWEITE DISK EIN");
        While Not Exist ( pfad$ )
        Wend
        Cls 0
@@ -5026,7 +5026,7 @@
     Wend
     Call 'scr$' [ 98 ]
     Call 'font$' [ "Topaz" , 9 ]
-    Text 142 , 200 , "JOY"
+    Text(142, 200, "JOY");
     Call 'scr$' [ 98 ]
     Do
     Loop
@@ -5040,7 +5040,7 @@
        Ink 1 , 0
        t = Text Length ( txt$ )
        Text 155 - t , 200 , txt$
-       Text 165 , 200 , txt2$
+       Text(165, 200, txt2$);
        Call 'scr$' [ 9 ]
        Read txt$ , txt2$
     Wend
@@ -5112,7 +5112,7 @@
        SwitchScreen(0);
        Gr Writing 0
        Ink 1 , 0
-       Text 70 , 60 , "BITTE LEGEN SIE DIE ZWEITE DISK EIN"
+       Text(70, 60, "BITTE LEGEN SIE DIE ZWEITE DISK EIN");
        While Not Exist ( pfad$ )
        Wend
        Cls 0
@@ -5266,8 +5266,8 @@
        Ink 14 , 6
        Call 'bildaufbau$'
        Call 'cursorhin$'
-       If Not Btst ( 1 , flag$ ( 61 ) )
-          Bset.<> 1 , flag$ ( 61 )
+       If Not Btst ( 1 , JOY.state.flag[61] )
+          Bset.<> 1 , JOY.state.flag[61]
           Call 'punkte$' [ 10 ]
        EndIf
     Else If ( Left$ ( scr$ ( z - 1 ) , 3 ) = "run" And ( Right$ ( scr$ ( z - 1 ) , 37 ) = Space$ ( 37 ) ) ) Or ( Left$ ( scr$ ( z - 1 ) , 2 ) = "rU" And ( Right$ ( scr$ ( z - 1 ) , 38 ) = Space$ ( 38 ) ) )
@@ -5283,8 +5283,8 @@
        Call 'lopri$' [ 0 , z - 3 , scr$ ( z - 3 ) ]
        Call 'lopri$' [ 0 , z - 1 , scr$ ( z - 1 ) ]
        Call 'cursorhin$'
-       If Not Btst ( 2 , flag$ ( 61 ) )
-          Bset.<> 2 , flag$ ( 61 )
+       If Not Btst ( 2 , JOY.state.flag[61] )
+          Bset.<> 2 , JOY.state.flag[61]
           Call 'punkte$' [ 10 ]
        EndIf
     Else If ( Left$ ( scr$ ( z - 1 ) , 4 ) = "load" And ( Right$ ( scr$ ( z - 1 ) , 36 ) = Space$ ( 36 ) ) ) Or ( Left$ ( scr$ ( z - 1 ) , 2 ) = "lO" And ( Right$ ( scr$ ( z - 1 ) , 38 ) = Space$ ( 38 ) ) )
@@ -5300,8 +5300,8 @@
        Call 'lopri$' [ 0 , z - 3 , scr$ ( z - 3 ) ]
        Call 'lopri$' [ 0 , z - 1 , scr$ ( z - 1 ) ]
        Call 'cursorhin$'
-       If Not Btst ( 3 , flag$ ( 61 ) )
-          Bset.<> 3 , flag$ ( 61 )
+       If Not Btst ( 3 , JOY.state.flag[61] )
+          Bset.<> 3 , JOY.state.flag[61]
           Call 'punkte$' [ 10 ]
        EndIf
     Else If ( Left$ ( scr$ ( z - 1 ) , 4 ) = "save" And ( Right$ ( scr$ ( z - 1 ) , 36 ) = Space$ ( 36 ) ) ) Or ( Left$ ( scr$ ( z - 1 ) , 2 ) = "sA" And ( Right$ ( scr$ ( z - 1 ) , 38 ) = Space$ ( 38 ) ) )
@@ -5317,8 +5317,8 @@
        Call 'lopri$' [ 0 , z - 3 , scr$ ( z - 3 ) ]
        Call 'lopri$' [ 0 , z - 1 , scr$ ( z - 1 ) ]
        Call 'cursorhin$'
-       If Not Btst ( 4 , flag$ ( 61 ) )
-          Bset.<> 4 , flag$ ( 61 )
+       If Not Btst ( 4 , JOY.state.flag[61] )
+          Bset.<> 4 , JOY.state.flag[61]
           Call 'punkte$' [ 10 ]
        EndIf
     Else If Left$ ( scr$ ( z - 1 ) , 5 ) = "print"
@@ -5365,8 +5365,8 @@
           Call 'lopri$' [ 0 , z - 1 , scr$ ( z - 1 ) ]
           Call 'cursorhin$'
        EndIf
-       If Not Btst ( 5 , flag$ ( 61 ) )
-          Bset.<> 5 , flag$ ( 61 )
+       If Not Btst ( 5 , JOY.state.flag[61] )
+          Bset.<> 5 , JOY.state.flag[61]
           Call 'punkte$' [ 10 ]
        EndIf
     Else If scr$ ( z - 1 ) = Space$ ( 40 )
@@ -5426,7 +5426,7 @@
           SwitchScreen(0);
           Gr Writing 0
           Ink 1 , 0
-          Text 70 , 60 , "BITTE LEGEN SIE DIE ZWEITE DISK EIN"
+          Text(70, 60, "BITTE LEGEN SIE DIE ZWEITE DISK EIN");
           While Not Exist ( pfad$ )
           Wend
           Cls 0
@@ -5805,8 +5805,8 @@
     EndIf
     Gr Writing 0
     Ink 1 , 0
-    Text 95 , 15 , "G:"
-    Text 95 , 23 , "S:"
+    Text(95, 15, "G:");
+    Text(95, 23, "S:");
     Gr Writing 1
     If speed > 0
        Bar 110 , 9 To 110 + 10 * speed , 15
@@ -6024,7 +6024,7 @@
  Return
 
  Label fs_gewonnen:
- flag$ ( 60 ) = 1
+ JOY.state.flag[60] = 1
  SwitchScreen(0);
  Fade 1
  Wait 20
@@ -6228,7 +6228,7 @@
     nummer$ = nummer$ + Str$ ( mz ) - " "
     SwitchScreen(2);
     Put Cblock 4 , 132 , 6
-    Text 138 , 9 , nummer$
+    Text(138, 9, nummer$);
     Call 'screco$'
  EndIf
  Call 'maus_aus$'
@@ -6288,7 +6288,7 @@
  SwitchScreen(2);
  Ink 1 , 0
  Box 10 , 10 To 41 , 20
- Text 15 , 17 , nummer$
+ Text(15, 17, nummer$);
  Limit Mouse 225 , 80 To 340 , 207
  SwitchScreen(0);
  Call 'cursor$'
@@ -6321,7 +6321,7 @@
     Ink 0
     Bar 15 , 13 To 37 , 18
     Ink 1 , 0
-    Text 15 , 17 , nummer$
+    Text(15, 17, nummer$);
     Call 'screco$'
  EndIf
  Call 'maus_aus$'
@@ -6356,17 +6356,17 @@
  Call 'txt$' [ Chr$ ( 10 ) + "...BITTE WARTEN...ES WIRD DURCHGEW�HLT..." + Chr$ ( 10 ) + "*" + Chr$ ( 10 ) ]
  Wait 200
  Call 'screco$'
- If nummer$ = "15637" And handlung$ ( 5 ) = 0 And reden$ ( 11 ) = 0
+ If nummer$ = "15637" And JOY.state.handlung[5] = 0 And reden$ ( 11 ) = 0
     Call 'unterhaltung_laden$' [ 5 ]
-    Call 'txt$' [ ereignis$ ( 32 ) ]
+    Call 'txt$' [ JOY.ereignis[32] ]
     //Call 'clickmouse$'
     Call 'screco$'
     Call 'unterhaltung$'
     If Btst ( 2 , gefragt )
        reden$ ( 10 ) = 1
        reden$ ( 11 ) = 1
-       handlung$ ( 5 ) = 1
-       flag$ ( 5 ) = 0
+       JOY.state.handlung[5] = 1
+       JOY.state.flag[5] = 0
     EndIf
     Gosub l�sch_nummer
     Goto telefon2
@@ -6378,11 +6378,11 @@
     Gosub l�sch_nummer
     Goto telefon2
  EndIf
- If nummer$ = "73210" And flag$ ( 68 ) = 0
+ If nummer$ = "73210" And JOY.state.flag[68] = 0
     Call 'unterhaltung_laden$' [ 17 ]
     Call 'unterhaltung$'
     If Btst ( 4 , gefragt )
-       flag$ ( 68 ) = 1
+       JOY.state.flag[68] = 1
        Call 'punkte$' [ 78 ]
     EndIf
     Gosub l�sch_nummer
@@ -6390,7 +6390,7 @@
  EndIf
  If nummer$ = "00929" And reden$ ( 7 ) = 0 And Not raum = 5
     Call 'unterhaltung_laden$' [ 4 ]
-    Call 'txt$' [ ereignis$ ( 30 ) ]
+    Call 'txt$' [ JOY.ereignis[30] ]
     //Call 'clickmouse$'
     Call 'screco$'
     Call 'unterhaltung$'
@@ -6439,7 +6439,7 @@
  Ink 0
  Bar 15 , 13 To 37 , 18
  Ink 1 , 0
- Text 15 , 17 , nummer$
+ Text(15, 17, nummer$);
  Call 'screco$'
  Return
 
@@ -6528,7 +6528,7 @@
           Goto parser
        EndIf
        If x = fx And y = fy And knoepfe = 0
-          flag$ ( 55 ) = 1
+          JOY.state.flag[55] = 1
           Call 'punkte$' [ 652 ]
           Gosub ib
           r = 21
@@ -6741,12 +6741,12 @@
     If inhalt = 23
        inhalt = 3
     EndIf
-    If Not flag$ ( 42 ) = 2
+    If Not JOY.state.flag[42] = 2
        Inc inhalt
     EndIf
     Paste Icon 155 + ( ax * 10 ) , 59 + ( ay * 10 ) , inhalt
  Next
- If transport$ ( 127 ) = 2 And flag$ ( 42 ) = 2
+ If transport$ ( 127 ) = 2 And JOY.state.flag[42] = 2
     Restore aufbau_daten_hell
     For i = 1 To 16
        Read ax , ay
@@ -6992,7 +6992,7 @@
     SwitchScreen(0);
     Gr Writing 0
     Ink 1 , 0
-    Text 70 , 60 , "BITTE LEGEN SIE DIE ZWEITE DISK EIN"
+    Text(70, 60, "BITTE LEGEN SIE DIE ZWEITE DISK EIN");
     While Not Exist ( pfad$ )
     Wend
     Cls 0
@@ -7006,8 +7006,8 @@
  Cls 32
  SwitchScreen(0);
  Reserve Zone 20
- If flag$ ( 69 ) = 0
-    flag$ ( 69 ) = 1
+ If JOY.state.flag[69] = 0
+    JOY.state.flag[69] = 1
     Call 'punkte$' [ p ]
  EndIf
  r = 1
@@ -7112,7 +7112,7 @@
     SwitchScreen(0);
     Gr Writing 0
     Ink 1 , 0
-    Text 70 , 60 , "BITTE LEGEN SIE DIE ZWEITE DISK EIN"
+    Text(70, 60, "BITTE LEGEN SIE DIE ZWEITE DISK EIN");
     While Not Exist ( pfad$ )
     Wend
     Cls 0
@@ -8001,14 +8001,14 @@
     Shared p
     SwitchScreen(0);
     Ink 1 , 0
-    Text 232 , 30 , Str$ ( p ) - " "
+    Text(232, 30, Str$ ( p ) - " ");
  End Proc
  Procedure klackstrisse$
     Shared kates , level , wr , wu
     Inc kates
     SwitchScreen(0);
     Ink 1 , 0
-    Text 232 , 37 , Str$ ( kates ) - " "
+    Text(232, 37, Str$ ( kates ) - " ");
     If kates Mod 5 = 0 And kates > 0
        Inc level
        Call 'level$'
@@ -8022,7 +8022,7 @@
     Shared level
     SwitchScreen(0);
     Ink 1 , 0
-    Text 232 , 44 , Str$ ( level ) - " "
+    Text(232, 44, Str$ ( level ) - " ");
  End Proc
  Procedure stats$
     Shared stat$ ( )
