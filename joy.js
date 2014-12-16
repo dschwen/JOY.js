@@ -1,6 +1,6 @@
 /*jshint eqnull:true */
 
-var game = new Phaser.Game(320, 252, Phaser.AUTO, '', { preload: preload, loadUpdate: loadUpdate, create: create, update: update }, false, false);
+var game = new Phaser.Game(320, 252, Phaser.AUTO, '', { preload: preload, /*loadUpdate: loadUpdate,*/ create: create, update: update }, false, false);
 
 JOY = {
   state: {
@@ -108,10 +108,10 @@ function preload() {
 
   // graphic assets
   for (i = 0; i < 20; ++i) {
-    game.load.image('gesicht_' + i, 'assets/grafiken/Gesichter.' + i + '.png');
+    game.load.image('gesicht_' + (i+1), 'assets/grafiken/Gesichter.' + i + '.png');
   }
   for (i = 0; i < 34; ++i) {
-    game.load.image('icons3_' + i, 'assets/grafiken/Icons3Deutsch.' + i + '.png');
+    game.load.image('icons3_' + (i+1), 'assets/grafiken/Icons3Deutsch.' + i + '.png');
   }
   game.load.image('befehle', 'assets/grafiken/BefehleDeutsch.Pic.png');
   game.load.image('befehle2', 'assets/grafiken/Befehle2.Pic.png');
@@ -125,12 +125,16 @@ function preload() {
   for (var r in raumBobNum)
     if(raumBobNum.hasOwnProperty(r)) {
       for(i = 0; i <= raumBobNum[r]; ++i) {
-        game.load.image('raum_' + r + '_bob_'+ i, 'assets/grafiken/Raum' + r + '.Bobs.' + i + '.png');
+        //game.load.image('raum_' + r + '_bob_'+ (i+1), 'assets/grafiken/Raum' + r + '.Bobs.' + i + '.png');
+        game.load.image('raum_' + r + '_bob_'+ (i+1), 'assets/grafiken/Room' + r + '.Sprites.Abk.' + i + '.png');
       }
-      game.load.image('raum_' + r, 'assets/grafiken/Raum' + r + '.Pic.png');
+      //game.load.image('raum_' + r, 'assets/grafiken/Raum' + r + '.Pic.png');
+      game.load.image('raum_' + r, 'assets/grafiken/Room' + r + '.Pic.png');
     }
   game.load.image('raum_5_1', 'assets/grafiken/Raum5_1.Pic.png');
   game.load.image('raum_11_1', 'assets/grafiken/Raum11_1.Pic.png');
+  game.load.image('raum_14_1', 'assets/grafiken/Raum14_1.Pic.png');
+  game.load.image('raum_14_2', 'assets/grafiken/Raum14_2.Pic.png');
 }
 
 function loadUpdate()
@@ -151,6 +155,8 @@ function create()
 // mouse handler
 function mouseClick()
 {
+  console.log('click!');
+
   JOY.geg1 = 0;
   JOY.geg2 = 0;
   JOY.pers = 0;
@@ -182,10 +188,10 @@ function mouseClick()
 // main game loop
 function update()
 {
-  JOY.pers = 0;
+  /*JOY.pers = 0;
   testScreen();
   JOY.geg1 = JOY.geg;
-  schreibeSatz();
+  schreibeSatz();*/
 }
 
 // AMOS Functions
@@ -204,6 +210,7 @@ function BobOff(n) {
   }
 }
 function Bob(n,x,y,i) {
+  console.log("Bob", JOY.bank + i);
   BobOff(n);
   JOY.bobs[JOY.screen][n] = game.add.sprite(x, y+JOY.screeny[JOY.screen], JOY.bank + i);
 }
@@ -221,6 +228,10 @@ function ClrBobs() {
     }
   }
 }
+function Text(x, y, t)
+{
+  console.log(x,y,t);
+}
 
 // which of the three screen sections (personen, raum, befehle) did the user click
 function mouseScreen()
@@ -235,11 +246,14 @@ function mouseScreen()
 function mouseZone()
 {
   var z = JOY.state.zones[JOY.screen];
-  var i, mx = game.input.x, my = game.input.y;
-  for (i = 1; i < z.length; ++i)
+  var i, mx = game.input.x, my = game.input.y - JOY.screeny[JOY.screen];
+console.log(mx, my);
+  for (i = 0; i < z.length; ++i)
   {
-    if (z[i] && mx >= z[i][0] && my >= z[i][1] && mx < (z[i][0]+z[i][2]) && my < (z[i][1]+z[i][3]))
-      return i + 1;
+    if (z[i] && mx >= z[i][0] && my >= z[i][1] && mx < z[i][2] && my < z[i][3]) {
+      console.log("Zone", i+1,"on screen", JOY.screen);
+      return i+1;
+    }
   }
   return 0;
 }
