@@ -82,6 +82,7 @@ JOY = {
 
   // assets
   bank: "gesicht_",
+  cmdtext: null,
   ereignis: [],
 
   //data
@@ -136,6 +137,10 @@ function preload() {
   game.load.image('raum_11_1', 'assets/grafiken/Raum11_1.Pic.png');
   game.load.image('raum_14_1', 'assets/grafiken/Raum14_1.Pic.png');
   game.load.image('raum_14_2', 'assets/grafiken/Raum14_2.Pic.png');
+  game.load.bitmapFont('times', 'assets/fonts/Times.png', 'assets/fonts/Times.xml');
+  game.load.bitmapFont('joy', 'assets/fonts/JOY.png', 'assets/fonts/JOY.xml');
+  game.load.bitmapFont('64erI', 'assets/fonts/64erI.png', 'assets/fonts/64erI.xml');
+  game.load.bitmapFont('64erII', 'assets/fonts/64erII.png', 'assets/fonts/64erII.xml');
 }
 
 function loadUpdate()
@@ -146,19 +151,23 @@ function loadUpdate()
 function create()
 {
   // interface and room 1
-
+  JOY.cmdtext = game.add.bitmapText(2, 6 + JOY.screeny[1] - 4, 'joy','',6);
+  JOY.cmdtext.tint = 0x333333;
   // setup handlers
   game.input.onDown.add(mouseClick, this);
+  JOY.shiftKey = game.input.keyboard.addKey(Phaser.Keyboard.SHIFT);
   initialisieren();
 }
 
 function render() {
   var color = ['#00ffff','#ff00ff','#ff0000','#ffff00'];
-  for (var s=0; s<4; ++s) {
-    var z = JOY.state.zones[s];
-    for (var i=0; i<z.length; ++i) {
-      if (z[i])
-        game.debug.rectangle(new Phaser.Rectangle(z[i][0],z[i][1]+JOY.screeny[s], z[i][2]-z[i][0], z[i][3]-z[i][1]),color[s], false);
+  if (JOY.shiftKey.isDown) {
+    for (var s=0; s<4; ++s) {
+      var z = JOY.state.zones[s];
+      for (var i=0; i<z.length; ++i) {
+        if (z[i])
+          game.debug.rectangle(new Phaser.Rectangle(z[i][0],z[i][1]+JOY.screeny[s], z[i][2]-z[i][0], z[i][3]-z[i][1]),color[s], false);
+      }
     }
   }
 }
@@ -243,6 +252,10 @@ function Text(x, y, t)
 {
   console.log(x,y,t);
 }
+function commandText(t) {
+  game.world.bringToTop(JOY.cmdtext);
+  JOY.cmdtext.setText(t)
+}
 
 // which of the three screen sections (personen, raum, befehle) did the user click
 function mouseScreen()
@@ -281,20 +294,20 @@ function schreibeSatz()
     //Ink 0 , 5
     if (JOY.state.geg[JOY.geg1] == "RÜCK") {
       if (JOY.verb == 10) {
-        Text(2, 6, JOY.verben[JOY.verb] + " " + JOY.state.geg[JOY.geg1] /*+ geg$ ( 0 )*/);
+        commandText(JOY.verben[JOY.verb] + " " + JOY.state.geg[JOY.geg1] /*+ geg$ ( 0 )*/);
         return;
       } else {
         JOY.geg1 = 0;
       }
     }
     if (JOY.geg1 == 227 && JOY.verb == 10) {
-      Text(2, 6, JOY.verben[JOY.verb] + " " + JOY.state.geg[JOY.geg1] /*+ geg$ ( 0 )*/);
+      commandText(JOY.verben[JOY.verb] + " " + JOY.state.geg[JOY.geg1] /*+ geg$ ( 0 )*/);
       return;
     }
-    Text(2, 6, JOY.verben[JOY.verb] + " " + JOY.state.geg[JOY.geg1] /*+ geg$ ( 0 )*/);
+    commandText(JOY.verben[JOY.verb] + " " + JOY.state.geg[JOY.geg1] /*+ geg$ ( 0 )*/);
   } else {
     SwitchScreen(1);
-    Text(2, 6, JOY.verben[JOY.verb] + " " + JOY.state.personName[JOY.pers] /*+ geg$ ( 0 )*/);
+    commandText(JOY.verben[JOY.verb] + " " + JOY.state.personName[JOY.pers] /*+ geg$ ( 0 )*/);
   }
 }
 
@@ -307,10 +320,10 @@ function schreibeSatzteil()
     if ( JOY.state.geg[JOY.geg2] == "RÜCK" || JOY.geg1 == JOY.geg2) {
       geg2 = 0;
     }
-    Text(2, 6, JOY.verben[JOY.verb] + " " + JOY.state.geg[JOY.geg1] + " AN " + JOY.state.geg[JOY.geg2] /*+ geg$ ( 0 )*/);
+    commandText(JOY.verben[JOY.verb] + " " + JOY.state.geg[JOY.geg1] + " AN " + JOY.state.geg[JOY.geg2] /*+ geg$ ( 0 )*/);
   } else {
     SwitchScreen(1);
-    Text(2, 6, JOY.verben[JOY.verb] + " " + JOY.state.geg[JOY.geg1] + " AN " + JOY.state.personName[JOY.pers] /*+ geg$ ( 0 )*/);
+    commandText(JOY.verben[JOY.verb] + " " + JOY.state.geg[JOY.geg1] + " AN " + JOY.state.personName[JOY.pers] /*+ geg$ ( 0 )*/);
   }
 }
 
@@ -419,7 +432,7 @@ function verbRm()
     JOY.verb2 = JOY.verb;
     JOY.verb = 16;
     SwitchScreen(1);
-    Text(2, 6, "REDE MIT " + JOY.state.personName[JOY.pers] + JOY.state.geg[0]);
+    commandText("REDE MIT " + JOY.state.personName[JOY.pers] + JOY.state.geg[0]);
 
     //Gosub "Raum" + Str$ ( JOY.state.raum ) - " "
     if (!JOY.raumFunc[JOY.state.raum]()) return false;
@@ -656,13 +669,13 @@ function verbWaehlen()
        if (JOY.verb == 6) {
           handlung();
           SwitchScreen(1);
-          Text(2, 6, "UMSCHAUEN: " + JOY.state.raum[raum]);
+          commandText("UMSCHAUEN: " + JOY.state.raum[raum]);
           showText(umgebung$);
           //Call 'clickmouse$'
           //Call 'screco$'
           SwitchScreen(1);
-          Text(2, 6, JOY.state.geg[0]);
-          Text(2, 6, JOY.state.verb[verb] + JOY.state.geg[0]);
+          commandText(JOY.state.geg[0]);
+          commandText(JOY.state.verb[verb] + JOY.state.geg[0]);
           // Paste Icon 0 , JOY.verb * 9 , JOY.verb
           JOY.verb = JOY.verb2;
           verbRein();
@@ -704,7 +717,7 @@ function verbWaehlen()
        verb = 14
        SwitchScreen(1);
        Ink 0 , 5
-       Text(2, 6, "SPIELSTAND SPEICHERN" + JOY.state.geg[0]);
+       commandText("SPIELSTAND SPEICHERN" + JOY.state.geg[0]);
        Paste Icon 58 , 46 , 29
        showText(Chr$ ( 10 ) + "HAUN SIE MAL KURZ IHRE SAVEDISK IN DF0:" + Chr$ ( 10 ) + "*" + Chr$ ( 10 ));
        //Call 'clickmouse$'
@@ -816,7 +829,7 @@ function verbWaehlen()
       JOY.verb = 15;
        SwitchScreen(1);
        Ink 0 , 5
-       Text(2, 6, "SPIELSTAND LADEN" + geg$ ( 0 ));
+       commandText("SPIELSTAND LADEN" + geg$ ( 0 ));
        Paste Icon 58 , 68 , 30
        showText(Chr$ ( 10 ) + "HAUN SIE MAL KURZ IHRE SAVEDISK IN DF0:" + Chr$ ( 10 ) + "*" + Chr$ ( 10 ));
        //Call 'clickmouse$'
