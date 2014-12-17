@@ -154,9 +154,13 @@ function create()
 }
 
 function render() {
-  var z = JOY.state.zones[0];
-  for (var i=0; i<z.length; ++i) {
-    game.debug.rectangle(new Phaser.Rectangle(z[i][0],z[i][1]+JOY.screeny[0], z[i][2]-z[i][0], z[i][3]-z[i][1]),'#0fffff', false);
+  var color = ['#00ffff','#ff00ff','#ff0000','#ffff00'];
+  for (var s=0; s<4; ++s) {
+    var z = JOY.state.zones[s];
+    for (var i=0; i<z.length; ++i) {
+      if (z[i])
+        game.debug.rectangle(new Phaser.Rectangle(z[i][0],z[i][1]+JOY.screeny[s], z[i][2]-z[i][0], z[i][3]-z[i][1]),color[s], false);
+    }
   }
 }
 
@@ -208,7 +212,7 @@ function YScreen(y) { return y - JOY.screeny[JOY.screen]; }
 function XScreen(x) { return x; }
 function YMouse() { return game.input.y; }
 function XMouse() { return game.input.x; }
-function SetZone(n,x1,y1,x2,y2) { JOY.state.zones[JOY.screen][n] = [x1,y1,x2-x1,y2-y1]; }
+function SetZone(n,x1,y1,x2,y2) { JOY.state.zones[JOY.screen][n] = [x1,y1,x2,y2]; }
 function ResetZone(n) { JOY.state.zones[JOY.screen][n] = null; }
 function BobOff(n) {
   var b = JOY.bobs[JOY.screen];
