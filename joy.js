@@ -236,14 +236,15 @@ function Bob(n,x,y,i) {
   BobOff(n);
   JOY.bobs[JOY.screen][n] = game.add.sprite(x, y+JOY.screeny[JOY.screen], JOY.bank + i);
 }
-function PasteIcon(i,x,y) {
+function PasteIcon(x,y,i) {
+  console.log("icon",i,"at",x,y);
   var ic = JOY.icons[JOY.screen], key = x+'_'+y;
   if (key in ic && ic[key]) {
     ic[key].destroy();
     delete ic[key];
   }
   if (i !== null) {
-    ic[key] = game.add.sprite(x, y+JOY.screeny[JOY.screen], 'icons', i);
+    ic[key] = game.add.sprite(x, y+JOY.screeny[JOY.screen], 'icons', i-1);
   }
 }
 function Unpack(key) {
