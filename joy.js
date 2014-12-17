@@ -120,11 +120,14 @@ function preload() {
   game.load.image('befehle2', 'assets/grafiken/Befehle2.Pic.png');
 
   // Raum assets
-  var raumBobNum = {
+  /*var raumBobNum = {
     "1":13, "10":0, "11":1, "12":3, "13":2, "14":7, "15":11, "16":0, "17":5, "18":1,
     "19":4, "2":9, "20":16, "21":0, "22":0, "23":0, "24":5, "25":0, "26":1, "3":25,
     "4":14, "5":2, "6":14, "7":3, "8":6
-  };
+  };*/
+  var raumBobNum = { "1":9, /*"10":0, "11":1, "12":3, "13":1, "14":3, "15":8, "16":1,
+    "17":5, "18":1, "19":2, "2":5, "20":13, "21":1, "22":1, "23":1, "3":8, "4":7,
+    "5":4, "6":11, "7":3, "8":3*/ }; // for the Room* files
   for (var r in raumBobNum)
     if(raumBobNum.hasOwnProperty(r)) {
       for(i = 0; i <= raumBobNum[r]; ++i) {
@@ -134,10 +137,14 @@ function preload() {
       //game.load.image('raum_' + r, 'assets/grafiken/Raum' + r + '.Pic.png');
       game.load.image('raum_' + r, 'assets/grafiken/Room' + r + '.Pic.png');
     }
-  game.load.image('raum_5_1', 'assets/grafiken/Raum5_1.Pic.png');
   game.load.image('raum_11_1', 'assets/grafiken/Raum11_1.Pic.png');
-  game.load.image('raum_14_1', 'assets/grafiken/Raum14_1.Pic.png');
-  game.load.image('raum_14_2', 'assets/grafiken/Raum14_2.Pic.png');
+  // game.load.image('raum_5_1', 'assets/grafiken/Raum5_1.Pic.png');
+  // game.load.image('raum_14_1', 'assets/grafiken/Raum14_1.Pic.png');
+  // game.load.image('raum_14_2', 'assets/grafiken/Raum14_2.Pic.png');
+  game.load.image('raum_5_1', 'assets/grafiken/Room5_1.Pic.png');
+  game.load.image('raum_14_1', 'assets/grafiken/Room14_1.Pic.png');
+  game.load.image('raum_14_2', 'assets/grafiken/Room14_2.Pic.png');
+
   game.load.bitmapFont('times', 'assets/fonts/Times.png', 'assets/fonts/Times.xml');
   game.load.bitmapFont('joy', 'assets/fonts/JOY.png', 'assets/fonts/JOY.xml');
   game.load.bitmapFont('64erI', 'assets/fonts/64erI.png', 'assets/fonts/64erI.xml');
