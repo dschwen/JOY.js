@@ -1,8 +1,7 @@
 /*jshint eqnull:true */
 
-//var game = new Phaser.Game(320, 252, Phaser.AUTO, '', { preload: preload, /*loadUpdate: loadUpdate,*/ create: create, update: update/*, render: render */}, false, false);
+//var game = new Phaser.Game(320, 252, Phaser.AUTO, '', { preload: preload, /*loadUpdate: loadUpdate,*/ create: create, update: update, render: render}, false, false);
 var game = new Phaser.Game(320, 252, Phaser.CANVAS, '', { preload: preload, /*loadUpdate: loadUpdate,*/ create: create, update: update, render: render}, false, false);
-//Phaser.AUTO
 
 JOY = {
   state: {
@@ -212,7 +211,7 @@ function YScreen(y) { return y - JOY.screeny[JOY.screen]; }
 function XScreen(x) { return x; }
 function YMouse() { return game.input.y; }
 function XMouse() { return game.input.x; }
-function SetZone(n,x1,y1,x2,y2) { JOY.state.zones[JOY.screen][n] = [x1,y1,x2,y2]; }
+function SetZone(n,x1,y1,x2,y2) { JOY.state.zones[JOY.screen][n-1] = [x1,y1,x2,y2]; }
 function ResetZone(n) { JOY.state.zones[JOY.screen][n] = null; }
 function BobOff(n) {
   var b = JOY.bobs[JOY.screen];
