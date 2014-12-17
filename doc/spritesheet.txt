@@ -1,0 +1,1 @@
+montage `ls Icons.?.png` `ls Icons.??.png` `ls Icons.???.png` -background none -tile 16x16 -geometry 16x16 icons.png

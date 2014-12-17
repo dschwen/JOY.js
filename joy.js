@@ -75,6 +75,7 @@ JOY = {
   screenh: [128,90,0,34],
   screeny: [34,34+128,0,0],
   bobs: [[],[],[],[]],
+  icons: [{},{},{},{}],
 
   // Raum routinen
   initRaum: [],
@@ -141,6 +142,7 @@ function preload() {
   game.load.bitmapFont('joy', 'assets/fonts/JOY.png', 'assets/fonts/JOY.xml');
   game.load.bitmapFont('64erI', 'assets/fonts/64erI.png', 'assets/fonts/64erI.xml');
   game.load.bitmapFont('64erII', 'assets/fonts/64erII.png', 'assets/fonts/64erII.xml');
+  game.load.spritesheet('icons', 'assets/grafiken/icons.png', 16, 16, 256);
 }
 
 function loadUpdate()
@@ -233,6 +235,16 @@ function Bob(n,x,y,i) {
   console.log("Bob", JOY.bank + i);
   BobOff(n);
   JOY.bobs[JOY.screen][n] = game.add.sprite(x, y+JOY.screeny[JOY.screen], JOY.bank + i);
+}
+function PasteIcon(i,x,y) {
+  var ic = JOY.icons[JOY.screen], key = x+'_'+y;
+  if (key in ic && ic[key]) {
+    ic[key].destroy();
+    delete ic[key];
+  }
+  if (i !== null) {
+    ic[key] = game.add.sprite(x, y+JOY.screeny[JOY.screen], 'icons', i);
+  }
 }
 function Unpack(key) {
   console.log("Unpack", key);
@@ -2126,7 +2138,6 @@ function personenDisplay()
   do
   {
     if (JOY.state.person[person_] == JOY.state.raum) {
-      //Paste Icon i * 31 , 0 , person_
       Bob(i, i * 31 , 0, person_);
       JOY.state.personen[i + 1] = person_;
       i++;
@@ -2135,9 +2146,6 @@ function personenDisplay()
   } while (i != 10 && person_ != 21);
 
   //Cls 0 , i * 31 , 0 To ( i * 31 ) + ( 320 - i ) , 39
-  for (; i <= 10; ++i) {
-    BobOff(i);
-  }
 }
 
 function initRaum(r)
@@ -2278,12 +2286,13 @@ function verbRaus()
 {
   SwitchScreen(1);
   //Call 'iconbank$' [ 0 ]
+  BobOff(1);
 
-  if (JOY.verb < 10) {
+  /*if (JOY.verb < 10) {
     //Paste Icon 0 , JOY.verb * 9 , JOY.verb
   } else {
     //Paste Icon 58 , ( JOY.verb - 9 ) * 9 , JOY.verb
-  }
+  }*/
 }
 
 function verbRein()
@@ -2292,6 +2301,7 @@ function verbRein()
   //Call 'iconbank$' [ 0 ]
   if (JOY.verb < 10) {
     //Paste Icon 0 , verb * 9 , verb + 15
+    //Bob(1, 0 , verb * 9 , verb + 15); // TODO so machen wir's
   } else {
     //Paste Icon 58 , ( verb - 9 ) * 9 , verb + 15
   }
@@ -2409,8 +2419,9 @@ function inventory()
     for (var x = 1; x <= 8; ++x) {
       zaehler++;
       if (JOY.state.inventar[zaehler] > 0) {
-        // Paste Icon 100 + x * 24 , - 6 + y * 24 , inventar$ ( zaehler )
+        PasteIcon(100 + x * 24 , - 6 + y * 24 , JOY.state.inventar[zaehler]);
       } else {
+        PasteIcon(100 + x * 24 , - 6 + y * 24 , null);
         // Cls 0 , 100 + x * 24 , - 6 + y * 24 To ( 100 + x * 24 ) + 16 , ( - 6 + y * 24 ) + 16
       }
     }
